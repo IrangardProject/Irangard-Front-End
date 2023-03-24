@@ -13,7 +13,7 @@ const TabsList = styled(TabsListUnstyled)``;
 const TabPanel = styled(TabPanelUnstyled)``;
 const Tab = styled(TabUnstyled)``;
 
-const ConfirmModal = ({ onDiscardChanges, open, onClose }) => {
+const ConfirmModal = ({ onDiscardChanges, open, onClose }) => {  
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -46,10 +46,16 @@ const ConfirmModal = ({ onDiscardChanges, open, onClose }) => {
 export default function LoginModal({ open, handleClose }) {
   const [formIsDirty, setFormIsDirty] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
 
   const handleCloseLoginModal = (discardChanges = false) => {
     if (formIsDirty && !discardChanges) setShowWarning(true);
     if (!formIsDirty || discardChanges) handleClose();
+  };
+
+  const handleActiveTab = (e, activeTab) => {
+    console.log("handling navigation to the page ", activeTab);
+    setActiveTab(activeTab); // set the active tab to the login TabPanel
   };
 
   return (
@@ -65,7 +71,11 @@ export default function LoginModal({ open, handleClose }) {
               handleCloseLoginModal(true);
             }}
           />
-          <Tabs defaultValue={0}>
+          <Tabs 
+          defaultValue={activeTab}
+          value={activeTab} 
+          onChange={handleActiveTab} 
+          >
             <TabsList className="login-modal__TabsList">
               <Tab className="login-modal__Tab">ورود اعضا</Tab>
               <Tab className="login-modal__Tab">ثبت نام</Tab>
@@ -74,7 +84,7 @@ export default function LoginModal({ open, handleClose }) {
               <LoginForm />
             </TabPanel>
             <TabPanel value={1}>
-              <SignupForm handleFormIsDirty={setFormIsDirty} />
+              <SignupForm handleFormIsDirty={setFormIsDirty} onComplete={handleActiveTab} />
             </TabPanel>
             <img src={FooterImg} alt="Goodbye" className="login-modal__FooterImg" />
           </Tabs>

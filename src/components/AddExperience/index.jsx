@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import { Rating } from '@mui/material';
+import { Rating, Autocomplete, TextField } from '@mui/material';
+import { MdOutlineLocationOn } from 'react-icons/md';
 import Layout from 'src/components/Layout';
 import Input from 'src/components/Input';
 import RichText from 'src/components/RichText';
@@ -20,8 +21,8 @@ function AddExperience() {
   const [title, setTitle] = useState('');
   const [titleError, setTitleError] = useState('');
   const [rateValue, setRateValue] = useState(3);
-  const [place, setPlace] = useState('');
   const [places, setPlaces] = useState([]);
+  const [place, setPlace] = useState(null);
   const [placeError, setPlaceError] = useState('');
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('');
@@ -30,15 +31,25 @@ function AddExperience() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
-  if (!auth.isLoggedIn) {
-    return (
-      <Layout title="نوشتن تجربه جدید">
-        <div className="add-experience">
-          <p>برای نوشتن تجربه ابتدا باید وارد شوید.</p>
-        </div>
-      </Layout>
-    );
-  }
+  // if (!auth.isLoggedIn) {
+  //   return (
+  //     <Layout title="نوشتن تجربه جدید">
+  //       <div className="add-experience">
+  //         <p>برای نوشتن تجربه ابتدا باید وارد شوید.</p>
+  //       </div>
+  //     </Layout>
+  //   );
+  // }
+
+  useEffect(() => {
+    apiInstance.get(`${baseUrl}/places/`).then(res => {
+      const placesInfo = res.data.results;
+      setPlaces(placesInfo.map(placeInfo => ({
+        id: placeInfo.id,
+        title: placeInfo.title
+      })))
+    });
+  }, []);
 
   const handleTitleChange = e => {
     setTitle(e.target.value);
@@ -49,35 +60,18 @@ function AddExperience() {
     }
   };
 
-  const handlePlaceChange = async e => {
-    setPlace(e.target.value);
+  const handlePlaceChange = async (newValue) => {
+    setPlace(newValue);
     if (typeof cancelToken != typeof undefined) {
       cancelToken.cancel();
     }
-
     //Save the cancel token for the current request
     cancelToken = axios.CancelToken.source();
-
-    axios
-      .get(`${baseUrl}/places/?search=${e.target.value}`, { cancelToken: cancelToken.token })
-      .then(res => res.data)
-      .then(data => {
-        console.log(data.results);
-        setPlaces(data.results);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    if (e.target.value === '') {
-      setPlaceError('مکان تجربه نمی‌تواند خالی باشد.');
-    } else {
-      setPlaceError('');
-    }
   };
 
   const submitExperience = async e => {
     let error = false;
-    if (place === '') {
+    if (place === null) {
       setPlaceError('مکان تجربه نمی‌تواند خالی باشد.');
       error = true;
     }
@@ -122,29 +116,30 @@ function AddExperience() {
       <div className="add-experience">
         <Toaster />
         <h1 className="add-experience__title">نوشتن تجربه</h1>
-        <div className="add-experience__places-box">
-          <Input
-            label="انتخاب مکان:"
-            placeholder="مکان..."
-            value={place.title}
-            onChange={handlePlaceChange}
-            onBlur={handlePlaceChange}
-            error={placeError}
-          />
-          {place.title && (
-            <div className="add-experience__place-selected">
-              <div className="add-experience__place-title">{place.title}</div>
-              <div className="add-experience__place-city">{place.contact?.city}</div>
-            </div>
-          )}
-          <div className="add-experience__places">
-            {places.map(plc => (
-              <div className="add-experience__place" onClick={() => setPlace(plc)}>
-                <div className="add-experience__place-title">{plc.title}</div>
-                <div className="add-experience__place-city">{plc?.contact?.city}</div>
+        <div className="state-city__field">
+          <Autocomplete
+            disablePortal
+            options={places}
+            getOptionLabel={(object) => object.title}
+            value={place}
+            onChange={(event, newValue) => handlePlaceChange(newValue)}
+            renderInput={params => (
+              <div ref={params.InputProps.ref} className="green-field">
+                <MdOutlineLocationOn className="icon" />
+
+                <Input
+                  {...params.inputProps}
+                  autoComplete="off"
+                  className="field-input"
+                  error={placeError}
+                  type="text"
+                  id="state"
+                  placeholder="انتخاب مکان"
+                  value={params.inputProps.value}
+                />
               </div>
-            ))}
-          </div>
+            )}
+          />
         </div>
         <Button className="add-experience__choose-img-btn" onClick={() => imageRef.current.click()}>
           <input
@@ -167,7 +162,6 @@ function AddExperience() {
           placeholder="عنوان..."
           value={title}
           onChange={handleTitleChange}
-          onBlur={handleTitleChange}
           error={titleError}
         />
         <div className="add-experience__rating">

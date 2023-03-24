@@ -222,6 +222,7 @@ const PlaceFilters = () => {
           imgSrc: x.images.length !== 0 ? x.images[0]['image'] : '',
         };
       });
+      console.log("res.data receiving from api: ", temp);
       setPlacesData(temp);
       setLoading(false);
     });
