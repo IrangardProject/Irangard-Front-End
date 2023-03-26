@@ -13,7 +13,7 @@
 //     const chatSocket = new WebSocket(
 //     'wss://'
 //     // + '127.0.0.1:8000'
-//     + 'api.parizaan.ir'
+//     + 'api.quilco.ir'
 //     + '/chat/room/'
 //     + 'admin'
 //     + '/'
@@ -70,7 +70,7 @@ function Chat(props) {
     const newChatSocket = new WebSocket(
       'wss://' +
         // '127.0.0.1:8000' +
-        'api.parizaan.ir' +
+        'api.quilco.ir' +
         '/chat/room/' +
         // auth.user.username +
         props.username +

@@ -8,6 +8,7 @@ import useAuth from '../../../context/AuthContext';
 import './style.scss';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { baseUrl } from '../../../utils/constants';
 
 function ToursList() {
   const [loading, setLoading] = useState(true);
@@ -40,7 +41,7 @@ function ToursList() {
         Authorization: `JWT ${access_token}`,
       };
   
-      axios.get('http://188.121.102.52/accounts/special-users/tours', { headers })
+      axios.get(`${baseUrl}/accounts/special-users/tours`, { headers })
         .then(res => console.log('res :', res))
         .catch(err => console.log('error', err));
     }
