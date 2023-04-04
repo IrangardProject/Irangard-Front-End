@@ -10,6 +10,7 @@ import Button from 'src/components/Button';
 import RichText from 'src/components/RichText';
 import { convertNumberToPersian, isPersianNumber, convertJalaliDateToGeorgian } from 'src/utils/formatters';
 import apiInstance from 'src/config/axios';
+import { baseUrl } from 'src/utils/constants';
 import './style.scss';
 import 'react-multi-date-picker/styles/layouts/mobile.css';
 
@@ -115,7 +116,13 @@ function AddTour() {
     setLoading(true);
 
     apiInstance
-      .post('/tours/', body)
+      // .post('/tours/', body)
+      .post(`${baseUrl}/tours/`, body, {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        //   'Content-Type': 'multipart/form-data',
+        // },
+      })
       .then(res => res.data)
       .then(data => {
         toast.success('تور با موفقیت اضافه شد.');

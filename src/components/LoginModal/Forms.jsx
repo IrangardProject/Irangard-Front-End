@@ -75,7 +75,7 @@ export const LoginForm = () => {
   );
 };
 
-export const SignupForm = ({ handleFormIsDirty }) => {
+export const SignupForm = ({ handleFormIsDirty, onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [verificationCode, setVerificationCode] = useState('');
 
@@ -140,6 +140,10 @@ export const SignupForm = ({ handleFormIsDirty }) => {
         if (!err.response) return 'خطا در ارتباط با سرور! اینترنت خود را بررسی کنید';
         return `مشکلی پیش آمد، دوباره امتحان کنید.`;
       },
+    })
+    .then(x => {
+      console.log("navigating to the login tab.")
+      onComplete(0);
     });
   };
 
@@ -156,6 +160,7 @@ export const SignupForm = ({ handleFormIsDirty }) => {
             isLoading={authActivate.isLoading}
           />
         )}
+        {window.location.reload}
         {currentStep === 1 && (
           <div className="login-modal-form">
             لطفا کد تایید ایمیل رو وارد کن

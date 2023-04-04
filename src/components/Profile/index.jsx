@@ -174,7 +174,6 @@ const Profile = () => {
               </div>
               {showFollow && (
                 <Button
-                  disabled={followLoading}
                   onClick={() => handleFollow()}
                   className="profile-summary__follow-btn"
                   variant={following ? 'white' : 'blue'}

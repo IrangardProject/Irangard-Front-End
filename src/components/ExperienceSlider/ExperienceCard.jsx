@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import defaultXpImg from '../../assets/images/defaultXpImg.png';
+import avatar from '../../assets/images/avatar.png';
 import './style.scss';
 
 const ExperienceCard = ({ id, imgSrc, title, description, userImgSrc, userName }) => {
@@ -13,7 +14,7 @@ const ExperienceCard = ({ id, imgSrc, title, description, userImgSrc, userName }
         {description.length > 40 ? description.slice(0, 40) + '...' : description}
       </p>
       <div className="experience-card__footer">
-        <img src={userImgSrc} alt={userName} className="experience-card__user-img" />
+        <img src={userImgSrc || avatar} alt={userName} className="experience-card__user-img" />
         <p className="experience-card__user-name">{userName.slice(0, 20)}</p>
       </div>
     </Link>
