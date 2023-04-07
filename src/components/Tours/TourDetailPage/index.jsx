@@ -54,7 +54,7 @@ function ToursDetailPage() {
     e.preventDefault();
     apiInstance
       .post(`/tours/${id}/book/`, {
-        discount_code_code: code,
+        // discount_code_code: code,
       })
       .then(res => res.data)
       .then(data => {
