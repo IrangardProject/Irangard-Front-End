@@ -185,7 +185,7 @@ const Filters = ({ isHotel, isFree }) => {
 const PlaceFilters = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [placeType, setPlaceType] = useState(searchParams.get('place_type') || 'all');
-  const [state, setState] = useState(searchParams.get('state') || '');
+  const [state, setState] = useState(searchParams.get('province') || '');
   const [city, setCity] = useState(searchParams.get('city') || '');
   const [cities, setCities] = useState([]);
   const [q, setQ] = useState(searchParams.get('q') || '');
@@ -205,11 +205,14 @@ const PlaceFilters = () => {
   // /places/?city=کیش&place_type=1&tags__name=چای&features__title=سرویس بهداشتی&rooms__capacity=2&rate__gte=3
   const updateResult = async e => {
     if (e) e.preventDefault();
-
     let query = '';
     for (const [key, value] of searchParams) {
+      console.log("filterKeys[key]", filterKeys[key])
+      console.log("the key is: ", key)
       query += `${filterKeys[key] ?? key}=${value}&`;
     }
+
+    console.log("this is the query: ", query);
 
     setLoading(true);
     await apiInstance.get(`places/?${query}`).then(res => {
@@ -236,12 +239,16 @@ const PlaceFilters = () => {
     let d = searchParams;
     console.log(d);
     if (state?.label) {
-      d.set('state', state.label);
+      d.set('province', state.label);
       if (city?.label) d.set('city', city.label);
       else if (!city) d.delete('city');
     } else if (!state) {
       d.delete('city');
-      d.delete('state');
+      d.delete('province');
+    }
+    for (const [key, value] of d){
+      console.log("the key is: ", key)
+      console.log("the value is: ", value)
     }
     setSearchParams(d);
   }, [state, city]);

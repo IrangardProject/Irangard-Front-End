@@ -13,10 +13,12 @@ const ExperienceCard = ({ id, imgSrc, title, description, userImgSrc, userName }
       <p className="experience-card__description">
         {description.length > 40 ? description.slice(0, 40) + '...' : description}
       </p>
-      <div className="experience-card__footer">
-        <img src={userImgSrc || avatar} alt={userName} className="experience-card__user-img" />
-        <p className="experience-card__user-name">{userName.slice(0, 20)}</p>
-      </div>
+      <Link to={`/profile/${userName}`}>
+        <div className="experience-card__footer">
+          <img src={userImgSrc || avatar} alt={userName} className="experience-card__user-img" />
+          <p className="experience-card__user-name">{userName.slice(0, 20)}</p>
+        </div>
+      </Link>
     </Link>
   );
 };

@@ -53,10 +53,10 @@ export default function LoginModal({ open, handleClose }) {
     if (!formIsDirty || discardChanges) handleClose();
   };
 
-  const handleActiveTab = (e, activeTab) => {
-    console.log("handling navigation to the page ", activeTab);
-    setActiveTab(activeTab); // set the active tab to the login TabPanel
-  };
+  // const handleActiveTab = (e, activeTab) => {
+  //   console.log("handling navigation to the page ", activeTab);
+  //   setActiveTab(activeTab); // set the active tab to the login TabPanel
+  // };
 
   return (
     <div>
@@ -74,7 +74,7 @@ export default function LoginModal({ open, handleClose }) {
           <Tabs 
           defaultValue={activeTab}
           value={activeTab} 
-          onChange={handleActiveTab} 
+          // onChange={handleActiveTab} 
           >
             <TabsList className="login-modal__TabsList">
               <Tab className="login-modal__Tab">ورود اعضا</Tab>
@@ -84,7 +84,10 @@ export default function LoginModal({ open, handleClose }) {
               <LoginForm />
             </TabPanel>
             <TabPanel value={1}>
-              <SignupForm handleFormIsDirty={setFormIsDirty} onComplete={handleActiveTab} />
+              <SignupForm 
+              handleFormIsDirty={setFormIsDirty} 
+              // onComplete={handleActiveTab} 
+              />
             </TabPanel>
             <img src={FooterImg} alt="Goodbye" className="login-modal__FooterImg" />
           </Tabs>

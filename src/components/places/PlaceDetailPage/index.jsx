@@ -20,6 +20,17 @@ const PlaceDetailPage = () => {
   if (error) {
     return <Navigate to={'/notFound'} />;
   }
+  // const [rateValue, setRateValue] = React.useState(data.rate);
+  console.log("this is the data: ", data);
+
+  const calculateAverageRating = () => {
+    let sum = 0;
+    
+  }
+
+  // const rateChangeHandler = (newRate) => {
+  //   setRateValue(newRate);  
+  // }
 
   return (
     <Layout>
@@ -32,6 +43,18 @@ const PlaceDetailPage = () => {
               <Rating dir="ltr" readOnly defaultValue={data.rate} max={5} />
               <div className="place-detail__rating-value">{convertNumberToPersian(data.rate)}</div>
             </div>
+            {/* <div className="add-experience__rating">
+              <label className="add-experience__rating-label">امتیاز: {convertNumberToPersian(rateValue)}</label>
+              <div className="add-experience__rating-choose">
+                <Rating
+                  value={rateValue}
+                  onChange={(event, newValue) => {
+                    // setRateValue(newValue);
+                    
+                  }}
+                />
+              </div>
+            </div> */}
           </header>
           <div className="place-detail__gallery-info-wrapper">
             <PlaceGallery className="place-detail__gallery" images={data.images} />
