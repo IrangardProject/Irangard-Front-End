@@ -20,6 +20,7 @@ import apiInstance from '../../config/axios';
 import useAuth from 'src/context/AuthContext';
 import defaultProfileImg from '../../assets/images/profile.jpeg';
 import './style.scss';
+import { baseUrl } from '../../utils/constants';
 import toast from 'react-hot-toast';
 
 const style = {
@@ -76,7 +77,7 @@ export default function AccountMenu() {
             aria-expanded={open ? 'true' : undefined}
           >
             <Avatar className={auth.isSpecial ? 'special-avatar' : ''} sx={{ width: 36, height: 36 }}>
-              <img width={36} height={36} src={auth.user.image || defaultProfileImg} />
+              <img width={36} height={36} src={(`${baseUrl}` + auth.user.image) || defaultProfileImg} />
             </Avatar>
           </IconButton>
         </Tooltip>

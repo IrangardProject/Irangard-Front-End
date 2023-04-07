@@ -27,7 +27,7 @@ function ToursDetailPage() {
       .get(`/tours/${id}`)
       .then(res => res.data)
       .then(data => {
-        console.log(data);
+        console.log("data fetched: ", data);
         setData(data);
       })
       .catch(error => {
@@ -95,6 +95,7 @@ function ToursDetailPage() {
               رفتن به داشبورد
             </p>
           )}
+          {console.log("this is the data: ", data)}
           <img className="tour-detail__img" src={data.image || defaultTourImg} />
           <div className="tour-detail__date">
             <div className="tour-detail__start">تاریخ رفت: {formatDate(data.start_date)}</div>

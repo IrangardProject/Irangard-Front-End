@@ -40,10 +40,15 @@ const Profile = () => {
   useEffect(async () => {
     setIsLoading(true);
     apiInstance
-      .get(`/accounts/profile/${usernameQuery}`)
+      .get(`${baseUrl}/accounts/profile/${usernameQuery}`)
       .then(res => res.data)
       .then(data => {
+        console.log("the data received: ", data)
         setData(data);
+        // setData({
+        //   ...data,
+        //   profileImg: `${baseUrl}` + data.image,
+        // })
         setFollowing(data.following);
         setFollowerCount(data.follower_number);
         setFollowLoading(data.following_number);

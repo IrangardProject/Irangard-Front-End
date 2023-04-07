@@ -17,7 +17,7 @@ export default function MapSection(props) {
 
   const street_validation = {
     maxLength: {
-      value: 25,
+      value: 100,
       message: 'آدرس خیابان باید کمتر از ۲۵ کارکتر باشد.',
     },
   };
