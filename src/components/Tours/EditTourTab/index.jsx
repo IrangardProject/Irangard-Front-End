@@ -30,6 +30,9 @@ function EditTourTab({ data }) {
   const [capacity, setCapacity] = useState('');
   const [capacityError, setCapacityError] = useState('');
 
+  const [isStartDateSelected, setIsStartDateSelected] = useState(false);
+
+
   const [image, setImage] = useState('');
   const imageRef = useRef(null);
 
@@ -258,9 +261,11 @@ function EditTourTab({ data }) {
         className="rmdp-mobile"
         onChange={date => {
           setStartDate(date);
+          setIsStartDateSelected(true);
         }}
         calendar={persian}
         locale={persian_fa}
+        minDate={new Date()}
       />
       <DatePicker
         ref={endDatePickerRef}
@@ -271,6 +276,7 @@ function EditTourTab({ data }) {
         }}
         calendar={persian}
         locale={persian_fa}
+        minDate={startDate}
       />
     </div>
   );

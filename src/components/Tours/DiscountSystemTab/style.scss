@@ -38,4 +38,24 @@
     font-size: 14px;
     padding: 8px;
   }
+  &__code-card-edit {
+    background-color: #04aa6c;
+    width: auto;
+    margin: 0;
+    font-size: 14px;
+    padding: 8px;
+  }
+  &__code-card-changeCode{
+    border-radius: 10px;
+    border: 1px solid #CCC;
+    padding: 15px;
+    width: 200px ;
+    height: 45px;
+  }
+  &__code-card-Modal{
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+  }
+  
 }

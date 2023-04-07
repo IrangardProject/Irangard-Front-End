@@ -13,6 +13,8 @@ import apiInstance from 'src/config/axios';
 import { baseUrl } from 'src/utils/constants';
 import './style.scss';
 import 'react-multi-date-picker/styles/layouts/mobile.css';
+import moment from 'jalali-moment';
+import { useEffect } from 'react';
 
 function AddTour() {
   const navigate = useNavigate();
@@ -30,6 +32,8 @@ function AddTour() {
   const imageRef = useRef(null);
 
   const [startDate, setStartDate] = useState(null);
+  const [isStartDateSelected, setIsStartDateSelected] = useState(false);
+
   const [endDate, setEndDate] = useState(null);
   const [startDateBlured, setStartDateBlured] = useState(false);
   const [endDateBlured, setEndDateBlured] = useState(false);
@@ -186,7 +190,7 @@ function AddTour() {
           onBlur={() => setStartDateBlured(true)}
           onFocus={() => startDatePickerRef.current.openCalendar()}
           onClick={() => startDatePickerRef.current.openCalendar()}
-          placeholder="انتخاب تاریخ شروع"
+          placeholder= {isStartDateSelected ?  "انتخاب تاریخ شروع" : "انتخاب تاریخ شروع"}
           type="text"
           id="start-date"
           value={startDate ? convertNumberToPersian(startDate.toString()) : ''}
@@ -220,9 +224,11 @@ function AddTour() {
           className="rmdp-mobile"
           onChange={date => {
             setStartDate(date);
+            setIsStartDateSelected(true);
           }}
           calendar={persian}
           locale={persian_fa}
+          minDate={new Date()}
         />
         <DatePicker
           ref={endDatePickerRef}
@@ -233,6 +239,7 @@ function AddTour() {
           }}
           calendar={persian}
           locale={persian_fa}
+          minDate={startDate}
         />
       </div>
     </Layout>

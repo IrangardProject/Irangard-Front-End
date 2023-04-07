@@ -7,6 +7,7 @@ import persian_fa from 'react-date-object/locales/persian_fa';
 import Button from 'src/components/Button';
 import Input from 'src/components/Input';
 import apiInstance from 'src/config/axios';
+import { Dialog ,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@mui/material';
 import {
   convertNumberToPersian,
   convertNumberToEnglish,
@@ -16,9 +17,13 @@ import {
 } from 'src/utils/formatters';
 import './style.scss';
 import 'react-multi-date-picker/styles/layouts/mobile.css';
+import axios from 'axios';
 
 function DiscountSystemTab() {
   const { id } = useParams();
+
+  const [selectedTour,setSelectedTour] = useState(null);
+
   const [discountCodes, setDiscountCodes] = useState([]);
   const [pageLoading, setPageLoading] = useState(true);
 
@@ -33,14 +38,24 @@ function DiscountSystemTab() {
 
   const [loading, setLoading] = useState(false);
 
+  const [open,setOpen] = useState(false);
+  const [changeCode,setChangeCode] = useState("");
+  const [selectedId,setSelectedId] = useState(null);
+  const handleClickOpen = () =>{
+    setOpen(true);
+  }
+  const handleClose = () =>{ 
+    setOpen(false);
+  }
+
   const endDatePickerRef = useRef(null);
 
   useEffect(() => {
+    
     apiInstance
       .get(`/tours/${id}/discount-codes`)
       .then(res => res.data)
       .then(data => {
-        console.log(data);
         setDiscountCodes(data);
       })
       .catch(error => {
@@ -112,7 +127,6 @@ function DiscountSystemTab() {
       .then(res => res.data)
       .then(data => {
         toast.success('کد تخفیف با موفقیت اضافه شد.');
-        console.log(data);
         setDiscountCodes(old => [...old, data]);
         setCode('');
         setEndDate(null);
@@ -120,11 +134,43 @@ function DiscountSystemTab() {
         setEndDateBlured(false);
       })
       .catch(error => {
-        console.log(error);
         toast.error('مشکلی در سامانه رخ داده‌است.');
       })
       .finally(() => setLoading(false));
   };
+  const handleChangeCode = async (discId) => {
+    const token = localStorage.getItem('access-token');
+    if (!token) {
+      toast.error('برای ویرایش کد تخفیف باید وارد شوید.');
+      return;
+    }
+  
+    try {
+      await axios.patch(
+        `https://api.quilco.ir/tours/${id}/discount-codes/${discId}/`,
+        {
+          off_percentage: changeCode,
+        },
+        {
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      );
+      toast.success('کد تخفیف با موفقیت ویرایش شد.');
+      setDiscountCodes(old => old.map(item => {
+        if (item.id === discId) {
+          return {...item, off_percentage: changeCode};
+        }
+        return item;
+      }));
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+      toast.error('مشکلی در سامانه رخ داده‌است.');
+    }
+  };
+  
 
   return (
     <div className="tour-dashboard-discounts">
@@ -171,6 +217,7 @@ function DiscountSystemTab() {
           }}
           calendar={persian}
           locale={persian_fa}
+          minDate={new Date()}
         />
       </form>
       {pageLoading && <div>در حال بارگیری کدها...</div>}
@@ -198,12 +245,10 @@ function DiscountSystemTab() {
                         .delete(`/tours/${id}/discount-codes/${discountCode.id}/`)
                         .then(res => res.data)
                         .then(data => {
-                          console.log(data);
                           toast.success('کد با موفقیت حذف شد.');
                           setDiscountCodes(old => old.filter(item => item.id !== discountCode.id));
                         })
                         .catch(error => {
-                          console.log(error);
                           toast.error('مشکلی در سامانه رخ داده‌است.');
                         });
                     }}
@@ -212,6 +257,34 @@ function DiscountSystemTab() {
                   >
                     حذف
                   </Button>
+                  <Button 
+                    className="tour-dashboard-discounts__code-card-edit"
+                    onClick={
+                      () => {setOpen(true)
+                      setSelectedTour(discountCode.id);
+                      }
+                    }
+                  >
+                    ویرایش 
+                  </Button>
+                  <Dialog open={open} onClose={() => setOpen(false)}>
+                    <DialogTitle>ویرایش کد تخفیف</DialogTitle>
+                    <DialogContent>
+                      <input 
+                        type="text"
+                        value={changeCode}
+                        onChange={(e) =>setChangeCode(e.target.value)}
+                        className='tour-dashboard-discounts__code-card-changeCode'
+
+                      />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button variant="red" onClick={() => setOpen(false)}>بستن</Button>
+                      <Button variant="green" onClick={() => {
+                        handleChangeCode(selectedTour)
+                        }}>آپدیت</Button>
+                    </DialogActions>
+                  </Dialog>
                 </div>
               ))}
             </>
