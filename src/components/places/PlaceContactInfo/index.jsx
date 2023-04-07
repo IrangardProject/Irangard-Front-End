@@ -15,6 +15,7 @@ const demo = {
 };
 const PlaceContactInfo = ({ className, info }) => {
   const { address, x_location: lat, y_location: long, phone, time, email, website, instagram } = info;
+  console.log("the website is: ", website)
   return (
     <div className={`place-contact ${className || ''}`}>
       <Map style={{ width: '100%', height: 240 }} defaultLat={lat} defaultLong={long} />
@@ -49,7 +50,7 @@ const PlaceContactInfo = ({ className, info }) => {
         {website && (
           <div className="place-contact__item place-contact__website">
             <RiLink size={24} />
-            <a href={website} target="_blank">
+            <a href={`https://${website}`} target="_blank">
               {website}
             </a>
           </div>
@@ -57,7 +58,7 @@ const PlaceContactInfo = ({ className, info }) => {
         {instagram && (
           <div className="place-contact__item place-contact__address">
             <RiInstagramLine size={24} />
-            <a href={website} target="_blank">
+            <a href={`https://instagram.com/${instagram}`} target="_blank">
               {instagram}
             </a>
           </div>

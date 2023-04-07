@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useKeenSlider } from 'keen-slider/react';
 import ExperienceCard from './ExperienceCard';
 import apiInstance from '../../config/axios';
+import { baseUrl } from '../../utils/constants';
 import 'keen-slider/keen-slider.min.css';
 import './style.scss';
 
@@ -46,7 +47,7 @@ const ExperienceSlider = () => {
                 title={item.title}
                 description={item.summary}
                 userName={item.user_username}
-                userImgSrc={item.user_image}
+                userImgSrc={`${baseUrl}` + item.user_image}
                 imgSrc={item.image}
               />
             </div>

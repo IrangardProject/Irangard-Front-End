@@ -34,6 +34,7 @@ function ExperienceDetail() {
       .get(`${baseUrl}/experiences/${id}`)
       .then(res => res.data)
       .then(data => {
+        console.log("experience data: ", data)
         setData(data);
         setIsLiked(data.is_liked_new);
         setLikesNumber(data.like_number);
@@ -152,7 +153,7 @@ function ExperienceDetail() {
           )}
           <Link to={`/profile/${data.user_username}`}>
             <div className="experience-detail__author-info">
-              <img className="experience-detail__author-img" src={data.user_image} alt={data.user_username} />
+              <img className="experience-detail__author-img" src={`${baseUrl}` + data.user_image} alt={data.user_username} />
               <p className="experience-detail__author-name">نوشته شده توسط {data.user_username}</p>
             </div>
           </Link>
