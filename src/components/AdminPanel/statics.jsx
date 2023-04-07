@@ -20,7 +20,7 @@ function Statics() {
     apiInstance
       .post(`${baseUrl}/accounts/admin/daily-statistics/`,
       {
-        start_date:'2022-06-10',end_date:'2022-07-10',
+        start_date:'2021-06-10',end_date:'2024-07-10',
       },)
       .then(res =>  res.data)
       .then(data => {

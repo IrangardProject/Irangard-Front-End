@@ -17,12 +17,18 @@ export const SignupForm = ({ handleFormIsDirty }) => {
     formData.append('username', userData.username);
     formData.append('email', userData.email);
     formData.append('password', userData.password);
+    formData.append('re_password',userData.password)
     
-    apiInstance.post(`${baseUrl}/accounts/admin/add-user/`,{
-      username:userData.username,
-      email:userData.email,
-      password:userData.password,
-      re_password:userData.password
+    console.log('formData',formData);
+    apiInstance
+    .post(`${baseUrl}/accounts/admin/add-user/`, formData)
+    .then(response => {
+      console.log(response);
+      toast.success('User added successfully!');
+    })
+    .catch(error => {
+      console.log(error);
+      toast.error('Failed to add user!');
     });
   };
 

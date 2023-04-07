@@ -36,12 +36,16 @@ export default function App() {
   const [DailyDataList, setDailyData] = useState(null);
   const [MonthlyDataList, setMonthlyData] = useState(null);
   var getDaysArray = function(s,e) {for(var a=[],d=new Date(s);d<=new Date(e);d.setDate(d.getDate()+1)){ a.push(new Date(d));}return a;};
+  const body = {
+      "start_date": "2023-03-20",
+      "end_date": "2023-03-27"
+    }
   useEffect(() => {
+    console.log('body' ,body);
     apiInstance
       .post(`${baseUrl}/accounts/admin/daily-statistics/`,
-      {
-        start_date:'2022-01-10',end_date:'2022-07-20',
-      },)
+        body
+      )
       .then(res => res.data)
       .then(data => {
         console.log('------------ data')
@@ -51,7 +55,7 @@ export default function App() {
         let result_tour = data['added_daily_tour']
         let result_exprience = data['added_daily_experience']
         let result_special = data['added_daily_special_user']
-        var daylist = getDaysArray(new Date('2022-06-10'),new Date('2022-07-20'));
+        var daylist = getDaysArray(new Date('2023-03-20'),new Date('2023-03-27'));
         var arrDate =  daylist.map((v)=>v.toISOString().slice(0,10))
         console.log(arrDate) 
         let styledData = arrDate.map((month)=>{
@@ -76,7 +80,7 @@ export default function App() {
     apiInstance
       .post(`${baseUrl}/accounts/admin/monthly-statistics/`,
       {
-        start_date:'2022-04-10',end_date:'2022-07-10',
+        start_date:'2021-04-24',end_date:'2024-07-10',
       },)
       .then(res => res.data)
       .then(data => {

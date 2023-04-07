@@ -38,7 +38,7 @@ export default function SwipeableTemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List className="sidebar">
-        {['حذف یا اضافه کاربر', 'آمارهای سایت', 'پیامهای ادمین'].map((text, index) => (
+        {['حذف یا اضافه کاربر', 'آمارهای سایت', 'پیامهای ادمین','صفحه اصلی'].map((text, index) => (
           <>
             <ListItem key={text} disablePadding style={{ textAlign: 'right', height: '6vh' }}>
               <ListItemButton className="drawer-button" dir="rtl" style={{ textAlign: 'right', height: '6vh' }}>
@@ -78,9 +78,16 @@ export default function SwipeableTemporaryDrawer() {
                     </>
                   </Link>
                 )}
+                {index === 3 && (
+                  <Link to="/" style={{ height: '4vh' }}>
+                    <>
+                      <ListItemText primary={text} style={{ marginRight: '60px' }} />
+                    </>
+                  </Link>
+                )}
               </ListItemButton>
             </ListItem>
-            {index !== 2 ? <Divider /> : ''}
+            {index !== 3 ? <Divider /> : ''}
           </>
         ))}
       </List>
