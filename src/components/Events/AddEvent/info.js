@@ -6,6 +6,7 @@ import {
   RiPagesLine,
   RiFileList2Fill,
 } from 'react-icons/ri';
+import {BsCalendarDate} from 'react-icons/bs';
 import { FaMapMarkedAlt } from 'react-icons/fa';
 import { MdContactPhone } from 'react-icons/md';
 export const AddEventSteps = [
@@ -26,7 +27,7 @@ export const AddEventSteps = [
   },
   {
     label: 'زمان و تاریخ',
-    icon: RiPagesLine,
+    icon: BsCalendarDate,
     fields: [],
   },
   {
