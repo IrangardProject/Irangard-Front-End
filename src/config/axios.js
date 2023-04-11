@@ -24,7 +24,7 @@ apiInstance.interceptors.response.use(
       const originalConfig = error.config;
       if (error.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
-        Axios.post(`${baseUrl}/accounts/jwt/refresh`, {
+        Axios.post(`${baseUrl}/accounts/auth/jwt/refresh`, {
           refresh: localStorage.getItem('refresh-token'),
         })
           .then(res => {
