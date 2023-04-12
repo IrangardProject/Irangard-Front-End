@@ -8,13 +8,9 @@ import useAuth from 'src/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from 'src/utils/constants';
 import { AddEventSteps as Steps } from './info';
-// import { BaseInfoSection, MapSection, ContactInfoSection, TimeAndDateSection, AdditionalInfoSection } from './Sections';
-import BaseInfoSection from './Sections/BaseInfoSection';
-import MapSection from './Sections/MapSection';
-import ContactInfoSection from './Sections/ContactInfoSection';
-import TimeAndDateSection from './Sections/TimeAndDateSection';
-import AdditionalInfoSection from './Sections/AdditionalInfoSection';
+import { BaseInfoSection, MapSection, ContactInfoSection, TimeAndDateSection, AdditionalInfoSection } from './Sections';
 import { useAddEvent, updateEvent } from 'src/api/Events';
+import './styles.scss';
 
 const AddEvent = () => {
   const auth = useAuth();
@@ -73,7 +69,7 @@ const AddEvent = () => {
         <FormProvider {...methods}>
           <Stepper steps={Steps} activeStep={activeStep} setActiveStep={s => methods.setValue('activeStep', s)} />
           <form onSubmit={methods.handleSubmit(onSubmit, onError)}>
-            <div className="add-event__content">
+            <div className="add-event__section">
               <AddEventSection />
               <>
                 {activeStep !== 4 ? (
