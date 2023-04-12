@@ -16,15 +16,15 @@ export const AddEventSteps = [
     fields: ['name', 'description'],
   },
   {
-    label: 'نقشه',
+    label: 'مکان رویداد',
     icon: FaMapMarkedAlt,
     fields: ['state', 'city', 'street', 'latitude', 'longitude'],
   },
-  {
-    label: 'اطلاعات تماس',
-    icon: MdContactPhone,
-    fields: ['phone', 'email', 'website'],
-  },
+  // {
+  //   label: 'اطلاعات تماس',
+  //   icon: MdContactPhone,
+  //   fields: ['phone', 'email', 'website'],
+  // },
   {
     label: 'زمان و تاریخ',
     icon: BsCalendarDate,

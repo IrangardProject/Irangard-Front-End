@@ -236,23 +236,45 @@
   }
 }
 
-.event-type {
+.event-details {
   display: flex;
   flex-direction: row;  
-  gap: 20px;
+  gap: 23px;
+  .event-type {
+    width: 36%;
+  }
+  .event-category {
+    width: 36%;
+  }
 }
 .event-tags {
   display: flex;
   flex-direction: column;
-  .event-tags-input {
+  .event-tags-title {
     margin-top: 20px;
-    width: 250px;
+  }
+  .event-tags-input {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    gap: 20px;
+    // width: 50%;
+    .tags-input {
+      width: 50%;
+      // direction: flex;
+      // flex-direction: row;
+    .tags-input-button {
+      width: 25%;
+      // background-color: "green";
+    }
+    }
+  }
+  .event-tags.entered {
     .user-tags {
       display: flex;
       flex-direction: row;
       gap: 10px;
       margin-top: 20px;
-
     }
   }
 }

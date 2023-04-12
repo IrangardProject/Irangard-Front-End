@@ -4,6 +4,7 @@ import { BasicInput } from '../Inputs';
 import { useMediaQuery, Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
+import Button from 'src/components/Button';
 
 const TagList = ({ tags, onDeleteTag }) => {
   return (
@@ -51,7 +52,7 @@ const BaseInfoSection = () => {
 
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
-      console.log("in function handleKeyDown when pressing Enter")
+      console.log('in function handleKeyDown when pressing Enter');
       const newTag = event.target.value.trim();
       if (newTag !== '') {
         setTags([...tags, newTag]);
@@ -62,6 +63,11 @@ const BaseInfoSection = () => {
 
   const handleDelete = tagToDelete => () => {
     setTags(tags.filter(tag => tag !== tagToDelete));
+  };
+
+  const tagsHandler = event => {
+    console.log('in tags handler', event);
+    setTags([...tags, event.target.value]);
   };
 
   return (
@@ -77,19 +83,19 @@ const BaseInfoSection = () => {
           id="eventName"
           // label="نام رویداد"
           placeholder="نام رویداد را وارد کنید"
-          validation={{ required: 'نام رویداد را وارد کنید' }}
+          validation={{ required: true }}
         />
         <BasicInput
           id="eventOrganizer"
           // label="نام فرد/سازمان برگزار کننده"
           placeholder="نام فرد/سازمان برگزار کننده را وارد کنید"
-          validation={{ required: 'سازمان برگزار کننده را وارد کنید' }}
+          validation={{ required: true }}
         />
       </div>
-
-      <div className="event-type">
+      <div className="event-details">
         {/* <label htmlFor="event-type">استان</label> */}
         <Autocomplete
+          className="event-type"
           disablePortal
           options={eventTypes}
           value={eventType}
@@ -101,7 +107,7 @@ const BaseInfoSection = () => {
                 <BasicInput
                   inputProps={{ ...params.inputProps }}
                   id="event-type"
-                  placeholder="نوغ رویداد را انتخاب کنید."
+                  placeholder="نوع رویداد را انتخاب کنید."
                   validation={{ required: true }}
                 />
               </div>
@@ -109,6 +115,7 @@ const BaseInfoSection = () => {
           }}
         />
         <Autocomplete
+          className="event-category"
           disablePortal
           options={eventCategories}
           value={eventCategory}
@@ -134,32 +141,29 @@ const BaseInfoSection = () => {
           <br />
           <h5>با افزودن برچسب های مرتبط با موضوع، قابلیت کشف رویداد خود را بهبود ببخشید.</h5>
         </div>
-        <div className="event-tags-input">
-          {/* <BasicInput
-            id="eventTags"
-            // label="برچسب های رویداد"
-            placeholder="برچسب های رویداد را وارد کنید"
-            validation={{ required: 'برچسب های رویداد را وارد کنید' }}
-          /> */}
-          {/* <TextField
-            label="برچسب ها"
-            // placeholder="برچسب های مربوط به رویداد را وارد کنید."
-            onKeyDown={handleKeyDown}
-            dir="rtl"
-          /> */}
-          <BasicInput
-            id="eventTags"
-            // label="برچسب های رویداد"
-            placeholder="برچسب های رویداد را وارد کنید"
-            validation={{ required: 'برچسب های رویداد را وارد کنید' }}
-            // onKeyDown={handleKeyDown}
-          />
+        <form onSubmit={tagsHandler}>
+          <div className="event-tags-input">
+            <div className="tags-input">
+              <BasicInput
+                id="eventTags"
+                placeholder="برچسب های رویداد را وارد کنید"
+                validation={{ required: 'برچسب های رویداد را وارد کنید' }}
+                // onKeyDown={handleKeyDown}
+              />
+            </div>
+            <div className="tags-input-button">
+              <Button
+                type="submit"
+                // varient="green"
+                // onClick={tagsHandler}
+              >
+                اضافه کردن
+              </Button>
+            </div>
+          </div>
+        </form>
+        <div className="event-tags-entered">
           <TagList tags={tags} onDeleteTag={handleDelete} />
-          {/* <div className="user-tags">
-            {tags.map(tag => (
-              <Chip key={tag} label={tag} onDelete={handleDelete(tag)} color="primary" />
-            ))}
-          </div> */}
         </div>
       </div>
     </div>

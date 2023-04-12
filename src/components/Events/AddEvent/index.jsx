@@ -8,7 +8,7 @@ import useAuth from 'src/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from 'src/utils/constants';
 import { AddEventSteps as Steps } from './info';
-import { BaseInfoSection, MapSection, ContactInfoSection, TimeAndDateSection, AdditionalInfoSection } from './Sections';
+import { BaseInfoSection, MapSection, TimeAndDateSection, AdditionalInfoSection } from './Sections';
 import { useAddEvent, updateEvent } from 'src/api/Events';
 import './styles.scss';
 
@@ -60,7 +60,7 @@ const AddEvent = () => {
 
   const onSubmit = async eventData => {};
 
-  const AddEventSections = [BaseInfoSection, MapSection, ContactInfoSection, TimeAndDateSection, AdditionalInfoSection];
+  const AddEventSections = [BaseInfoSection, MapSection, TimeAndDateSection, AdditionalInfoSection];
   const AddEventSection = AddEventSections[preStep];
 
   return (

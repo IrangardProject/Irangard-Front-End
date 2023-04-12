@@ -15,7 +15,7 @@ import DatePicker from 'react-multi-date-picker';
 import persian_fa from 'react-date-object/locales/persian_fa';
 
 export function BasicInput(props) {
-  const { id, label, validation, placeholder, inputProps, onKeyDown , type = 'text', readOnly = false, isTextArea = false } = props;
+  const { id, className, label, validation, placeholder, inputProps, onKeyDown , type = 'text', readOnly = false, isTextArea = false } = props;
   const {
     register,
     formState: { errors },
@@ -23,7 +23,7 @@ export function BasicInput(props) {
   const basicInputProps = {
     ...register(id, validation),
     ...inputProps,
-    className: `field-input ${errors[id] ? 'invalid' : ''} `,
+    className: `field-input ${className} ${errors[id] ? 'invalid' : ''} `,
     autoComplete: 'off',
     id: id,
     name: id,

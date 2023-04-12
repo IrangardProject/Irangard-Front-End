@@ -94,7 +94,17 @@
   }
   .map-section {
     .state-city-address {
+      margin-top: 20px;
       padding-left: 20px;
+      .address {
+        margin-top: 20px;
+      }
+      .coordinates__title {
+        margin-top: 50px;
+      }
+      .coordinates {
+        margin-top: 15px;
+      }
     }
     .location-info {
       display: flex;
@@ -114,10 +124,10 @@
       }
     }
     .title {
-      font-size: 28px;
+      font-size: 21px;
       color: #080340;
-      margin-bottom: 10px;
-      margin-top: 10px;
+      margin-bottom: 15px;
+      margin-top: 20px;
     }
     .coordinates__title {
       margin-top: 30px;
