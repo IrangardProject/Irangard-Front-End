@@ -7,6 +7,7 @@ import Chip from '@mui/material/Chip';
 import Button from 'src/components/Button';
 
 const TagList = ({ tags, onDeleteTag }) => {
+  console.log("the tags: ", typeof tags, tags)
   return (
     <div className="user-tags">
       {tags.map(tag => (
@@ -21,7 +22,8 @@ const BaseInfoSection = () => {
   const isMobile = useMediaQuery('(max-width: 600px)');
   const eventType = watch('eventType');
   const eventCategory = watch('eventCategory');
-  const [tags, setTags] = useState([]);
+  // const [tags, setTags] = useState([]);
+  const tags = watch('tags');
 
   const eventTypes = [
     { label: 'همایش', value: 'conference' },
@@ -55,19 +57,22 @@ const BaseInfoSection = () => {
       console.log('in function handleKeyDown when pressing Enter');
       const newTag = event.target.value.trim();
       if (newTag !== '') {
-        setTags([...tags, newTag]);
+        // setTags([...tags, newTag]);
+        setValue('tags', [...tags, newTag]);
         event.target.value = '';
       }
     }
   };
 
   const handleDelete = tagToDelete => () => {
-    setTags(tags.filter(tag => tag !== tagToDelete));
+    // setTags(tags.filter(tag => tag !== tagToDelete));
+    setValue('tags', tags.filter(tag => tag !== tagToDelete));
   };
 
   const tagsHandler = event => {
     console.log('in tags handler', event);
-    setTags([...tags, event.target.value]);
+    // setTags([...tags, event.target.value]);
+    setValue('tags', [...tags, event.target.value]);
   };
 
   return (

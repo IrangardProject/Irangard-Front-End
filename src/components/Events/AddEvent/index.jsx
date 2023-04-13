@@ -34,6 +34,15 @@ const AddEvent = () => {
       longitude: '',
       latitude: '',
       images: [],
+      startDate: '',
+      endDate: '',
+      startTime: '',
+      endTime: '',
+      isFree: false,
+      summary: '',
+      eventType: '',
+      eventCategory: '',
+      tags: [],
     },
   });
 
@@ -72,12 +81,12 @@ const AddEvent = () => {
             <div className="add-event__section">
               <AddEventSection />
               <>
-                {activeStep !== 4 ? (
+                {activeStep !== 3 ? (
                   <Button variant="green" onClick={() => methods.setValue('activeStep', activeStep + 1)}>
                     ادامه
                   </Button>
                 ) : (
-                  preStep !== 3 && (
+                  preStep !== 2 && (
                     <Button type="submit" variant="green" disabled={isLoading}>
                       ثبت رویداد
                     </Button>

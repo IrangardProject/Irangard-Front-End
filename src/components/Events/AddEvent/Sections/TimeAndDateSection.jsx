@@ -11,6 +11,7 @@ import Input from 'src/components/Input';
 import { convertNumberToPersian, isPersianNumber, convertJalaliDateToGeorgian } from 'src/utils/formatters';
 import 'react-multi-date-picker/styles/layouts/mobile.css';
 import moment from 'jalali-moment';
+// import Timekeeper from 'react-timekeeper';
 
 const TimeAndDateSection = () => {
   const { watch, setValue } = useFormContext();
@@ -23,15 +24,30 @@ const TimeAndDateSection = () => {
   const [startDateBlured, setStartDateBlured] = useState(false);
   const [endDateBlured, setEndDateBlured] = useState(false);
 
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
 
+  const startTimeHandler = (event) => {
+    setStartTime(event.target.value);
+  }
+  const endTimeHandler = (event) => {
+    setEndTime(event.target.value)
+  }
+
   return (
     <div className="time-and-date-section">
-      <div className="title">زمان و تاریخ</div>
+      <div className="title">
+        <h2>زمان و تاریخ</h2>
+      </div>
       <div className="description">
-        به شرکت کنندگان در رویداد بگویید که رویداد شما چه زمانی شروع می شود و چه زمانی به پایان می رسد تا بتوانند برای
-        شرکت در آن برنامه ریزی کنند.
+        <h5>
+          {' '}
+          به شرکت کنندگان در رویداد بگویید که رویداد شما چه زمانی شروع می شود و چه زمانی به پایان می رسد تا بتوانند برای
+          شرکت در آن برنامه ریزی کنند.
+        </h5>
       </div>
       <div className="date-inputs">
         <div className="start-date-input">
@@ -90,6 +106,34 @@ const TimeAndDateSection = () => {
               minDate={startDate}
             />
           </div>
+        </div>
+      </div>
+      <div className="time-inputs">
+        <div className="start-time-input">
+            <label htmlFor="start" className="field__label">
+              ساعت شروع:
+            </label>
+            <input
+              value={startTime}
+              onChange={startTimeHandler}
+              type="time"
+              className="field-input"
+              id="start"
+              placeholder="ساعت شروع"
+            />
+        </div>
+        <div className="end-time-input">
+            <label htmlFor="end" className="field__label">
+              ساعت پایان:
+            </label>
+            <input
+              value={endTime}
+              onChange={endTimeHandler}
+              type="time"
+              className="field-input"
+              id="end"
+              placeholder="ساعت پایان"
+            />
         </div>
       </div>
     </div>
