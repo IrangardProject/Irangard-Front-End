@@ -9,7 +9,9 @@ import TextArea from 'src/components/TextArea';
 
 const AdditionalInfoSection = () => {
   const { watch, setValue } = useFormContext();
+  const isFree = watch('isFree');
   const summary = watch('summary');
+  const images = watch('images');
   return (
     <div className="additional-info-section">
       <div className="title">
@@ -22,7 +24,7 @@ const AdditionalInfoSection = () => {
         <label>خیر، رایگان است.</label>
       </div>
       <div className="event-summary">
-        <h3>توضیحات تکمیلی</h3>
+        <h3>توضیحات</h3>
         <h5 className="summary-description-label">
           با توضیح کوتاهی درباره رویداد خود توجه مردم را به خود جلب کنید. شرکت کنندگان این را در بالای صفحه رویداد شما
           خواهند دید. (حداکثر 140 کاراکتر)

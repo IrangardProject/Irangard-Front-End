@@ -15,11 +15,22 @@ import DatePicker from 'react-multi-date-picker';
 import persian_fa from 'react-date-object/locales/persian_fa';
 
 export const BasicInput = props => {
-  const { id, label, validation, placeholder, inputProps, type = 'text', readOnly = false, isTextArea = false } = props;
+  const {
+    id,
+    label,
+    validation,
+    placeholder,
+    inputProps,
+    // OnKeyDownListener,
+    type = 'text',
+    readOnly = false,
+    isTextArea = false,
+  } = props;
   const {
     register,
     formState: { errors },
   } = useFormContext();
+  console.log('errors: ', errors);
   const basicInputProps = {
     ...register(id, validation),
     ...inputProps,
@@ -30,7 +41,14 @@ export const BasicInput = props => {
     placeholder: placeholder,
     type: type,
     readOnly: readOnly,
+    // OnKeyDown: OnKeyDownListener,
   };
+  console.log('the basicInputProps: ', basicInputProps);
+  console.log("the temp: ", {
+    ...register(id, validation),
+  })
+  console.log("the validation is: ", validation)
+  console.log("the id is: ", id)
   return (
     <div className="basic-field">
       {label && (

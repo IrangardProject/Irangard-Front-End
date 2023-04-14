@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { set, useFormContext } from 'react-hook-form';
 import { BasicInput } from '../Inputs';
 import { useMediaQuery, Autocomplete } from '@mui/material';
 import Chip from '@mui/material/Chip';
@@ -17,25 +17,32 @@ const TimeAndDateSection = () => {
   const { watch, setValue } = useFormContext();
   const isMobile = useMediaQuery('(max-width: 600px)');
 
-  const [startDate, setStartDate] = useState(null);
+  const [inputStartDate, setInputStartDate] = useState(null);
+  const startDate = watch('startDate');
   const [isStartDateSelected, setIsStartDateSelected] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const [endDate, setEndDate] = useState(null);
+  const [inputEndDate, setInputEndDate] = useState(null);
+  const endDate = watch('endDate');
   const [startDateBlured, setStartDateBlured] = useState(false);
   const [endDateBlured, setEndDateBlured] = useState(false);
 
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  // const [startTime, setStartTime] = useState(null);
+  const startTime = watch('startTime');
+  // const [endTime, setEndTime] = useState(null);
+  const endTime = watch('endTime');
 
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
 
-  const startTimeHandler = (event) => {
-    setStartTime(event.target.value);
-  }
-  const endTimeHandler = (event) => {
-    setEndTime(event.target.value)
-  }
+  const startTimeHandler = event => {
+    // setStartTime(event.target.value);
+    setValue('startTime', event.target.value);
+  };
+  const endTimeHandler = event => {
+    // setEndTime(event.target.value)
+    setValue('endTime', event.target.value);
+  };
 
   return (
     <div className="time-and-date-section">
@@ -51,7 +58,6 @@ const TimeAndDateSection = () => {
       </div>
       <div className="date-inputs">
         <div className="start-date-input">
-          {/* <div className="start-input"> */}
           <Input
             label="تاریخ شروع:"
             autoComplete="off"
@@ -61,17 +67,19 @@ const TimeAndDateSection = () => {
             placeholder={isStartDateSelected ? 'انتخاب تاریخ شروع' : 'انتخاب تاریخ شروع'}
             type="text"
             id="start-date"
-            value={startDate ? convertNumberToPersian(startDate.toString()) : ''}
-            error={startDateBlured && !startDate && 'تاریخ شروع نمی‌تواند خالی باشد.'}
+            value={inputStartDate ? convertNumberToPersian(inputStartDate.toString()) : ''}
+            error={startDateBlured && !inputStartDate && 'تاریخ شروع نمی‌تواند خالی باشد.'}
           />
-          {/* </div> */}
           <div className="date-picker">
             <DatePicker
               ref={startDatePickerRef}
               inputClass="date-input"
               className="rmdp-mobile"
               onChange={date => {
-                setStartDate(date);
+                setInputStartDate(date);
+                // console.log('the data is: ', date);
+                // console.log("the converted data: ", convertNumberToPersian(startDate.toString()))
+                setValue('startDate', inputStartDate);
                 setIsStartDateSelected(true);
               }}
               calendar={persian}
@@ -80,26 +88,32 @@ const TimeAndDateSection = () => {
             />
           </div>
         </div>
-        <div className="end-date-input">
-          <Input
-            label="تاریخ پایان:"
-            autoComplete="off"
-            onBlur={() => setEndDateBlured(true)}
-            onFocus={() => endDatePickerRef.current.openCalendar()}
-            onClick={() => endDatePickerRef.current.openCalendar()}
-            placeholder="انتخاب تاریخ پایان"
-            type="text"
-            id="end-date"
-            value={endDate ? convertNumberToPersian(endDate.toString()) : ''}
-            error={endDateBlured && !endDate && 'تاریخ پایان نمی‌تواند خالی باشد.'}
-          />
+        <div className="end-date-input" style={{ position: 'relative' }}>
+          <div style={{ zIndex: 2 }}>
+            <Input
+              label="تاریخ پایان:"
+              autoComplete="off"
+              onBlur={() => setEndDateBlured(true)}
+              onFocus={() => endDatePickerRef.current.openCalendar()}
+              onClick={() => {
+                setShowDatePicker(true);
+                endDatePickerRef.current.openCalendar();
+              }}
+              placeholder="انتخاب تاریخ پایان"
+              type="text"
+              id="end-date"
+              value={inputEndDate ? convertNumberToPersian(inputEndDate.toString()) : ''}
+              error={endDateBlured && !inputEndDate && 'تاریخ پایان نمی‌تواند خالی باشد.'}
+            />
+          </div>
           <div className="date-picker">
             <DatePicker
               ref={endDatePickerRef}
               inputClass="date-input"
               className="rmdp-mobile"
               onChange={date => {
-                setEndDate(date);
+                setInputEndDate(date);
+                setValue('endDate', inputEndDate);
               }}
               calendar={persian}
               locale={persian_fa}
@@ -110,30 +124,30 @@ const TimeAndDateSection = () => {
       </div>
       <div className="time-inputs">
         <div className="start-time-input">
-            <label htmlFor="start" className="field__label">
-              ساعت شروع:
-            </label>
-            <input
-              value={startTime}
-              onChange={startTimeHandler}
-              type="time"
-              className="field-input"
-              id="start"
-              placeholder="ساعت شروع"
-            />
+          <label htmlFor="start" className="field__label">
+            ساعت شروع:
+          </label>
+          <input
+            value={startTime}
+            onChange={startTimeHandler}
+            type="time"
+            className="field-input"
+            id="start"
+            placeholder="ساعت شروع"
+          />
         </div>
         <div className="end-time-input">
-            <label htmlFor="end" className="field__label">
-              ساعت پایان:
-            </label>
-            <input
-              value={endTime}
-              onChange={endTimeHandler}
-              type="time"
-              className="field-input"
-              id="end"
-              placeholder="ساعت پایان"
-            />
+          <label htmlFor="end" className="field__label">
+            ساعت پایان:
+          </label>
+          <input
+            value={endTime}
+            onChange={endTimeHandler}
+            type="time"
+            className="field-input"
+            id="end"
+            placeholder="ساعت پایان"
+          />
         </div>
       </div>
     </div>

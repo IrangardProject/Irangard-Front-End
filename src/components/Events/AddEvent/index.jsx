@@ -17,7 +17,7 @@ const AddEvent = () => {
   if (!auth.isLoggedIn) {
     return (
       <Layout title="اضافه کردن رویداد جدید">
-        <div>
+        <div className="add-event__no-auth">
           <p>برای اضافه کردن رویداد ابتدا باید وارد شوید.</p>
         </div>
       </Layout>
@@ -28,25 +28,26 @@ const AddEvent = () => {
     defaultValues: {
       activeStep: 0,
       name: '',
-      description: '',
+      organizer: '',
+      eventType: '',
+      eventCategory: '',
+      tags: [],
       state: '',
       city: '',
+      address: '',
       longitude: '',
       latitude: '',
-      images: [],
       startDate: '',
       endDate: '',
       startTime: '',
       endTime: '',
       isFree: false,
       summary: '',
-      eventType: '',
-      eventCategory: '',
-      tags: [],
+      images: [],
     },
   });
 
-  const eventType = methods.watch('eventType');
+  // const eventType = methods.watch('eventType');
   const activeStep = methods.watch('activeStep');
   const [preStep, setPreStep] = useState(activeStep);
   const onError = (errors, e) => toast.error('لطفا مشکلات مراحلی که علامت هشدار دارند، را رفع کنید.');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { BasicInput } from '../Inputs';
 import { useMediaQuery, Autocomplete } from '@mui/material';
@@ -7,11 +7,11 @@ import Chip from '@mui/material/Chip';
 import Button from 'src/components/Button';
 
 const TagList = ({ tags, onDeleteTag }) => {
-  console.log("the tags: ", typeof tags, tags)
+  // console.log('the tags: ', typeof tags, tags);
   return (
     <div className="user-tags">
       {tags.map(tag => (
-        <Chip key={tag} label={tag} onDelete={onDeleteTag(tag)} color="primary" />
+        <Chip className="tag-chips" key={tag} label={tag} onDelete={() => onDeleteTag(tag)} color="primary" />
       ))}
     </div>
   );
@@ -22,9 +22,11 @@ const BaseInfoSection = () => {
   const isMobile = useMediaQuery('(max-width: 600px)');
   const eventType = watch('eventType');
   const eventCategory = watch('eventCategory');
-  // const [tags, setTags] = useState([]);
+  const [inputTag, setInputTag] = useState('');
   const tags = watch('tags');
-
+  const name = watch('name');
+  const organizer = watch('organizer');
+  
   const eventTypes = [
     { label: 'همایش', value: 'conference' },
     { label: 'کارگاه', value: 'workshop' },
@@ -45,6 +47,12 @@ const BaseInfoSection = () => {
     { label: 'مذهبی', value: 'religion' },
   ];
 
+  // useEffect(() => {
+  //   console.log('in useEffect of BaseInfoSection');
+  //   console.log('tags:', tags);
+  //   setValue('tags', watch['tags']);
+  // }, [watch('tags')]);
+
   const handleIsOptionEqualToValue = (option, val) => {
     if (val) {
       if (val.label != option.label) return false;
@@ -52,7 +60,7 @@ const BaseInfoSection = () => {
     return true;
   };
 
-  const handleKeyDown = event => {
+  const handleInputKeyPress = event => {
     if (event.key === 'Enter') {
       console.log('in function handleKeyDown when pressing Enter');
       const newTag = event.target.value.trim();
@@ -60,19 +68,28 @@ const BaseInfoSection = () => {
         // setTags([...tags, newTag]);
         setValue('tags', [...tags, newTag]);
         event.target.value = '';
+        setInputTag('');
       }
     }
   };
 
-  const handleDelete = tagToDelete => () => {
+  const deleteTagHandler = tagToDelete => {
     // setTags(tags.filter(tag => tag !== tagToDelete));
-    setValue('tags', tags.filter(tag => tag !== tagToDelete));
+    console.log('in delete tag, the tags: ', tags);
+    tags.filter(tag => tag !== tagToDelete);
+    console.log('tags after being filtered: ', tags);
+    setValue(
+      'tags',
+      tags.filter(tag => tag !== tagToDelete)
+    );
   };
 
   const tagsHandler = event => {
     console.log('in tags handler', event);
     // setTags([...tags, event.target.value]);
-    setValue('tags', [...tags, event.target.value]);
+    // setValue('tags', [...tags, event.target.value]);
+    setValue('tags', [...tags, inputTag]);
+    setInputTag('');
   };
 
   return (
@@ -85,16 +102,16 @@ const BaseInfoSection = () => {
       </div>
       <div>
         <BasicInput
-          id="eventName"
-          // label="نام رویداد"
+          id="name"
+          name="name"
           placeholder="نام رویداد را وارد کنید"
           validation={{ required: true }}
         />
-        <BasicInput
-          id="eventOrganizer"
-          // label="نام فرد/سازمان برگزار کننده"
+        <BasicInput 
+          id="organizer"
+          name="organizer"
           placeholder="نام فرد/سازمان برگزار کننده را وارد کنید"
-          validation={{ required: true }}
+          validation={{ required: true, maxLength: 50 }}
         />
       </div>
       <div className="event-details">
@@ -105,13 +122,16 @@ const BaseInfoSection = () => {
           options={eventTypes}
           value={eventType}
           isOptionEqualToValue={handleIsOptionEqualToValue}
-          onChange={(event, newValue) => {}}
+          onChange={(event, newValue) => {
+            setValue('eventType', newValue);
+          }}
           renderInput={params => {
             return (
               <div ref={params.InputProps.ref}>
                 <BasicInput
                   inputProps={{ ...params.inputProps }}
-                  id="event-type"
+                  id="eventType"
+                  name="eventType"
                   placeholder="نوع رویداد را انتخاب کنید."
                   validation={{ required: true }}
                 />
@@ -125,13 +145,16 @@ const BaseInfoSection = () => {
           options={eventCategories}
           value={eventCategory}
           isOptionEqualToValue={handleIsOptionEqualToValue}
-          onChange={(event, newValue) => {}}
+          onChange={(event, newValue) => {
+            setValue('eventCategory', newValue);
+          }}
           renderInput={params => {
             return (
               <div ref={params.InputProps.ref}>
                 <BasicInput
                   inputProps={{ ...params.inputProps }}
-                  id="event-category"
+                  id="eventCategory"
+                  name="eventCategory"
                   placeholder="دسته بندی رویداد را انتخاب کنید."
                   validation={{ required: true }}
                 />
@@ -146,29 +169,44 @@ const BaseInfoSection = () => {
           <br />
           <h5>با افزودن برچسب های مرتبط با موضوع، قابلیت کشف رویداد خود را بهبود ببخشید.</h5>
         </div>
-        <form onSubmit={tagsHandler}>
-          <div className="event-tags-input">
-            <div className="tags-input">
-              <BasicInput
+        {/* <form onSubmit={tagsHandler}> */}
+        <div className="event-tags-input">
+          <div className="tags-input">
+            {/* <BasicInput
                 id="eventTags"
                 placeholder="برچسب های رویداد را وارد کنید"
                 validation={{ required: 'برچسب های رویداد را وارد کنید' }}
                 // onKeyDown={handleKeyDown}
-              />
-            </div>
-            <div className="tags-input-button">
-              <Button
-                type="submit"
-                // varient="green"
-                // onClick={tagsHandler}
-              >
-                اضافه کردن
-              </Button>
-            </div>
+              /> */}
+            <TextField
+              // className=''
+              inputProps={{ style: { height: '16px', fontSize: '14px', maxWidth: '700px' } }}
+              placeholder="برچسب های رویداد را وارد کنید"
+              fullWidth
+              variant="outlined"
+              value={inputTag}
+              onChange={event => {
+                setInputTag(event.target.value);
+              }}
+              onKeyPress={handleInputKeyPress}
+            />
           </div>
-        </form>
+          <div className="tags-input-button">
+            <Button
+              className="add-tag-button"
+              type="button"
+              varient="green"
+              onClick={event => {
+                setInputTag(tagsHandler);
+              }}
+            >
+              افزودن
+            </Button>
+          </div>
+        </div>
+        {/* </form> */}
         <div className="event-tags-entered">
-          <TagList tags={tags} onDeleteTag={handleDelete} />
+          <TagList tags={tags} onDeleteTag={deleteTagHandler} />
         </div>
       </div>
     </div>

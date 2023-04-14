@@ -10,6 +10,7 @@ const MapSection = () => {
   const useMobile = () => useMediaQuery('(max-width: 470px)');
   const state = watch('state');
   const city = watch('city');
+  const address = watch('address');
   const [cities, setCities] = useState([]);
   useEffect(async () => {
     if (state) setCities(await (await fetch(`/assets/data/cities/${state?.value}.json`)).json());
@@ -103,7 +104,7 @@ const MapSection = () => {
               id="address"
               name="address"
               placeholder="آدرس خود را وارد کنید"
-              validation={street_validation}
+              validation={{ required: true }}
             />
           </div>
           <h3 className="coordinates__title">محل روی نقشه</h3>

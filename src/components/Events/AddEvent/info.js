@@ -13,26 +13,21 @@ export const AddEventSteps = [
   {
     label: 'اطلاعات پایه',
     icon: RiFileList2Fill,
-    fields: ['name', 'description'],
+    fields: ['name', 'organizer', 'eventType', 'eventCategory', 'eventTags'],
   },
   {
     label: 'مکان رویداد',
     icon: FaMapMarkedAlt,
-    fields: ['state', 'city', 'street', 'latitude', 'longitude'],
+    fields: ['state', 'city', 'address', 'latitude', 'longitude'],
   },
-  // {
-  //   label: 'اطلاعات تماس',
-  //   icon: MdContactPhone,
-  //   fields: ['phone', 'email', 'website'],
-  // },
   {
     label: 'زمان و تاریخ',
     icon: BsCalendarDate,
-    fields: [],
+    fields: ['startDate', 'endDate', 'startTime', 'endTime'],
   },
   {
     label: 'اطلاعات تکمیلی',
     icon: RiPagesLine,
-    fields: [],
+    fields: ['isFree', 'summary', 'images'],
   },
 ];
