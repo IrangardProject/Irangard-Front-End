@@ -33,6 +33,7 @@ export function BasicInput(props) {
     onKeyDownListener: onKeyDown,
   };
   console.log('basicInputProps:', basicInputProps);
+  console.log("the errors: ", errors);
   return (
     <div className="basic-field">
       {label && (

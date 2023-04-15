@@ -24,8 +24,8 @@ const BaseInfoSection = () => {
   const eventCategory = watch('eventCategory');
   const [inputTag, setInputTag] = useState('');
   const tags = watch('tags');
-  const name = watch('name');
-  const organizer = watch('organizer');
+  // const name = watch('name');
+  // const organizer = watch('organizer');
   
   const eventTypes = [
     { label: 'همایش', value: 'conference' },
@@ -103,13 +103,13 @@ const BaseInfoSection = () => {
       <div>
         <BasicInput
           id="name"
-          name="name"
+          // name="name"
           placeholder="نام رویداد را وارد کنید"
-          validation={{ required: true }}
+          validation={{ required: true, maxLength: 50 }}
         />
         <BasicInput 
           id="organizer"
-          name="organizer"
+          // name="organizer"
           placeholder="نام فرد/سازمان برگزار کننده را وارد کنید"
           validation={{ required: true, maxLength: 50 }}
         />

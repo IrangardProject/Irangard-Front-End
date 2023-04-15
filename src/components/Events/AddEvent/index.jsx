@@ -47,7 +47,6 @@ const AddEvent = () => {
     },
   });
 
-  // const eventType = methods.watch('eventType');
   const activeStep = methods.watch('activeStep');
   const [preStep, setPreStep] = useState(activeStep);
   const onError = (errors, e) => toast.error('لطفا مشکلات مراحلی که علامت هشدار دارند، را رفع کنید.');
@@ -57,18 +56,85 @@ const AddEvent = () => {
   useEffect(async () => {
     const stepFields = Steps[preStep].fields;
     const isOkay = await methods.trigger(stepFields);
+    console.log('isOkay: ' + isOkay);
     Steps[preStep]['error'] = !isOkay;
     setPreStep(activeStep);
   }, [activeStep]);
 
-  // useEffect(() => {
-  //   const subscription = methods.watch((value, { name, type }) => {
-  //     methods.trigger(name);
-  //   });
-  //   return () => subscription.unsubscribe();
-  // }, [methods.watch]);
+  useEffect(() => {
+    const subscription = methods.watch((value, { name, type }) => {
+      methods.trigger(name);
+    });
+    return () => subscription.unsubscribe();
+  }, [methods.watch]);
 
-  const onSubmit = async eventData => {};
+  const apiAdaptor = eventData => {
+    console.log('event data in apiAdaptor: ', eventData);
+    const formatedData = {
+      event_type: eventData.eventType,
+      event_category: eventData.eventCategory,
+      title: eventData.name,
+      organizer: eventData.organizer,
+      description: eventData.summary,
+      x_location: eventData.latitude,
+      y_location: eventData.longitude,
+      start_date: eventData.startDate,
+      end_date: eventData.endDate,
+      start_time: eventData.startTime,
+      end_time: eventData.endTime,
+      province: eventData.state.label,
+      city: eventData.city,
+      tags: eventData.tags,
+      address: eventData.address,
+      is_free: eventData.isFree,
+      // images:
+    };
+    return formatedData;
+  };
+
+  const onSubmit = async eventData => {
+    console.log('this is the eventData in onSubmit: ', eventData);
+    if (Steps.slice(0, 2).some(s => s['error'] === undefined)) toast.error('لطفا ابتدا تمامی مراحل را بگذرونید.');
+    else if (Steps.some(s => s['error'] === true)) toast.error('لطفا مشکلات مراحلی که علامت هشدار دارند، را رفع کنید.');
+    else
+      toast
+        .promise(mutateAsync(apiAdaptor(eventData)), {
+          loading: 'در حال بررسی...',
+          success: res => {
+            return 'رویداد با موفقیت اضافه شد.';
+          },
+          error: err => {
+            if (!err.response) return 'خطا در ارتباط با سرور! اینترنت خود را بررسی کنید';
+            else return `مشکلی پیش اومده است، دوباره امتحان کنید.`;
+          },
+        })
+        .then(res => {
+          if (eventData.images.length === 0) return;
+          const form_data = new FormData();
+          eventData.images.forEach((img, i) => {
+            form_data.append('images', img);
+          });
+          toast
+            .promise(updateEvent(res.data['id'], form_data), {
+              loading: 'در حال آپلود تصاویر...',
+              success: res => {
+                return 'تصاویر با موفقیت اضافه شد.';
+              },
+              error: err => {
+                if (!err.response) return 'خطا در ارتباط با سرور! اینترنت خود را بررسی کنید';
+                else return `مشکلی پیش اومده است، دوباره امتحان کنید.`;
+              },
+            })
+            .then(res => {
+              // router.push(`${baseUrl}/places/${res.data['id']}`);
+              console.log('navigating to: ', `${baseUrl}/events/${res.data['id']}`);
+              navigate(`${baseUrl}/events/${res.data['id']}`);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        });
+  };
 
   const AddEventSections = [BaseInfoSection, MapSection, TimeAndDateSection, AdditionalInfoSection];
   const AddEventSection = AddEventSections[preStep];

@@ -68,7 +68,7 @@
           margin-left: 10px;
           max-width: 90px;
           max-height: 50px;
-          font-size: 12px;   
+          font-size: 14px;   
         }
       }
     }
@@ -297,11 +297,13 @@
     gap: 20px;
 
     .start-date-input {
+      min-width: 100px;
       .date-input {
         display: none;
       }
     }
     .end-date-input {
+      min-width: 100px;      
       .date-input {
         display: none;
       }
@@ -314,6 +316,7 @@
     flex-direction: row;
     gap: 20px;
     .start-time-input {
+      min-width: 100px;
       width: 27%;
       display: flex;
       flex-direction: column;
@@ -335,6 +338,7 @@
       }
     }
     .end-time-input {
+      min-width: 100px;
       width: 27%;
       display: flex;
       flex-direction: column;

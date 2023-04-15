@@ -30,7 +30,10 @@ export const BasicInput = props => {
     register,
     formState: { errors },
   } = useFormContext();
-  console.log('errors: ', errors);
+  // console.log('errors: ', errors);
+  // Object.keys(errors).forEach(key => {
+  //   delete errors[key];
+  // });
   const basicInputProps = {
     ...register(id, validation),
     ...inputProps,
@@ -43,12 +46,12 @@ export const BasicInput = props => {
     readOnly: readOnly,
     // OnKeyDown: OnKeyDownListener,
   };
-  console.log('the basicInputProps: ', basicInputProps);
-  console.log("the temp: ", {
-    ...register(id, validation),
-  })
-  console.log("the validation is: ", validation)
-  console.log("the id is: ", id)
+  // console.log('the basicInputProps: ', basicInputProps);
+  // console.log('the temp: ', {
+  //   ...register(id, validation),
+  // });
+  // console.log('the validation is: ', validation);
+  // console.log('the id is: ', id);
   return (
     <div className="basic-field">
       {label && (

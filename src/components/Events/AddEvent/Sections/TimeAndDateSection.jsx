@@ -127,12 +127,13 @@ const TimeAndDateSection = () => {
           <label htmlFor="start" className="field__label">
             ساعت شروع:
           </label>
-          <input
+          <BasicInput
             value={startTime}
             onChange={startTimeHandler}
             type="time"
             className="field-input"
-            id="start"
+            id="startTime"
+            validation={{ required: true }}
             placeholder="ساعت شروع"
           />
         </div>
@@ -140,12 +141,13 @@ const TimeAndDateSection = () => {
           <label htmlFor="end" className="field__label">
             ساعت پایان:
           </label>
-          <input
+          <BasicInput
             value={endTime}
             onChange={endTimeHandler}
             type="time"
             className="field-input"
-            id="end"
+            id="endTime"
+            validation={{ required: true }}
             placeholder="ساعت پایان"
           />
         </div>
