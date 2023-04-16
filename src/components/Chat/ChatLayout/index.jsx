@@ -7,6 +7,7 @@ import './style.scss';
 import profileAvatar from '../assets/avatar.png';
 import { baseUrl } from 'src/utils/constants';
 import apiInstance from '../../../config/axios'
+import {defaultImg} from '../../../../public/images/img/defaultImg.jpg'
 export default function ChatLayout({
   title,
   titleAvatar,
@@ -43,6 +44,8 @@ export default function ChatLayout({
   const [showChat, setShowChat] = useState(false);
   const [users,setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
+
   // const []
 
   const toggleShowChat= () =>{
@@ -66,6 +69,11 @@ export default function ChatLayout({
   const filteredUsers = users.filter((user) =>{
     return user.username.toLowerCase().includes(searchTerm.toLowerCase());
   })
+  const handleUserClick = (user) => {
+    setSelectedUser(user);
+    console.log('user clicked' , user.id);
+  };
+  // const defaultImage = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg'
 
   return (
     <div
@@ -103,8 +111,8 @@ export default function ChatLayout({
               {users.map((user) => {
                 if(user.username === 'admin' && user.is_admin === true){
                   return (
-                    <div className='user'>
-                      <img className='user_img' src={user.image} alt="userIamge" />
+                    <div onClick={() => handleUserClick(user)} className='user'>
+                      <img className='user_img' src={user.image !== '' ? user.image : defaultImg} alt="userIamge" />
                       <p>{user.username}</p>
                     </div>
                   )
@@ -117,19 +125,8 @@ export default function ChatLayout({
                 filteredUsers.map((user) => {
                   
                   return (
-                    <div className='user'>
-                      {/* show the admin username and profile */}
-                      {user.username === 'admin' && user.is_admin === true ? () => {
-                        return (
-                          <div className='user'>
-                            <img className='user_img' src={user.image} alt="userIamge" />
-                            <p>{user.username}</p>
-                          </div>
-                        )
-                      } : () => {
-
-                      }}
-                      <img className='user_img' src={user.image} alt="userImage" />
+                    <div onClick={() => handleUserClick(user)} className='user'>
+                      <img className='user_img' src={user.image !== '' ? user.image : defaultImg}  alt="userIamge" />
                       <p>{user.username}</p>
                     </div>
                   )
