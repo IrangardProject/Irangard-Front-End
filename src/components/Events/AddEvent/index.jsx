@@ -7,7 +7,7 @@ import Button from 'src/components/Button';
 import useAuth from 'src/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from 'src/utils/constants';
-import { AddEventSteps as Steps } from './info';
+import { AddEventSteps as Steps, eventTypes, eventCategories } from './info';
 import { BaseInfoSection, MapSection, TimeAndDateSection, AdditionalInfoSection } from './Sections';
 import { useAddEvent, updateEvent } from 'src/api/Events';
 import './styles.scss';
@@ -30,7 +30,9 @@ const AddEvent = () => {
       name: '',
       organizer: '',
       eventType: '',
+      eventTypeIndex: 0,
       eventCategory: '',
+      eventCategoryIndex: 0,
       tags: [],
       state: '',
       city: '',
@@ -70,9 +72,12 @@ const AddEvent = () => {
 
   const apiAdaptor = eventData => {
     console.log('event data in apiAdaptor: ', eventData);
+    console.log('finding the index of: ', eventTypes.indexOf(eventData.eventData));
     const formatedData = {
-      event_type: eventData.eventType,
-      event_category: eventData.eventCategory,
+      // event_type: eventData.eventType,
+      // event_category: eventData.eventCategory,
+      event_type: eventData.eventTypeIndex,
+      event_category: eventData.eventCategoryIndex,
       title: eventData.name,
       organizer: eventData.organizer,
       description: eventData.summary,
@@ -83,17 +88,23 @@ const AddEvent = () => {
       start_time: eventData.startTime,
       end_time: eventData.endTime,
       province: eventData.state.label,
-      city: eventData.city,
-      tags: eventData.tags,
+      city: eventData.city.label,
+      tags: eventData.tags.map(tag => {
+        return {
+          name: tag,
+        };
+      }),
       address: eventData.address,
       is_free: eventData.isFree,
-      // images:
+      added_by: auth.user.id,
     };
     return formatedData;
   };
 
   const onSubmit = async eventData => {
-    console.log('this is the eventData in onSubmit: ', eventData);
+    // console.log('this is the eventData in onSubmit: ', eventData);
+    console.log('the data sending to back-end: ', apiAdaptor(eventData));
+    console.log('the auth: ', auth);
     if (Steps.slice(0, 2).some(s => s['error'] === undefined)) toast.error('لطفا ابتدا تمامی مراحل را بگذرونید.');
     else if (Steps.some(s => s['error'] === true)) toast.error('لطفا مشکلات مراحلی که علامت هشدار دارند، را رفع کنید.');
     else
@@ -114,6 +125,18 @@ const AddEvent = () => {
           eventData.images.forEach((img, i) => {
             form_data.append('images', img);
           });
+          form_data.append('address', eventData.address);
+          form_data.append('city', eventData.city.label);
+          form_data.append('province', eventData.state.label);
+          form_data.append('title', eventData.name);
+          form_data.append('organizer', eventData.organizer);
+          form_data.append('description', eventData.summary);
+          form_data.append('x_location', eventData.latitude);
+          form_data.append('y_location', eventData.longitude);
+          form_data.append('start_date', eventData.startDate);
+          form_data.append('end_date', eventData.endDate);
+          form_data.append('start_time', eventData.startTime);
+          form_data.append('end_time', eventData.endTime);
           toast
             .promise(updateEvent(res.data['id'], form_data), {
               loading: 'در حال آپلود تصاویر...',
@@ -126,9 +149,7 @@ const AddEvent = () => {
               },
             })
             .then(res => {
-              // router.push(`${baseUrl}/places/${res.data['id']}`);
-              console.log('navigating to: ', `${baseUrl}/events/${res.data['id']}`);
-              navigate(`${baseUrl}/events/${res.data['id']}`);
+              navigate(`/events/${res.data['id']}`);
             })
             .catch(err => {
               console.log(err);

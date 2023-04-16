@@ -5,6 +5,7 @@ import { useMediaQuery, Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 import Button from 'src/components/Button';
+import {eventTypes, eventCategories} from '../info';
 
 const TagList = ({ tags, onDeleteTag }) => {
   // console.log('the tags: ', typeof tags, tags);
@@ -26,26 +27,6 @@ const BaseInfoSection = () => {
   const tags = watch('tags');
   // const name = watch('name');
   // const organizer = watch('organizer');
-  
-  const eventTypes = [
-    { label: 'همایش', value: 'conference' },
-    { label: 'کارگاه', value: 'workshop' },
-    { label: 'جشنواره', value: 'festival' },
-    { label: 'مسابقه', value: 'competition' },
-    { label: 'کنفرانس', value: 'conference' },
-    { label: 'سمینار', value: 'seminar' },
-    { label: 'جلسه', value: 'meeting' },
-    { label: 'کارگاه', value: 'workshop' },
-  ];
-  const eventCategories = [
-    { label: 'هنری', value: 'art' },
-    { label: 'علمی', value: 'science' },
-    { label: 'فرهنگی', value: 'culture' },
-    { label: 'ورزشی', value: 'sport' },
-    { label: 'سیاسی', value: 'politics' },
-    { label: 'اجتماعی', value: 'social' },
-    { label: 'مذهبی', value: 'religion' },
-  ];
 
   // useEffect(() => {
   //   console.log('in useEffect of BaseInfoSection');
@@ -123,7 +104,9 @@ const BaseInfoSection = () => {
           value={eventType}
           isOptionEqualToValue={handleIsOptionEqualToValue}
           onChange={(event, newValue) => {
+            setValue('eventTypeIndex', eventTypes.indexOf(newValue));
             setValue('eventType', newValue);
+            // setValue('eventType', eventTypes.indexOf(newValue))
           }}
           renderInput={params => {
             return (
@@ -146,7 +129,10 @@ const BaseInfoSection = () => {
           value={eventCategory}
           isOptionEqualToValue={handleIsOptionEqualToValue}
           onChange={(event, newValue) => {
+            setValue('eventCategoryIndex', eventCategories.indexOf(newValue));
             setValue('eventCategory', newValue);
+            // console.log("the eventcategory setting: ", eventCategories.indexOf(newValue))
+            // setValue('eventCategory', eventCategories.indexOf(newValue))
           }}
           renderInput={params => {
             return (

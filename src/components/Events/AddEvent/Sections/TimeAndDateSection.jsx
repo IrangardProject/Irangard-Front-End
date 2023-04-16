@@ -77,9 +77,7 @@ const TimeAndDateSection = () => {
               className="rmdp-mobile"
               onChange={date => {
                 setInputStartDate(date);
-                // console.log('the data is: ', date);
-                // console.log("the converted data: ", convertNumberToPersian(startDate.toString()))
-                setValue('startDate', inputStartDate);
+                setValue('startDate', convertJalaliDateToGeorgian(date.toString()))
                 setIsStartDateSelected(true);
               }}
               calendar={persian}
@@ -113,11 +111,11 @@ const TimeAndDateSection = () => {
               className="rmdp-mobile"
               onChange={date => {
                 setInputEndDate(date);
-                setValue('endDate', inputEndDate);
+                setValue('endDate', convertJalaliDateToGeorgian(date.toString()));
               }}
               calendar={persian}
               locale={persian_fa}
-              minDate={startDate}
+              minDate={inputStartDate}
             />
           </div>
         </div>

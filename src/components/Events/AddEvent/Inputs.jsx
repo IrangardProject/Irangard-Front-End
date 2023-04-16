@@ -30,7 +30,7 @@ export const BasicInput = props => {
     register,
     formState: { errors },
   } = useFormContext();
-  // console.log('errors: ', errors);
+  console.log('errors: ', errors);
   // Object.keys(errors).forEach(key => {
   //   delete errors[key];
   // });
