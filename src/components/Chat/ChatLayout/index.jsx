@@ -42,7 +42,8 @@ export default function ChatLayout({
 
   const [showChat, setShowChat] = useState(false);
   const [users,setUsers] = useState([]);
-  // const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  // const []
 
   const toggleShowChat= () =>{
     setShowChat(!showChat);
@@ -59,6 +60,12 @@ export default function ChatLayout({
       console.log(err);
     })
   },[])
+  const handleSearchInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  const filteredUsers = users.filter((user) =>{
+    return user.username.toLowerCase().includes(searchTerm.toLowerCase());
+  })
 
   return (
     <div
@@ -81,15 +88,56 @@ export default function ChatLayout({
         //   messages={messages}
         // />
         <div className='usersList' >
+          <input
+            type="text"
+            placeholder="جستجو کنید"
+            value={searchTerm}
+            onChange={handleSearchInputChange}
+            className='searchInput'
+          />
           <p className='chatwithUser'>چت با کاربر</p>
-          {users.map((user) => { // Corrected arrow function syntax
-            return (
-              <div className='user' key={user.id}> {/* Added a unique "key" prop for each child element */}
-                <img className='user_img' src={user.image} alt="" />
-                <p className='user_username'>{user.username}</p>
-              </div>
-            );
-          })}
+
+          {searchTerm === '' ? (
+            <div className=''>
+              
+              {users.map((user) => {
+                if(user.username === 'admin' && user.is_admin === true){
+                  return (
+                    <div className='user'>
+                      <img className='user_img' src={user.image} alt="userIamge" />
+                      <p>{user.username}</p>
+                    </div>
+                  )
+                }
+              })}
+            </div>
+          ) : (
+            <div className=''>
+              {
+                filteredUsers.map((user) => {
+                  
+                  return (
+                    <div className='user'>
+                      {/* show the admin username and profile */}
+                      {user.username === 'admin' && user.is_admin === true ? () => {
+                        return (
+                          <div className='user'>
+                            <img className='user_img' src={user.image} alt="userIamge" />
+                            <p>{user.username}</p>
+                          </div>
+                        )
+                      } : () => {
+
+                      }}
+                      <img className='user_img' src={user.image} alt="userImage" />
+                      <p>{user.username}</p>
+                    </div>
+                  )
+                })
+              }
+            </div>
+          )}
+          
         </div>
       )}
       <Launcher toggleShowChat={toggleShowChat} showChat={showChat} />
