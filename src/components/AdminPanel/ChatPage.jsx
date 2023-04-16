@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 
 function AdminPanel() {
   const {username} = useParams();
+  console.log(username);
   return (
     <div className="bg" style={{ backgroundColor: '#0f0026' }}>
       <div className="sidebar">

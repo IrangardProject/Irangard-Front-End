@@ -67,6 +67,7 @@
     "react-zoomable-ui": "^0.9.1",
     "recharts": "^2.1.10",
     "sass": "^1.49.9",
+    "socket.io-client": "^4.6.1",
     "styled-components": "^5.3.5",
     "stylis": "^4.0.10",
     "stylis-plugin-rtl": "^2.1.1",

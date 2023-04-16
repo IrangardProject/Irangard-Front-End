@@ -76,15 +76,13 @@ function Chat(props) {
 
   useEffect(() => {
     console.log('log',auth);
-
+    console.log('chatSocket.current',chatSocket.current);
     if (auth && auth.user && auth.user.username && !chatSocket.current) {
-      
+      console.log('we are in if loop');
       const newChatSocket = new WebSocket(
         'wss://' +
-          // '127.0.0.1:8000' +
            'api.quilco.ir'+
           '/chat/room/' +
-          // auth.user.username +
           auth.user.username +
           '/'
       );
@@ -120,7 +118,8 @@ function Chat(props) {
 
   return (
     <div>
-      { chatSocket.current && messages.length > 0 && <ChatLayout
+      {/* chatSocket.current && messages.length > 0 && */}
+      {  <ChatLayout
         chatSocket={chatSocket.current}
         messages={messages}
         title="پشتیبانی ایرانگرد"

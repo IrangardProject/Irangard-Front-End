@@ -52,9 +52,8 @@
 
 // export default Chat;
 
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
-import { Widget } from 'react-chat-widget';
+import React, { useState, useEffect, useRef } from 'react';
+import { Widget, addResponseMessage, addUserMessage } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 import ChatLayout from './ChatLayout';
 import axios from 'axios';
@@ -66,16 +65,18 @@ function Chat(props) {
 
   useEffect(() => {
     console.log('log');
+    const chatUrl = `wss://api.quilco.ir/chat/room/${props.username}/`;
+    const newChatSocket = new WebSocket(chatUrl);
 
-    const newChatSocket = new WebSocket(
-      'wss://' +
-        // '127.0.0.1:8000' +
-        'api.quilco.ir' +
-        '/chat/room/' +
-        // auth.user.username +
-        props.username +
-        '/'
-    );
+    // const newChatSocket = new WebSocket(
+    //   'wss://' +
+    //     // '127.0.0.1:8000' +
+    //     'api.quilco.ir' +
+    //     '/chat/room/' +
+    //     // auth.user.username +
+    //     props.username +
+    //     '/'
+    // );
 
     newChatSocket.onclose = function (e) {
       console.log('The socket close unexpectadly', e);
@@ -109,13 +110,22 @@ function Chat(props) {
           chatSocket={chatSocket.current}
           messages={messages}
           title="پشتیبانی ایرانگرد"
-          subtitle={`${props.username}`}
+          subtitle={`کاربر  ${props.username}`}
           senderPlaceHolder="سوالت رو بپرس !!!"
           handleNewUserMessage={handleNewUserMessage}
         />
       )}
+
+      {/* ویجت چت */}
+      {/* <Widget
+        handleNewUserMessage={handleNewUserMessage}
+        title="پشتیبانی ایرانگرد"
+        subtitle={`${props.username}`}
+        senderPlaceHolder="سوالت رو بپرس !!!"
+      /> */}
     </div>
   );
 }
 
 export default Chat;
+

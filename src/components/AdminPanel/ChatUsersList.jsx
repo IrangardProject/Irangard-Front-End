@@ -70,7 +70,8 @@ const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export default function RecievedList() {
+export default function RecievedList(props) {
+  console.log('props' , props);
   //const [tansferHistory, setTansferHistory] = useState(null);
   const [diagramData, setDiagramData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -96,7 +97,7 @@ export default function RecievedList() {
       <Box sx={{ flexGrow: 1, margin: '35px', backgroundColor: 'white' }}>
         <FormGroup row></FormGroup>
         <Grid item xs={12} md={12}>
-          <Typography sx={{ mt: 4, mb: 2, color: 'white' }} variant="h6" component="div">
+          <Typography sx={{ mt: 4, mb: 2, color: 'green' }} variant="h6" component="div">
             لیست چت‌ها
           </Typography>
           <Demo
