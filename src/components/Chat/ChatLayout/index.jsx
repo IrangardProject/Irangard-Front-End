@@ -7,7 +7,7 @@ import './style.scss';
 import profileAvatar from '../assets/avatar.png';
 import { baseUrl } from 'src/utils/constants';
 import apiInstance from '../../../config/axios'
-import {defaultImg} from '../../../../public/images/img/defaultImg.jpg'
+// import {defaultImg} from '../../../../public/images/img/defaultImg.jpg'
 export default function ChatLayout({
   title,
   titleAvatar,
@@ -45,7 +45,9 @@ export default function ChatLayout({
   const [users,setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
+  const [conversation, setConversation] = useState(false);
 
+  
   // const []
 
   const toggleShowChat= () =>{
@@ -71,9 +73,10 @@ export default function ChatLayout({
   })
   const handleUserClick = (user) => {
     setSelectedUser(user);
+    setConversation(true);
     console.log('user clicked' , user.id);
   };
-  // const defaultImage = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg'
+  const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg'
 
   return (
     <div
@@ -95,7 +98,23 @@ export default function ChatLayout({
         //   chatSocket={chatSocket}
         //   messages={messages}
         // />
-        <div className='usersList' >
+        <>
+        
+        {conversation ? <Conversation 
+          title={title}
+          subtitle={subtitle}
+          senderPlaceHolder={senderPlaceHolder}
+          handleNewUserMessage={handleNewUserMessage}
+          profileAvatar={profileAvatar}
+          chatSocket={chatSocket}
+          messages={messages}
+        /> : null}
+
+          {/* if converstaion true hide this section  */}
+          {
+            conversation === false ? 
+              <div>
+                 <div className='usersList' >
           <input
             type="text"
             placeholder="جستجو کنید"
@@ -136,7 +155,14 @@ export default function ChatLayout({
           )}
           
         </div>
-      )}
+              </div> 
+            :
+            null
+          }
+
+       
+        </>)}
+      
       <Launcher toggleShowChat={toggleShowChat} showChat={showChat} />
       {imagePreview && <FullScreenPreview fullScreenMode={fullScreenMode} zoomStep={zoomStep} />}
     </div>
