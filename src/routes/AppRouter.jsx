@@ -23,6 +23,9 @@ import CityExperiences from '../components/CityExperiences';
 import AddPlaces from 'src/components/AddPlaces';
 import PlaceFilters from 'src/components/PlaceFilters';
 import AddEvent from 'src/components/Events/AddEvent';
+import EventDetailsPage from 'src/components/Events/EventDetailsPage';
+import EventDashboard from 'src/components/Events/EventDashboard';
+import EventsList from 'src/components/Events/EventsList';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -57,7 +60,10 @@ const AppRouter = () => {
         <Route path="/Search" x element={<PlaceFilters />} />
         <Route path="/places/new" x element={<AddPlaces />} />
         <Route path="/Search" x element={<PlaceFilters />} />
+        <Route path="/events" element={<EventsList />} />
         <Route path="/events/new" element={<AddEvent />} />
+        <Route path="/events/:id" element={<EventDetailsPage />} />
+        <Route path="/events/:id/dashboard" element={<EventDashboard />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

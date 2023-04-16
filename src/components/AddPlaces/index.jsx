@@ -109,7 +109,6 @@ export default function AddPlaces() {
   };
 
   const onSubmit = placeData => {
-    console.log('this is the placeData: ', placeData);
     if (steps.slice(0, 2).some(s => s['error'] === undefined)) toast.error('لطفا ابتدا تمامی مراحل را بگذرونید.');
     else if (steps.some(s => s['error'] === true)) toast.error('لطفا مشکلات مراحلی که علامت هشدار دارند، را رفع کنید.');
     else
