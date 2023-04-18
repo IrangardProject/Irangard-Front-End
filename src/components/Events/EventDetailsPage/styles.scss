@@ -1,0 +1,68 @@
+@import 'src/theme/main.scss';
+.event-detail {
+  background-color: $c-white;
+  margin: 32px 0;
+  padding: 8px;
+  box-shadow: 2px 4px 8px $c-black-20;
+  border-radius: 16px;
+  border: 1px solid $c-greydd;
+
+  &__header {
+    padding: 24px;
+  }
+
+  &__gallery {
+    width: calc(100% - 364px);
+  }
+
+//   &__rating {
+//     display: flex;
+//     font-size: 18px;
+//     align-items: center;
+//     margin-top: 8px;
+//   }
+
+//   &__rating-value {
+//     margin-right: 4px;
+//     margin-top: 2px;
+//   }
+
+  &__gallery-info-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+  }
+
+  &__body {
+    padding: 32px;
+  }
+
+  &__about-title {
+    margin-bottom: 8px;
+  }
+
+  &__about-description {
+    font-weight: 300;
+    line-height: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .event-detail {
+    border: none;
+    border-radius: 0;
+
+    &__gallery-info-wrapper {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__gallery {
+      width: 100%;
+    }
+
+    &__info {
+      margin-top: 32px;
+    }
+  }
+}

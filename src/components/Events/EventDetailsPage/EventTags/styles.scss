@@ -1,0 +1,28 @@
+@import 'src/theme/main.scss';
+.event-available-tags {
+  border: 1px solid $c-greydd;
+  border-radius: 16px;
+  box-shadow: 2px 4px 8px $c-grey1a;
+  margin-top: 32px;
+
+  &__title {
+    padding: 12px 16px;
+    border-bottom: 1px solid $c-greydd;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 12px 8px;
+  }
+
+  &__tag {
+    margin: 8px;
+    border-radius: 18px;
+    border: 1px solid $c-darkpurple;
+    color: $c-darkpurple;
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: $c-white4;
+  }
+}

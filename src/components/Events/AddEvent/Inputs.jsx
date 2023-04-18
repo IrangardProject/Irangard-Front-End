@@ -28,9 +28,10 @@ export const BasicInput = props => {
   } = props;
   const {
     register,
-    formState: { errors },
+    formState: { errors, touched },
   } = useFormContext();
   console.log('errors: ', errors);
+  // const hasError = !!errors[id] && !!touched && !!touched[id];
   // Object.keys(errors).forEach(key => {
   //   delete errors[key];
   // });
@@ -44,7 +45,6 @@ export const BasicInput = props => {
     placeholder: placeholder,
     type: type,
     readOnly: readOnly,
-    // OnKeyDown: OnKeyDownListener,
   };
   // console.log('the basicInputProps: ', basicInputProps);
   // console.log('the temp: ', {
