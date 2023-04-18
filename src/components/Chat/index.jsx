@@ -70,62 +70,23 @@ import { baseUrl } from 'src/utils/constants';
 import useAuth from 'src/context/AuthContext';
 function Chat(props) {
   const auth = useAuth();
-
+  console.log('props',props);
   const chatSocket = useRef(null);
-  const [messages, setMessages] = useState([]);
+  
 
-  useEffect(() => {
-    console.log('log',auth);
-    console.log('chatSocket.current',chatSocket.current);
-    if (auth && auth.user && auth.user.username && !chatSocket.current) {
-      console.log('we are in if loop');
-      const newChatSocket = new WebSocket(
-        'wss://' +
-           'api.quilco.ir'+
-          '/chat/room/' +
-          auth.user.username +
-          '/'
-      );
+  
 
-      newChatSocket.onclose = function (e) {
-        console.log('The socket close unexpectadly', e);
-      };
-
-      chatSocket.current = newChatSocket;
-
-      axios.get(`${baseUrl}/chat/room/messages/${auth.user.username}`).then((response) => {
-        setMessages(response.data);
-        console.log('messages',messages);
-      });
-    }
-
-
-
-  }, [auth]);
-
-  const handleNewUserMessage = message => {
-    console.log('sent',message,chatSocket.current);
-    chatSocket.current.send(
-      JSON.stringify({
-        message: message,
-        username: auth.user.username,
-        room_name: auth.user.username,
-        sender_type: 'CLIENT',
-      })
-    );
-    // console.log("sent");
-  };
+  
 
   return (
     <div>
       {/* chatSocket.current && messages.length > 0 && */}
       {  <ChatLayout
-        chatSocket={chatSocket.current}
-        messages={messages}
+        
         title="پشتیبانی ایرانگرد"
         subtitle="هر سوالی داری بپرس"
         senderPlaceHolder="سوالت رو بپرس !!!"
-        handleNewUserMessage={handleNewUserMessage}
+        // handleNewUserMessage={handleNewUserMessage}
       />}
     </div>
   );

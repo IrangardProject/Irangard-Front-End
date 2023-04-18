@@ -4,17 +4,63 @@ import cn from 'classnames';
 import Header from './Header';
 import Messages from './Messages';
 import Sender from './Sender';
-
+import useAuth from 'src/context/AuthContext';
+import { baseUrl } from '../../../utils/constants';
 import './style.scss';
+import apiInstance from '../../../config/axios';
 
 export default function Conversation(props) {
   const [messageNumber, setMessageNumber] = useState(0);
-  const [messages, setMessages] = useState(props.messages);
-
+  // const [messages, setMessages] = useState(props.messages);
+  const [messages, setMessages] = useState([]);
   const updateMessages = (sendMessage, message) => {
     setMessageNumber(messageNumber + 1);
     setMessages([...messages, sendMessage(message)]);
   };
+  const chatSocket = useRef(null);
+  const auth = useAuth()
+  console.log('conversataion');
+
+  useEffect(() => {
+    async function fetchMessages() {
+      if (auth && auth.user && auth.user.username && !chatSocket.current) {
+        const newChatSocket = new WebSocket(
+          'wss://' +
+            'api.quilco.ir'+
+            '/chat/room/' +
+            auth.user.username + '_'+ props.contact_username +
+            '/'
+        );
+  
+        newChatSocket.onclose = function (e) {
+          console.log('The socket close unexpectadly', e);
+        };
+  
+        chatSocket.current = newChatSocket;
+  
+        const response = await apiInstance.get(`${baseUrl}/chat/room/messages/${auth.user.username + '_'+ props.contact_username }`);
+        setMessages(response.data);
+        console.log('messages', messages);
+      }
+    }
+  
+    fetchMessages();
+  }, [auth, props.contact_username]);
+  
+  const handleNewUserMessage = message => {
+    console.log('sent',message,chatSocket.current);
+    chatSocket.current.send(
+      JSON.stringify({
+        message: message,
+        username: auth.user.username,
+        room_name: auth.user.username,
+        sender_type: 'CLIENT',
+      })
+    );
+    // console.log("sent");
+  };
+  // chatSocket=chatSocket.current
+  // messages=messages
 
   props.chatSocket.onmessage = function (e) {
     console.log('onmessage');
@@ -23,7 +69,7 @@ export default function Conversation(props) {
     if (data.message) {
       console.log(data);
       if (data.sender_type === 'SERVER') {
-        setMessages([...messages, { message: data.message, sender: 'emad',sender_type: 'SERVER',showTimeStamp:false}]);
+        setMessages([...messages, { message: data.message ,sender_type: 'SERVER',showTimeStamp:false}]);
       }
     } else {
       alert('The message is empty!');
@@ -33,17 +79,17 @@ export default function Conversation(props) {
   return (
     <div id="rcw-conversation-container" className={cn('rcw-conversation-container')} aria-live="polite">
       <Header title={props.title} subtitle={props.subtitle} />
-      <Messages
+      {/* <Messages
         messages={messages}
         messageNumber={messageNumber}
         profileAvatar={props.profileAvatar}
         profileClientAvatar={props.profileClientAvatar}
         showTimeStamp={props.showTimeStamp}
-      />
+      /> */}
 
       <Sender
         updateMessages={updateMessages}
-        handleNewUserMessage={props.handleNewUserMessage}
+        handleNewUserMessage={handleNewUserMessage}
         sendMessage={props.handlerSendMsn}
         placeholder={props.senderPlaceHolder}
         disabledInput={props.disabledInput}

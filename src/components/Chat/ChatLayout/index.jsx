@@ -46,7 +46,7 @@ export default function ChatLayout({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [conversation, setConversation] = useState(false);
-
+  console.log(selectedUser);
   
   // const []
 
@@ -77,7 +77,7 @@ export default function ChatLayout({
     console.log('user clicked' , user.id);
   };
   const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg'
-
+  
   return (
     <div
       className={cn('rcw-widget-container', {
@@ -104,10 +104,11 @@ export default function ChatLayout({
           title={title}
           subtitle={subtitle}
           senderPlaceHolder={senderPlaceHolder}
-          handleNewUserMessage={handleNewUserMessage}
+          // handleNewUserMessage={handleNewUserMessage}
           profileAvatar={profileAvatar}
-          chatSocket={chatSocket}
-          messages={messages}
+          // chatSocket={chatSocket}
+          // messages={messages}
+          contact_username = {selectedUser.username}
         /> : null}
 
           {/* if converstaion true hide this section  */}
