@@ -1,14 +1,9 @@
 import {
-  RiRestaurantLine,
-  RiHome3Line,
-  RiChatQuoteLine,
-  RiShipLine,
   RiPagesLine,
   RiFileList2Fill,
 } from 'react-icons/ri';
 import { BsCalendarDate } from 'react-icons/bs';
 import { FaMapMarkedAlt } from 'react-icons/fa';
-import { MdContactPhone } from 'react-icons/md';
 export const AddEventSteps = [
   {
     label: 'اطلاعات پایه',

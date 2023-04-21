@@ -4,7 +4,13 @@ import Map from 'src/components/Map';
 import './styles.scss';
 
 const EventContactInfo = ({ className, info }) => {
-  const { address, x_location: lat, y_location: long } = info;
+  const { 
+    address, 
+    x_location: lat, 
+    y_location: long,
+    phone,
+    website, 
+  } = info;
 
   return (
     <div className={`event-contact ${className || ''}`}>
@@ -25,10 +31,12 @@ const EventContactInfo = ({ className, info }) => {
             {phone}
           </div>
         )}
-        {time && (
-          <div className="event-contact__item">
-            <RiTimeLine size={24} />
-            {time}
+        {website && (
+          <div className="event-contact__item event-contact__website">
+            <RiLink size={24} />
+            <a href={`https://${website}`} target="_blank">
+              {website}
+            </a>
           </div>
         )} */}
       </div>

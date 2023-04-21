@@ -37,13 +37,31 @@
     padding: 32px;
   }
 
-  &__about-title {
-    margin-bottom: 8px;
+  &__date-and-time {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    &__icon {
+      margin: 15px 15px;
+    }
+    &__text {
+      font-weight: 300;
+      line-height: 2;
+    }
   }
 
-  &__about-description {
-    font-weight: 300;
-    line-height: 2;
+  &__description {
+    margin-top: 32px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: row;
+    &__icon {
+      margin: 15px 15px;
+    }
+    &__text {
+      font-weight: 300;
+      line-height: 2;
+    }
   }
 }
 

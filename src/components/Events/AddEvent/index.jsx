@@ -46,6 +46,8 @@ const AddEvent = () => {
       isFree: false,
       summary: '',
       images: [],
+      phone: '',
+      website: '',
     },
   });
 
@@ -97,6 +99,8 @@ const AddEvent = () => {
       address: eventData.address,
       is_free: eventData.isFree,
       added_by: auth.user.id,
+      phone: eventData.phone,
+      website: eventData.website,
     };
     return formatedData;
   };
@@ -137,6 +141,8 @@ const AddEvent = () => {
           form_data.append('end_date', eventData.endDate);
           form_data.append('start_time', eventData.startTime);
           form_data.append('end_time', eventData.endTime);
+          form_data.append('phone', eventData.phone);
+          form_data.append('website', eventData.website);
           toast
             .promise(updateEvent(res.data['id'], form_data), {
               loading: 'در حال آپلود تصاویر...',
