@@ -86,13 +86,13 @@ const BaseInfoSection = () => {
           id="name"
           // name="name"
           placeholder="نام رویداد را وارد کنید"
-          validation={{ required: true, maxLength: 50 }}
+          // validation={{ required: true, maxLength: 50 }}
         />
         <BasicInput 
           id="organizer"
           // name="organizer"
           placeholder="نام فرد/سازمان برگزار کننده را وارد کنید"
-          validation={{ required: true, maxLength: 50 }}
+          // validation={{ required: true, maxLength: 50 }}
         />
       </div>
       <div className="event-details">
@@ -116,7 +116,7 @@ const BaseInfoSection = () => {
                   id="eventType"
                   name="eventType"
                   placeholder="نوع رویداد را انتخاب کنید."
-                  validation={{ required: true }}
+                  // validation={{ required: true }}
                 />
               </div>
             );
@@ -142,7 +142,7 @@ const BaseInfoSection = () => {
                   id="eventCategory"
                   name="eventCategory"
                   placeholder="دسته بندی رویداد را انتخاب کنید."
-                  validation={{ required: true }}
+                  // validation={{ required: true }}
                 />
               </div>
             );
