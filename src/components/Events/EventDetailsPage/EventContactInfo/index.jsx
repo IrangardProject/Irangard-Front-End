@@ -25,7 +25,7 @@ const EventContactInfo = ({ className, info }) => {
             {address}
           </div>
         )}
-        {/* {phone && (
+        {phone && (
           <div className="event-contact__item">
             <RiPhoneLine size={24} />
             {phone}
@@ -38,7 +38,7 @@ const EventContactInfo = ({ className, info }) => {
               {website}
             </a>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
