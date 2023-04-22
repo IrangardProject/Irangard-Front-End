@@ -19,33 +19,43 @@ export default function Conversation(props) {
   };
   const chatSocket = useRef(null);
   const auth = useAuth()
-  console.log('conversataion');
-
-  useEffect(() => {
-    async function fetchMessages() {
+  const fetchMessages = async () => {
+    try {
       if (auth && auth.user && auth.user.username && !chatSocket.current) {
         const newChatSocket = new WebSocket(
           'wss://' +
-            'api.quilco.ir'+
-            '/chat/room/' +
-            auth.user.username + '_'+ props.contact_username +
-            '/'
-        );
-  
-        newChatSocket.onclose = function (e) {
-          console.log('The socket close unexpectadly', e);
-        };
-  
-        chatSocket.current = newChatSocket;
-  
-        const response = await apiInstance.get(`${baseUrl}/chat/room/messages/${auth.user.username + '_'+ props.contact_username }`);
-        setMessages(response.data);
-        console.log('messages', messages);
+          'api.quilco.ir'+
+          '/chat/room/' +
+          auth.user.username + '_'+ props.contact_username +
+          '/'
+          );
+          
+          console.log('newChatSocket',newChatSocket);
+          
+          newChatSocket.onclose = function (e) {
+            console.log('The socket close unexpectadly', e);
+          };
+          
+          chatSocket.current = newChatSocket;
+          
+          const response = await apiInstance.get(`${baseUrl}/chat/room/messages/${auth.user.username + '_'+ props.contact_username }`);
+          setMessages(response.data);
+          console.log('messages', messages);
+        }
+      } catch (error) {
+        console.log('error',error);
       }
-    }
-  
+      // auth, chatSocket, props.contact_username
+    };
+    
     fetchMessages();
-  }, [auth, props.contact_username]);
+    
+    
+    console.log('converstaion.js');
+    useEffect(() => {
+      console.log('useEffect');
+    });
+  
   
   const handleNewUserMessage = message => {
     console.log('sent',message,chatSocket.current);
