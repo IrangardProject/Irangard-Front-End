@@ -86,8 +86,7 @@ const TimeAndDateSection = () => {
             />
           </div>
         </div>
-        <div className="end-date-input" style={{ position: 'relative' }}>
-          <div style={{ zIndex: 2 }}>
+        <div className="end-date-input">
             <Input
               label="تاریخ پایان:"
               autoComplete="off"
@@ -103,7 +102,6 @@ const TimeAndDateSection = () => {
               value={inputEndDate ? convertNumberToPersian(inputEndDate.toString()) : ''}
               error={endDateBlured && !inputEndDate && 'تاریخ پایان نمی‌تواند خالی باشد.'}
             />
-          </div>
           <div className="date-picker">
             <DatePicker
               ref={endDatePickerRef}

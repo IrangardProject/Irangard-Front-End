@@ -7,7 +7,6 @@ import defaultEventImg2 from 'src/assets/images/defaultEventImg2.jpeg';
 
 function EventCard({ event }) {
   const navigate = useNavigate();
-  console.log('the event is : ', event);
   const eventImg = event.images[0]['image'] ? event.images[0]['image'] : defaultEventImg2;
   return (
     <div className="event-card">

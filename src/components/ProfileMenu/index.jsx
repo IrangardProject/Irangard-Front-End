@@ -22,6 +22,8 @@ import defaultProfileImg from '../../assets/images/profile.jpeg';
 import './style.scss';
 import { baseUrl } from '../../utils/constants';
 import toast from 'react-hot-toast';
+import { BsCalendarEvent } from 'react-icons/bs';
+import { RiShipLine } from 'react-icons/ri';
 
 const style = {
   position: 'absolute',
@@ -77,7 +79,7 @@ export default function AccountMenu() {
             aria-expanded={open ? 'true' : undefined}
           >
             <Avatar className={auth.isSpecial ? 'special-avatar' : ''} sx={{ width: 36, height: 36 }}>
-              <img width={36} height={36} src={(`${baseUrl}` + auth.user.image) || defaultProfileImg} />
+              <img width={36} height={36} src={`${baseUrl}` + auth.user.image || defaultProfileImg} />
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -147,6 +149,32 @@ export default function AccountMenu() {
             </MenuItem>
           </>
         )}
+        {auth.isSpecial && (
+          <>
+            <Divider />
+            <MenuItem>
+              <Link to="/tours/new">
+                <ListItemIcon>
+                  <RiShipLine size={20} />
+                </ListItemIcon>
+                ثبت تور جدید
+              </Link>
+            </MenuItem>
+          </>
+        )}
+        {auth.isSpecial && (
+          <>
+            <Divider />
+            <MenuItem>
+              <Link to="/events/new">
+                <ListItemIcon>
+                  <BsCalendarEvent size={20} />
+                </ListItemIcon>
+                ثبت رویداد جدید
+              </Link>
+            </MenuItem>
+          </>
+        )}
         {auth.isAdmin && (
           <>
             <Divider />
@@ -165,7 +193,7 @@ export default function AccountMenu() {
           onClick={() => {
             auth.logout();
             window.location.reload(false);
-            toast.error('شما از سایت خارج شدید!')
+            toast.error('شما از سایت خارج شدید!');
           }}
         >
           <ListItemIcon>

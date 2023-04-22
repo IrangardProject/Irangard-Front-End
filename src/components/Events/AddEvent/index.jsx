@@ -11,6 +11,7 @@ import { AddEventSteps as Steps, eventTypes, eventCategories } from './info';
 import { BaseInfoSection, MapSection, TimeAndDateSection, AdditionalInfoSection } from './Sections';
 import { useAddEvent, updateEvent } from 'src/api/Events';
 import './styles.scss';
+import defaultEventImg2 from 'src/assets/images/defaultEventImg2.jpg';
 
 const AddEvent = () => {
   const auth = useAuth();
@@ -76,8 +77,6 @@ const AddEvent = () => {
     console.log('event data in apiAdaptor: ', eventData);
     console.log('finding the index of: ', eventTypes.indexOf(eventData.eventData));
     const formatedData = {
-      // event_type: eventData.eventType,
-      // event_category: eventData.eventCategory,
       event_type: eventData.eventTypeIndex,
       event_category: eventData.eventCategoryIndex,
       title: eventData.name,
@@ -124,11 +123,16 @@ const AddEvent = () => {
           },
         })
         .then(res => {
-          if (eventData.images.length === 0) return;
+          // if (eventData.images.length === 0) return;
           const form_data = new FormData();
-          eventData.images.forEach((img, i) => {
-            form_data.append('images', img);
-          });
+          if (eventData.images.length === 0) {
+            navigate(`/events/${res.data['id']}`);
+            return;
+          } else {
+            eventData.images.forEach((img, i) => {
+              form_data.append('images', img);
+            });
+          }
           form_data.append('address', eventData.address);
           form_data.append('city', eventData.city.label);
           form_data.append('province', eventData.state.label);
@@ -143,6 +147,7 @@ const AddEvent = () => {
           form_data.append('end_time', eventData.endTime);
           form_data.append('phone', eventData.phone);
           form_data.append('website', eventData.website);
+          form_data.append('is_free', eventData.isFree);
           toast
             .promise(updateEvent(res.data['id'], form_data), {
               loading: 'در حال آپلود تصاویر...',
