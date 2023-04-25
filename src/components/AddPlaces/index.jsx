@@ -108,62 +108,7 @@ export default function AddPlaces() {
     return filterNullValues(formatedData);
   };
 
-  // const onSubmit = placeData => {
-  //   console.log('apiAdaptor(placeData)', apiAdaptor(placeData));
-  //   console.log('placeData type: ', typeof placeData);
-  //   console.log('placeData: ', placeData);
-  //   if (steps.slice(0, 2).some(s => s['error'] === undefined)) toast.error('لطفا ابتدا تمامی مراحل را بگذرونید.');
-  //   else if (steps.some(s => s['error'] === true)) toast.error('لطفا مشکلات مراحلی که علامت هشدار دارند، را رفع کنید.');
-  //   else {
-  //     const newPlaceData = apiAdaptor(placeData);
-  //     console.log('newPlaceData', newPlaceData);
-  //     const formData = new FormData();
-  //     formData.append('contact', JSON.stringify(newPlaceData.contact));
-  //     formData.append('description', newPlaceData.description);
-  //     formData.append('features', JSON.stringify(newPlaceData.features));
-  //     formData.append('place_type', placeData.place_type);
-  //     formData.append('tags', JSON.stringify(newPlaceData.tags));
-  //     if (placeData.images.length > 0) {
-  //       placeData.images.forEach((img, i) => {
-  //         formData.append('images', img);
-  //       });
-  //     }
-  //     formData.append('title', placeData.name);
-  //     const jsonData = {};
-  //     for (let [key, value] of formData.entries()) {
-  //       jsonData[key] = value;
-  //     }
-  //     const temp = {
-  //       contact:
-  //         '{"x_location":32.581883068709956,"y_location":51.665164946462035,"province":"اصفهان","city":"اصفهان","address":"isfahan","phone":"03135233118","email":"aliqapoo@gmail.com","instagram":"aliqapoo"}',
-  //       description: 'aliqapoo',
-  //       features: '[]',
-  //       place_type: 'undefined',
-  //       tags: '[{"name":"دارای سرویس بهداشتی"}]',
-  //       images: {
-  //         path: 'aliqapooPalace2.jpg',
-  //         preview: 'blob:http://localhost:3000/2f0da072-2bb0-4602-a42d-989a95b73212',
-  //       },
-  //       title: 'aliqapoo',
-  //     };
-  //     const jsonString = JSON.stringify(jsonData);
-  //     console.log('jsonData, the data sending to backend: ', jsonData);
-
-  //     toast.promise(mutateAsync(formData), {
-  //       loading: 'در حال بررسی...',
-  //       success: res => {
-  //         return 'مکان با موفقیت اضافه شد.';
-  //       },
-  //       error: err => {
-  //         if (!err.response) return 'خطایی در ارتباط با سرور رخ داده است.';
-  //         else return 'خطایی در ارتباط با سرور رخ داده است.';
-  //       },
-  //     });
-  //   }
-  // };
-
   const onSubmit = placeData => {
-    console.log('this is the placeData: ', placeData);
     if (steps.slice(0, 2).some(s => s['error'] === undefined)) toast.error('لطفا ابتدا تمامی مراحل را بگذرونید.');
     else if (steps.some(s => s['error'] === true)) toast.error('لطفا مشکلات مراحلی که علامت هشدار دارند، را رفع کنید.');
     else

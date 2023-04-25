@@ -223,6 +223,7 @@ function AddTour() {
           inputClass="date-input"
           className="rmdp-mobile"
           onChange={date => {
+            console.log("the date in add tour is: ", date.toString());
             setStartDate(date);
             setIsStartDateSelected(true);
           }}

@@ -8,6 +8,7 @@ import {
   RiShipLine,
   RiAncientPavilionFill,
 } from 'react-icons/ri';
+import { BsCalendarEvent } from 'react-icons/bs';
 import Navbar from '../Navbar';
 import './style.scss';
 
@@ -27,6 +28,10 @@ const Header = () => {
         <Link to="tours" className="header__nav-item">
           <div className="txt">تورها</div>
           <RiShipLine size={20} />
+        </Link>
+        <Link to="events" className="header__nav-item">
+          <div className="txt">رویدادها</div>
+          <BsCalendarEvent size={20} />
         </Link>
         <Link to="experiences" className="header__nav-item">
           <div className="txt">تجربه‌ها</div>
