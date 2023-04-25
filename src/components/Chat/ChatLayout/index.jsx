@@ -46,38 +46,68 @@ export default function ChatLayout({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [conversation, setConversation] = useState(false);
-  console.log(selectedUser);
+  const [idRoom , setIdRoom] = useState(0);
+  // console.log(selectedUser);
+  // console.log('idRoom',idRoom);
   
   // const []
 
   const toggleShowChat= () =>{
     setShowChat(!showChat);
-    console.log("showchat",showChat);
+    // console.log("showchat",showChat);
   };
   console.log('users',users)
   console.log(users);
   useEffect(() => {
+    // console.log('useEffect called');
     apiInstance.get(`${baseUrl}/accounts/users`)
     .then((res) =>{
       setUsers(res.data)
-      console.log('res.data',res.data);
+      // console.log('res.data',res.data);
     })
     .catch((err) => {
       console.log(err);
     })
   },[])
+
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
   };
   const filteredUsers = users.filter((user) =>{
     return user.username.toLowerCase().includes(searchTerm.toLowerCase());
   })
-  const handleUserClick = (user) => {
+
+  const makeRoom = async() =>{
+    console.log('make room called');
+    await apiInstance.get(`${baseUrl}/message/room`,{
+      name : " "
+    })
+    .then((res) =>{
+      console.log(res.data);
+      setIdRoom('id',res.data[0].id);
+      // setIdRoom(res.data[0].id);
+    })
+    .catch((err) => {
+      console.log('err',err);
+    })
+  }
+  console.log('idRoom',idRoom);
+  const handleUserClick = async (user) => {
     setSelectedUser(user);
-    setConversation(true);
+    try {
+      const res = await apiInstance.get(`${baseUrl}/message/room` , {
+          name  : ""
+      }
+    )
+      setIdRoom(res.data[0].id);
+      setConversation(true);
+  } catch (error) {
+      console.log(error);
+    }
+    // makeRoom();
     console.log('user clicked' , user.id);
   };
-  const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg'
+  const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
   
   return (
     <div
@@ -110,6 +140,7 @@ export default function ChatLayout({
           // chatSocket={chatSocket}
           // messages={messages}
           contact_username = {selectedUser.username}
+          roomId = {idRoom}
         /> : null}
 
           {/* if converstaion true hide this section  */}
