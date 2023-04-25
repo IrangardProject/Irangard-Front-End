@@ -54,12 +54,13 @@ export default function ChatLayout({
     setShowChat(!showChat);
     console.log("showchat",showChat);
   };
+  console.log('users',users)
   console.log(users);
   useEffect(() => {
     apiInstance.get(`${baseUrl}/accounts/users`)
     .then((res) =>{
       setUsers(res.data)
-      
+      console.log('res.data',res.data);
     })
     .catch((err) => {
       console.log(err);

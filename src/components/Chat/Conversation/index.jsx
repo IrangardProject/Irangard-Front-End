@@ -19,6 +19,8 @@ export default function Conversation(props) {
   };
   const chatSocket = useRef(null);
   const auth = useAuth()
+  // object room make 
+  // get id of romm 
   const fetchMessages = async () => {
     try {
       if (auth && auth.user && auth.user.username && !chatSocket.current) {
@@ -26,7 +28,9 @@ export default function Conversation(props) {
           'wss://' +
           'api.quilco.ir'+
           '/chat/room/' +
-          auth.user.username + '_'+ props.contact_username +
+          // message 
+          auth.user.username + '_'+ props.contact_username + 
+          // rood id 
           '/'
           );
           
