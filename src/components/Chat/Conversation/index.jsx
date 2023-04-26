@@ -55,11 +55,29 @@ export default function Conversation(props) {
   
     
     // fetchMessages();
+    // const get 
+
+    const addUserToRoom = async(userId,roomId) =>{
+      console.log('addUserToRoom',userId,roomId);
+      try {
+        const response = await apiInstance.post(`${baseUrl}/message/add/user/${userId}/room/${roomId}`);
+        console.log('response',response);
+      } catch (error) {
+        console.log('error',error);
+      }
+    }
+    // wss://api/quilco.ir/ws/{room_id}
     
-    console.log(props.contact_username);
-    console.log('converstaion.js');
+
+    
+    
+    
+    console.log('props.contact_username',props.contact_id);
+    // console.log('converstaion.js');
     useEffect(() => {
       console.log('useEffect');
+      addUserToRoom(auth.user.id,props.roomId);
+      addUserToRoom(props.contact_id,props.roomId);
     },[]);
   
   
@@ -78,30 +96,18 @@ export default function Conversation(props) {
   // chatSocket=chatSocket.current
   // messages=messages
 
-  props.chatSocket.onmessage = function (e) {
-    console.log('onmessage');
-    const data = JSON.parse(e.data);
-    // console.log(data);
-    if (data.message) {
-      console.log(data);
-      if (data.sender_type === 'SERVER') {
-        setMessages([...messages, { message: data.message ,sender_type: 'SERVER',showTimeStamp:false}]);
-      }
-    } else {
-      alert('The message is empty!');
-    }
-  };
+  //  
 
   return (
     <div id="rcw-conversation-container" className={cn('rcw-conversation-container')} aria-live="polite">
       <Header title={props.title} subtitle={props.subtitle} />
-      {/* <Messages
+      <Messages
         messages={messages}
         messageNumber={messageNumber}
         profileAvatar={props.profileAvatar}
         profileClientAvatar={props.profileClientAvatar}
         showTimeStamp={props.showTimeStamp}
-      /> */}
+      />
 
       <Sender
         updateMessages={updateMessages}
