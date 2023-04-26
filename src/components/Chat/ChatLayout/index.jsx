@@ -59,7 +59,6 @@ export default function ChatLayout({
   console.log('users',users)
   console.log(users);
   useEffect(() => {
-    // console.log('useEffect called');
     apiInstance.get(`${baseUrl}/accounts/users`)
     .then((res) =>{
       setUsers(res.data)
@@ -79,7 +78,7 @@ export default function ChatLayout({
 
   const makeRoom = async() =>{
     console.log('make room called');
-    await apiInstance.get(`${baseUrl}/message/room`,{
+    await apiInstance.post(`${baseUrl}/message/room`,{
       name : " "
     })
     .then((res) =>{
@@ -95,11 +94,11 @@ export default function ChatLayout({
   const handleUserClick = async (user) => {
     setSelectedUser(user);
     try {
-      const res = await apiInstance.get(`${baseUrl}/message/room` , {
-          name  : ""
+      const res = await apiInstance.post(`${baseUrl}/message/room/` , {
+          name  : "test "
       }
     )
-      setIdRoom(res.data[0].id);
+      setIdRoom(res.data.id);
       setConversation(true);
   } catch (error) {
       console.log(error);
@@ -119,7 +118,6 @@ export default function ChatLayout({
     >
         
       {showChat && (
-        // instead of showing converstion I want to show a list of users and when I click on a user it should show the conversation with that user
         // <Conversation
         //   title={title}
         //   subtitle={subtitle}
@@ -139,11 +137,11 @@ export default function ChatLayout({
           profileAvatar={profileAvatar}
           // chatSocket={chatSocket}
           // messages={messages}
-          contact_username = {selectedUser.username}
+          contact_id = {selectedUser.id}
           roomId = {idRoom}
         /> : null}
 
-          {/* if converstaion true hide this section  */}
+          
           {
             conversation === false ? 
               <div>
