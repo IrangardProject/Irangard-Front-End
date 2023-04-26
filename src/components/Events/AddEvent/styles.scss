@@ -1,6 +1,6 @@
 @import '/src/theme/main.scss';
 
-.add-place {
+.add-event {
   margin: 30px 0;
   border: 2px solid black;
   border-radius: 8px;
@@ -50,6 +50,43 @@
       margin-top: 40px;
       color: rgb(27, 27, 27);
     }
+    .event-tags-input {
+      display: flex;
+      flex-direction: row;
+      .tags-input {
+        max-width: 600px;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      .tags-input-button {
+        // padding-bottom: 50px;
+        .add-tag-button {
+          margin-top: 10px;
+          background-color: #04aa6c;
+          // margin-bottom: 10px;
+          margin-left: 10px;
+          max-width: 90px;
+          max-height: 50px;
+          font-size: 14px;   
+        }
+      }
+    }
+    .event-tags-entered {
+      display: flex;
+      flex-direction: row;
+      .tag-chips {
+        background-color: #F1F1F1;
+        color: black;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        width: 150px;
+        .MuiChip-deleteIcon {
+          color: #73777B;
+        } 
+      }
+    }
     .question {
       margin-top: 50px;
       margin-bottom: 10px;
@@ -94,7 +131,17 @@
   }
   .map-section {
     .state-city-address {
+      margin-top: 20px;
       padding-left: 20px;
+      .address {
+        margin-top: 20px;
+      }
+      .coordinates__title {
+        margin-top: 40px;
+      }
+      .coordinates {
+        margin-top: 15px;
+      }
     }
     .location-info {
       display: flex;
@@ -114,10 +161,10 @@
       }
     }
     .title {
-      font-size: 28px;
+      font-size: 21px;
       color: #080340;
-      margin-bottom: 10px;
-      margin-top: 10px;
+      margin-bottom: 15px;
+      margin-top: 20px;
     }
     .coordinates__title {
       margin-top: 30px;
@@ -236,45 +283,115 @@
   }
 }
 
-.event-details {
-  display: flex;
-  flex-direction: row;  
-  gap: 23px;
-  .event-type {
-    width: 36%;
+.time-and-date-section {
+  .title {
+    font-size: 15px;
   }
-  .event-category {
-    width: 36%;
+  .description {
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
-}
-.event-tags {
-  display: flex;
-  flex-direction: column;
-  .event-tags-title {
-    margin-top: 20px;
-  }
-  .event-tags-input {
+  .date-inputs {
     display: flex;
     flex-direction: row;
-    margin-top: 5px;
     gap: 20px;
-    // width: 50%;
-    .tags-input {
-      width: 50%;
-      // direction: flex;
-      // flex-direction: row;
-    .tags-input-button {
-      width: 25%;
-      // background-color: "green";
+
+    .start-date-input {
+      min-width: 100px;
+      .date-input {
+        display: none;
+      }
     }
+    .end-date-input {
+      min-width: 100px;      
+      .date-input {
+        display: none;
+      }
     }
   }
-  .event-tags.entered {
-    .user-tags {
+  .time-inputs {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    .start-time-input {
+      min-width: 100px;
+      width: 27%;
       display: flex;
-      flex-direction: row;
-      gap: 10px;
-      margin-top: 20px;
+      flex-direction: column;
+      .field-input {
+        margin-top: 6px;
+        outline: 0;
+        padding: 14px;
+        border-radius: 4px;
+        transition: border-color 0.2s;
+        width: 100%;
+        border: 1px solid rgb(173, 173, 173);
+  
+        &:focus {
+          border-color: #04aa6c;
+          border-width: 2px;
+        }
+        &.invalid {
+          border-color: $c-golbehi2;
+        }
+      }
+    }
+    .end-time-input {
+      min-width: 100px;
+      width: 27%;
+      display: flex;
+      flex-direction: column;
+      .field-input {
+        margin-top: 6px;
+        outline: 0;
+        padding: 14px;
+        border-radius: 4px;
+        transition: border-color 0.2s;
+        width: 100%;
+        border: 1px solid rgb(173, 173, 173);
+  
+        &:focus {
+          border-color: #04aa6c;
+          border-width: 2px;
+        }
+        &.invalid {
+          border-color: $c-golbehi2;
+        }
+      }
+    }
+  }
+}
+
+.additional-info-section {
+  .title {
+    font-size: 15px;
+  }
+  .is-free {
+    margin-top: 20px;
+  }
+  .contact-section {
+    margin-top: 20px;
+    .title {
+      font-size: 18px;
+    }
+  }
+  .event-summary {
+    margin-top: 20px;
+    .summary-description-label {
+      margin-top: 10px;
+    }
+  }
+  .upload-images {
+    margin-top: 20px;
+    .title {
+      padding-top: 10px;
+      font-size: 18px;
+    }
+    .img-description-label {
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
   }
 }

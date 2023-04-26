@@ -65,6 +65,10 @@ export const convertJalaliDateToGeorgian = date => {
   return moment.from(convertNumberToEnglish(date), 'fa', 'YYYY/MM/DD').format('YYYY-MM-DD');
 };
 
+export const convertGeorgianDateToJalali = date => {
+  return moment(date).locale('fa').format('YYYY/MM/DD');
+};
+
 export const getPersianDateWithSlash = date => {
   if (!(date instanceof Date)) {
     throw new Error('invalid input');

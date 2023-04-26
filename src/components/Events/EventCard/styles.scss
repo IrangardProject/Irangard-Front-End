@@ -1,0 +1,135 @@
+@import 'src/theme/main.scss';
+
+.event-card {
+  border: 1px solid #eee;
+  background-color: $c-white;
+  border-radius: 10px;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+
+  &__img {
+    height: 160px;
+    width: 240px;
+    max-width: 100%;
+    display: block;
+    border-radius: 8px;
+    margin-left: 16px;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &__cost-capacity {
+    display: flex;
+    align-items: center;
+  }
+
+  &__capacity {
+    color: #666;
+    font-size: 16px;
+    font-weight: 800;
+    margin-left: 16px;
+  }
+
+  &__cost {
+    color: #2979fe;
+    font-weight: 800;
+    font-size: 18px;
+  }
+
+  &__date {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__start,
+  &__end {
+    font-size: 14px;
+    margin: 8px 0;
+    font-weight: 700;
+    padding: 8px;
+    border-radius: 8px;
+    width: auto;
+  }
+
+  &__start {
+    color: #006a33;
+    background-color: #f7fafb;
+    border: 1px solid #006a33;
+    margin-left: 16px;
+  }
+
+  &__end {
+    color: #e40300;
+    background-color: #fdeded;
+    border: 1px solid #e40300;
+  }
+
+  &__more {
+    // background-color: #feb714;
+    // color: $c-black;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px;
+    margin: 8px 0;
+    border: none;
+    width: 120px;
+    height: 40px;
+    background-color: #004f32;
+    border-radius: 32px;
+    -webkit-transition: background-color 0.2s linear;
+    -o-transition: background-color 0.2s linear;
+    transition: background-color 0.2s linear;
+    // padding: 5px 0px;
+
+    cursor: pointer;
+    @media (min-width: 800px) {
+      // margin: 0px 30px;
+      padding: 10px 0px;
+    }
+    @media (max-width:800px) {
+      width: auto;
+    }
+    &:hover {
+      background-color: #00aa6c;
+    }
+    p {
+      margin: 0;
+      vertical-align: middle;
+      font-size: 16px;
+      font-weight: bold;
+      color: #ffffff;
+      display: inline-block;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .event-card {
+    flex-direction: column;
+
+    &__left {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      width: 100%;
+    }
+
+    &__title {
+      margin: 8px 0;
+    }
+
+    &__date-and-time {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

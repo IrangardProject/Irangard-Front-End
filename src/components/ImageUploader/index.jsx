@@ -31,7 +31,6 @@ export default function ImageUploader() {
   const thumbs = files.map(file => (
     <div className="thumb" key={file.name}>
       <div className="thumb-inner">
-        
         <img
           src={file.preview}
           className="img"
@@ -55,10 +54,12 @@ export default function ImageUploader() {
         <p>عکسهای مورد نظر را در اینجا کشیده و رها کنید</p>
         <p>و یا برای انتخاب آنها اینجا کلیک کنید</p>
       </div>
-      <div>
-        <p className="preview-title">تصاویر آپلود شده:</p>
-        <aside className="thumbs-container">{thumbs}</aside>
-      </div>
+      {thumbs && thumbs.length > 0 && (
+        <div>
+          <p className="preview-title">تصاویر آپلود شده:</p>
+          <aside className="thumbs-container">{thumbs}</aside>
+        </div>
+      )}
     </div>
   );
 }

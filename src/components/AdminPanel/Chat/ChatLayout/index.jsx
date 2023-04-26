@@ -63,35 +63,10 @@ export default function ChatLayout({
           profileAvatar={profileAvatar}
           chatSocket={chatSocket}
           messages={messages}
-          //   sendMessage={onSendMessage}
-          //   profileClientAvatar={profileClientAvatar}
-          //   toggleChat={onToggleConversation}
-          //   showCloseButton={showCloseButton}
-          // //   disabledInput={dissableInput}
-          //   autofocus={autofocus}
-          //   titleAvatar={titleAvatar}
-          //   className={showChat || true ? 'active' : 'hidden'}
-          //   onQuickButtonClicked={onQuickButtonClicked}
-          //   onTextInputChange={onTextInputChange}
-          //   sendButtonAlt={sendButtonAlt}
-          //   showTimeStamp={showTimeStamp}
-          //   resizable={resizable}
-          //   emojis={emojis}
+          
         />
       )}
-      {/* {customLauncher
-        ? customLauncher(onToggleConversation)
-        : !fullScreenMode && (
-            <Launcher
-              toggle={onToggleConversation}
-              chatId={chatId}
-              openLabel={launcherOpenLabel}
-              closeLabel={launcherCloseLabel}
-              closeImg={launcherCloseImg}
-              openImg={launcherOpenImg}
-              showBadge={showBadge}
-            />
-          )} */}
+      
       {imagePreview && <FullScreenPreview fullScreenMode={fullScreenMode} zoomStep={zoomStep} />}
     </div>
   );

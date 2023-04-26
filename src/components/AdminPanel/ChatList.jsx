@@ -10,6 +10,7 @@ import './style.scss';
 import { baseUrl } from 'src/utils/constants';
 
 function AdminPanel() {
+  const name = 'this is a test'
   return (
     <div className="bg" style={{ backgroundColor: '#white' }}>
       <div className="sidebar">
@@ -19,7 +20,7 @@ function AdminPanel() {
         <div className="panel-header"></div>
         <div className="body">
           {/* <UsersList /> */}
-          <ChatUsersList />
+          <ChatUsersList name={name} />
         </div>
       </div>
     </div>
