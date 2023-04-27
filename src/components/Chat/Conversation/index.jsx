@@ -20,6 +20,7 @@ export default function Conversation(props) {
   const chatSocket = useRef(null);
   const auth = useAuth()
   console.log(props.roomId);
+  console.log(messages);
   // object room make 
   // get id of romm 
   // const fetchMessages = async () => {
@@ -61,23 +62,55 @@ export default function Conversation(props) {
       console.log('addUserToRoom',userId,roomId);
       try {
         const response = await apiInstance.post(`${baseUrl}/message/add/user/${userId}/room/${roomId}`);
-        console.log('response',response);
+        // console.log('response',response);
       } catch (error) {
         console.log('error',error);
       }
     }
     // wss://api/quilco.ir/ws/{room_id}
+    const connecttionwss = async() =>{
+      try {
+          if (auth && auth.user && auth.user.id ) {
+            const newChatSocket = new WebSocket('wss://api.quilco.ir/ws/' + props.roomId);
+            console.log('newChatSocket',newChatSocket);
+            newChatSocket.onclose = function (e) {
+              console.log('The socket close unexpectadly', e);
+            };
+            const response = await apiInstance.get(`${baseUrl}/message/room/chats/${props.roomId}`);
+            setMessages(response.data);
+            console.log('messages', messages);
+            // chatSocket.current = newChatSocket;
+            // chatSocket.current.onmessage = function (e) {
+            //   console.log('onmessage',e);
+            //   const data = JSON.parse(e.data);
+            //   console.log('data',data);
+            //   updateMessages(
+            //     message => ({
+            //       id: messageNumber,
+            //       message: message,
+            //       sender: data.username,
+            //       sender_type: data.sender_type,
+            //     }),
+            //     data.message
+            //   );
+            // };
+          }
+      } catch (error) {
+        console.log('error',error);
+      }
+    }
     
 
     
     
     
-    console.log('props.contact_username',props.contact_id);
+    // console.log('props.contact_username',props.contact_id);
     // console.log('converstaion.js');
     useEffect(() => {
-      console.log('useEffect');
+      // console.log('useEffect');
       addUserToRoom(auth.user.id,props.roomId);
       addUserToRoom(props.contact_id,props.roomId);
+      connecttionwss();
     },[]);
   
   
