@@ -38,7 +38,11 @@ const defaultFilters = {
   startDate: '',
   endDate: '',
 };
-const EventFilters = () => {
+const EventFilters = ({ setEventData }) => {
+  const filterKeys = {
+    q: 'search',
+  };
+  const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -52,8 +56,13 @@ const EventFilters = () => {
   useEffect(() => {
     let d = searchParams;
     console.log(d);
-    if (filters.is_free) d.set('is_free', filters.is_free);
-    else d.delete('is_free');
+    if (filters.is_free) {
+      if (filters.is_free === true) {
+        d.set('is_free', 1);
+      } else {
+        d.set('is_free', 0);
+      }
+    } else d.delete('is_free');
     // if (filters.tags) d.set('tags', filters.tags);
     // else d.delete('tags');
     if (filters.type) d.set('event_type', filters.type);
@@ -81,8 +90,10 @@ const EventFilters = () => {
     setSearchParams(d);
   }, [filters]);
 
-
   const updateResult = async e => {
+    if (filters.is_free === true) {
+      console.log('finding all is free');
+    }
     console.log('in update result');
     if (e) e.preventDefault();
     let query = '';
@@ -97,12 +108,14 @@ const EventFilters = () => {
     setLoading(true);
     await apiInstance.get(`events/?${query}`).then(res => {
       console.log('this is the res: ', res.data['results']);
-      setData(res.data['results']);
+      setEventData(res.data['results']);
       setLoading(false);
     });
   };
 
   useEffect(() => {
+    console.log('updating the info');
+    console.log('the filters are: ', filters);
     updateResult();
   }, [filters]);
 
@@ -127,8 +140,8 @@ const EventFilters = () => {
               onChange={e => setFilters({ ...filters, type: e.target.value })}
               placeholder="نوع رویداد"
             >
-              {eventTypes.map(type => (
-                <MenuItem value={type.value}>{type.label}</MenuItem>
+              {eventTypes.map((type, idx) => (
+                <MenuItem value={idx}>{type.label}</MenuItem>
               ))}
             </Select>
           </div>
@@ -140,8 +153,8 @@ const EventFilters = () => {
               onChange={e => setFilters({ ...filters, category: e.target.value })}
               placeholder="دسته بندی رویداد"
             >
-              {eventCategories.map(category => (
-                <MenuItem value={category.value}>{category.label}</MenuItem>
+              {eventCategories.map((category, idx) => (
+                <MenuItem value={idx}>{category.label}</MenuItem>
               ))}
             </Select>
           </div>
@@ -150,6 +163,7 @@ const EventFilters = () => {
             <Autocomplete
               className="event-filters__filters-row-item-autocomplete"
               multiple
+              onChange={(e, value) => setFilters({ ...filters, tags: value })}
               id="tags-filled"
               options={[]}
               defaultValue={[]}
@@ -273,17 +287,11 @@ function EventsList() {
   const updateResult = async e => {
     if (e) e.preventDefault();
     let query = '';
-    for (const [key, value] of searchParams) {
-      console.log('filterKeys[key]', filterKeys[key]);
-      console.log('the key is: ', key);
-      query += `${filterKeys[key] ?? key}=${value}&`;
-    }
+    for (const [key, value] of searchParams) query += `${filterKeys[key] ?? key}=${value}&`;
 
-    console.log('this is the query: ', query);
-    console.log(`requesting to: events/?${query}`)
     setLoading(true);
     await apiInstance.get(`events/?${query}`).then(res => {
-      console.log("the result after sending the query is: ", res.data)
+      console.log('the result after sending the query is: ', res.data);
       setData(res.data['results']);
       setLoading(false);
     });
@@ -376,7 +384,7 @@ function EventsList() {
                       value={eventProvince}
                       isOptionEqualToValue={handleIsOptionEqualToValue}
                       onChange={(event, newValue) => {
-                        console.log("setting the eventProvince to:", newValue);
+                        console.log('setting the eventProvince to:', newValue);
                         setEventProvince(newValue);
                         setCity(null);
                       }}
@@ -430,7 +438,7 @@ function EventsList() {
               </form>
             </div>
             <div className="search-events__events-list">
-              {!isMobile && <EventFilters />}
+              {!isMobile && <EventFilters setEventData={setData} />}
               <div className="search-events__events-list__events">
                 {data.map((event, index) => (
                   <EventCard key={index} event={event} />
