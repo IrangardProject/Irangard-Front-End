@@ -4,9 +4,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Autocomplete, Checkbox, MenuItem, Select, Switch, Chip, TextField } from '@mui/material';
 import { MdLocationPin, MdOutlineLocationOn, MdSearch } from 'react-icons/md';
 import { IconContext } from 'react-icons';
-import Layout from 'src/components/Layout';
 import Loader from 'src/components/Loader';
-import Button from 'src/components/Button';
 import apiInstance from '../../../config/axios';
 import EventCard from '../EventCard';
 import useAuth from '../../../context/AuthContext';
@@ -18,7 +16,6 @@ import IranStates from 'src/assets/data/IranStates.json';
 import IranStateKeys from 'src/assets/data/IranStateKeys.json';
 import { useMobile } from 'src/utils/hooks';
 import loader from 'src/assets/images/loader.gif';
-import { useForm, FormProvider } from 'react-hook-form';
 import DatePicker from 'react-multi-date-picker';
 import Input from 'src/components/Input';
 import persian from 'react-date-object/calendars/persian';
@@ -27,6 +24,8 @@ import Navbar from 'src/components/Navbar';
 import Footer from 'src/components/Footer';
 import { convertNumberToPersian, isPersianNumber, convertJalaliDateToGeorgian } from 'src/utils/formatters';
 import { eventTypes, eventCategories } from 'src/components/Events/AddEvent/info';
+import { TbZoomCancel } from 'react-icons/tb';
+
 
 const defaultFilters = {
   is_free: false,
@@ -56,6 +55,9 @@ const EventFilters = ({ setEventData }) => {
   useEffect(() => {
     let d = searchParams;
     console.log(d);
+    console.log('the start date is: ', filters.startDate);
+    // if (filters.q) d.set('title__contains', filters.q);
+    // else d.delete('title__contains');
     if (filters.is_free) {
       if (filters.is_free === true) {
         d.set('is_free', 1);
@@ -63,15 +65,15 @@ const EventFilters = ({ setEventData }) => {
         d.set('is_free', 0);
       }
     } else d.delete('is_free');
-    // if (filters.tags) d.set('tags', filters.tags);
-    // else d.delete('tags');
+    if (filters.tags) d.set('tag', filters.tags);
+    else d.delete('tag');
     if (filters.type) d.set('event_type', filters.type);
     else d.delete('event_type');
     if (filters.category) d.set('event_category', filters.category);
     else d.delete('event_category');
-    if (filters.startDate) d.set('start_date', filters.startDate);
+    if (filters.startDate) d.set('start_date__gte', convertJalaliDateToGeorgian(filters.startDate));
     else d.delete('start_date');
-    if (filters.endDate) d.set('end_date', filters.endDate);
+    if (filters.endDate) d.set('end_date__lte', convertJalaliDateToGeorgian(filters.endDate));
     else d.delete('end_date');
 
     // if (eventProvince?.label) {
@@ -141,7 +143,7 @@ const EventFilters = ({ setEventData }) => {
               placeholder="نوع رویداد"
             >
               {eventTypes.map((type, idx) => (
-                <MenuItem value={idx}>{type.label}</MenuItem>
+                <MenuItem value={idx+1}>{type.label}</MenuItem>
               ))}
             </Select>
           </div>
@@ -154,7 +156,7 @@ const EventFilters = ({ setEventData }) => {
               placeholder="دسته بندی رویداد"
             >
               {eventCategories.map((category, idx) => (
-                <MenuItem value={idx}>{category.label}</MenuItem>
+                <MenuItem value={idx+1}>{category.label}</MenuItem>
               ))}
             </Select>
           </div>
@@ -273,11 +275,11 @@ function EventsList() {
   const [eventEndDate, setEventEndDate] = useState(searchParams.get('end_date') || '');
   const [eventTags, setEventTags] = useState(searchParams.get('tags') || '');
   const [cities, setCities] = useState([]);
-  const [q, setQ] = useState(searchParams.get('q') || '');
+  const [q, setQ] = useState(searchParams.get('title__contains') || '');
   const isMobile = useMobile();
   const [eventsData, setEventsData] = useState([]);
   const filterKeys = {
-    q: 'search',
+    q: 'title__contains',
   };
   useEffect(async () => {
     if (eventProvince) console.log('state', IranStateKeys[eventProvince]);
@@ -300,6 +302,8 @@ function EventsList() {
   useEffect(() => {
     let d = searchParams;
     console.log(d);
+    if (q) d.set('title__contains', q);
+    else if (q === '') d.delete('title__contains');
     if (eventProvince?.label) {
       d.set('province', eventProvince.label);
       if (eventCity?.label) d.set('city', eventCity.label);
@@ -314,6 +318,7 @@ function EventsList() {
     }
     setSearchParams(d);
   }, [eventProvince, eventCity]);
+  
   const greenTheme = createTheme({
     palette: {
       primary: {
@@ -369,7 +374,7 @@ function EventsList() {
                         let v = e.target.value;
                         setQ(v);
                         let d = searchParams;
-                        d.set('q', v);
+                        d.set('title__contains', v);
                         setSearchParams(d);
                       }}
                       placeholder="جست‌و‌جو برای رویداد..."
@@ -440,9 +445,19 @@ function EventsList() {
             <div className="search-events__events-list">
               {!isMobile && <EventFilters setEventData={setData} />}
               <div className="search-events__events-list__events">
-                {data.map((event, index) => (
+                {/* {data.map((event, index) => (
                   <EventCard key={index} event={event} />
-                ))}
+                ))} */}
+                {data.length > 0 ? (
+                  data.map((event, index) => <EventCard key={index} event={event} />)
+                ) : (
+                  <div className="no-place-wrapper">
+                    <div className="no-places">
+                      <TbZoomCancel style={{ fontSize: '48px' }} />
+                      <h3 className="no-places__title">رویدادی یافت نشد.</h3>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <Footer />
