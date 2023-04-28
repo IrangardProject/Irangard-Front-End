@@ -318,7 +318,7 @@ function EventsList() {
     }
     setSearchParams(d);
   }, [eventProvince, eventCity]);
-  
+
   const greenTheme = createTheme({
     palette: {
       primary: {
@@ -451,10 +451,10 @@ function EventsList() {
                 {data.length > 0 ? (
                   data.map((event, index) => <EventCard key={index} event={event} />)
                 ) : (
-                  <div className="no-place-wrapper">
-                    <div className="no-places">
+                  <div className="no-event-wrapper">
+                    <div className="no-events">
                       <TbZoomCancel style={{ fontSize: '48px' }} />
-                      <h3 className="no-places__title">رویدادی یافت نشد.</h3>
+                      <h3 className="no-events__title">رویدادی یافت نشد.</h3>
                     </div>
                   </div>
                 )}
