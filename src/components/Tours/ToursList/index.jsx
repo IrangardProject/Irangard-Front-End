@@ -123,10 +123,6 @@ const TourFilters = ({ setTourData }) => {
       <div className="search-tours__tour-filters__filters">
         <div className="search-tours__tour-filters__filters-row">
           <div className="search-tours__tour-filters__filters-row__item">
-            {/* <button onClick={cancelFiltersHandle} className="cancel-filters-btn">
-              <AiOutlineDelete fontSize={17} />
-              <p>حذف فیلترها</p>
-            </button> */}
             <Button className="cancel-filters-btn" variant="text" onClick={cancelFiltersHandle}>
               <AiOutlineDelete style={{ color: 'black', fontSize: '17px', minWidth: '20px' }} />
               <p className="cancel-filters-btn__text">حذف فیلتر ها</p>

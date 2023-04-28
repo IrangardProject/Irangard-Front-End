@@ -86,15 +86,41 @@
       flex-direction: column;
       gap: 5px;
     }
+    .cancel-filters-btn {
+      display: flex;
+      flex-direction: row;
+      background-color: white;
+      padding: 0;
+      .cancel-filters-btn__text {
+        // margin-right: 10px;
+        color: black;
+        font-size: 13px;
+        margin: auto 10px;
+      }
+      // border: none;
+      &:hover {
+        p {
+          color: red;
+        }
+        svg {
+          fill: red;
+        }
+      }
+    }
     border-radius: 10px;
     background-color: $c-white;
-    padding: 50px;
+    padding: 20px;
     width: 25%;
     max-height: 650px;
     &__filters-row {
       display: flex;
       flex-direction: column;
       gap: 20px;
+
+      /* changing the tag delete icon styles */
+      .css-915qdx-MuiButtonBase-root-MuiChip-root .MuiChip-deleteIcon {
+        margin-left: 6px !important;
+      }
     }
     .date-input {
       display: none;
@@ -186,3 +212,7 @@
     text-align: center;
   }
 }
+
+// .css-915qdx-MuiButtonBase-root-MuiChip-root .MuiChip-deleteIcon {
+//   margin-left: 6px !important;
+// }

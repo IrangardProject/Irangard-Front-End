@@ -25,7 +25,8 @@ import Footer from 'src/components/Footer';
 import { convertNumberToPersian, isPersianNumber, convertJalaliDateToGeorgian } from 'src/utils/formatters';
 import { eventTypes, eventCategories } from 'src/components/Events/AddEvent/info';
 import { TbZoomCancel } from 'react-icons/tb';
-
+import Button from 'src/components/Button';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 const defaultFilters = {
   is_free: false,
@@ -51,6 +52,7 @@ const EventFilters = ({ setEventData }) => {
   const [endDateBlured, setEndDateBlured] = useState(false);
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
+  const eventTagsRef = useRef(null);
 
   useEffect(() => {
     let d = searchParams;
@@ -121,10 +123,31 @@ const EventFilters = ({ setEventData }) => {
     updateResult();
   }, [filters]);
 
+  const cancelFiltersHandle = () => {
+    setFilters(defaultFilters);
+    searchParams.delete('title__contains');
+    searchParams.delete('event_type');
+    searchParams.delete('event_category');
+    searchParams.delete('is_free');
+    searchParams.delete('tag');
+    searchParams.delete('province');
+    searchParams.delete('city');
+    searchParams.delete('start_date__gte');
+    searchParams.delete('end_date__lte');
+    setSearchParams(searchParams);
+    eventTagsRef.current.setOptions([]);
+  };
+
   return (
     <div className="search-events__event-filters">
       <div className="search-events__event-filters__filters">
         <div className="search-events__event-filters__filters-row">
+          <div className="search-tours__tour-filters__filters-row__item">
+            <Button className="cancel-filters-btn" variant="text" onClick={cancelFiltersHandle}>
+              <AiOutlineDelete style={{ color: 'black', fontSize: '17px', minWidth: '20px' }} />
+              <p className="cancel-filters-btn__text">حذف فیلتر ها</p>
+            </Button>
+          </div>
           <div className="event-filters__filters-row__item">
             <label className="search-events__search-events__event-filters__filters-row__item__label">رایگان</label>
             <Switch
@@ -143,7 +166,7 @@ const EventFilters = ({ setEventData }) => {
               placeholder="نوع رویداد"
             >
               {eventTypes.map((type, idx) => (
-                <MenuItem value={idx+1}>{type.label}</MenuItem>
+                <MenuItem value={idx + 1}>{type.label}</MenuItem>
               ))}
             </Select>
           </div>
@@ -156,14 +179,15 @@ const EventFilters = ({ setEventData }) => {
               placeholder="دسته بندی رویداد"
             >
               {eventCategories.map((category, idx) => (
-                <MenuItem value={idx+1}>{category.label}</MenuItem>
+                <MenuItem value={idx + 1}>{category.label}</MenuItem>
               ))}
             </Select>
           </div>
           <div className="search-events__event-filters__filters-row__item type-category">
             <label className="search-events__event-filters__filters-row__item-label">برچسب‌ها</label>
             <Autocomplete
-              className="event-filters__filters-row-item-autocomplete"
+              className="event-filters__filters-row__item-autocomplete"
+              ref={eventTagsRef}
               multiple
               onChange={(e, value) => setFilters({ ...filters, tags: value })}
               id="tags-filled"
@@ -171,7 +195,9 @@ const EventFilters = ({ setEventData }) => {
               defaultValue={[]}
               freeSolo
               renderTags={(value, getTagProps) =>
-                value.map((option, index) => <Chip variant="outlined" label={option} {...getTagProps({ index })} />)
+                value.map((option, index) => (
+                  <Chip className="tag-chip" variant="outlined" label={option} {...getTagProps({ index })} />
+                ))
               }
               renderInput={params => (
                 <TextField
@@ -191,7 +217,7 @@ const EventFilters = ({ setEventData }) => {
               onBlur={() => setStartDateBlured(true)}
               onFocus={() => startDatePickerRef.current.openCalendar()}
               onClick={() => startDatePickerRef.current.openCalendar()}
-              placeholder={isStartDateSelected ? 'انتخاب تاریخ شروع' : 'انتخاب تاریخ شروع'}
+              placeholder={isStartDateSelected ? 'انتخاب رویداد از تاریخ ' : 'انتخاب رویداد از تاریخ '}
               type="text"
               id="start-date"
               value={filters.startDate ? convertNumberToPersian(filters.startDate.toString()) : ''}
@@ -220,7 +246,7 @@ const EventFilters = ({ setEventData }) => {
                 setShowDatePicker(true);
                 endDatePickerRef.current.openCalendar();
               }}
-              placeholder="انتخاب تاریخ پایان"
+              placeholder="انتخاب رویداد تا تاریخ"
               type="text"
               id="end-date"
               value={filters.endDate ? convertNumberToPersian(filters.endDate.toString()) : ''}

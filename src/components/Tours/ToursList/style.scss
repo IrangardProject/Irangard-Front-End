@@ -108,12 +108,10 @@
       flex-direction: row;
       background-color: white;
       .cancel-filters-btn__text {
-        // margin-right: 10px;
         color: black;
         font-size: 13px;
         margin: auto 10px;
       }
-      // border: none;
       &:hover {
         p {
           color: red;
