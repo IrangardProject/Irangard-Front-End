@@ -137,7 +137,7 @@ const TourFilters = ({ setTourData }) => {
               placeholder="دسته بندی تور"
             >
               {tourCategories.map((category, idx) => (
-                <MenuItem value={idx + 1}>{category.label}</MenuItem>
+                <MenuItem value={idx}>{category.label}</MenuItem>
               ))}
             </Select>
           </div>
