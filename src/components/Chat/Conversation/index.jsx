@@ -71,7 +71,7 @@ export default function Conversation(props) {
     const connecttionwss = async() =>{
       try {
           if (auth && auth.user && auth.user.id ) {
-            const newChatSocket = new WebSocket('wss://api.quilco.ir/ws/' + props.roomId);
+            const newChatSocket = new WebSocket(`wss://api.quilco.ir/ws/${props.roomId}/`);
             console.log('newChatSocket',newChatSocket);
             newChatSocket.onclose = function (e) {
               console.log('The socket close unexpectadly', e);
@@ -79,21 +79,20 @@ export default function Conversation(props) {
             const response = await apiInstance.get(`${baseUrl}/message/room/chats/${props.roomId}`);
             setMessages(response.data);
             console.log('messages', messages);
-            // chatSocket.current = newChatSocket;
-            // chatSocket.current.onmessage = function (e) {
-            //   console.log('onmessage',e);
-            //   const data = JSON.parse(e.data);
-            //   console.log('data',data);
-            //   updateMessages(
-            //     message => ({
-            //       id: messageNumber,
-            //       message: message,
-            //       sender: data.username,
-            //       sender_type: data.sender_type,
-            //     }),
-            //     data.message
-            //   );
-            // };
+            chatSocket.current = newChatSocket;
+            chatSocket.current.onmessage = function (e) {
+              console.log('onmessage',e);
+              const data = JSON.parse(e.data);
+              console.log('data',data);
+              updateMessages(
+                message => ({
+                  room: props.roomId ,
+                  message: message,
+                  userid : auth.user.id
+                }),
+                data.message
+              );
+            };
           }
       } catch (error) {
         console.log('error',error);
@@ -111,7 +110,7 @@ export default function Conversation(props) {
       addUserToRoom(auth.user.id,props.roomId);
       addUserToRoom(props.contact_id,props.roomId);
       connecttionwss();
-    },[]);
+    },[ props.roomId,auth.user.id,props.contact_id ]);
   
   
   const handleNewUserMessage = message => {
