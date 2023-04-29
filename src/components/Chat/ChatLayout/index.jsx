@@ -7,6 +7,7 @@ import './style.scss';
 import profileAvatar from '../assets/avatar.png';
 import { baseUrl } from 'src/utils/constants';
 import apiInstance from '../../../config/axios'
+import useAuth from 'src/context/AuthContext';
 // import {defaultImg} from '../../../../public/images/img/defaultImg.jpg'
 export default function ChatLayout({
   title,
@@ -47,6 +48,8 @@ export default function ChatLayout({
   const [selectedUser, setSelectedUser] = useState(null);
   const [conversation, setConversation] = useState(false);
   const [idRoom , setIdRoom] = useState(0);
+  const [rooms,setRooms] = useState([]);
+  const auth = useAuth();
   // console.log(selectedUser);
   // console.log('idRoom',idRoom);
   
@@ -76,35 +79,36 @@ export default function ChatLayout({
     return user.username.toLowerCase().includes(searchTerm.toLowerCase());
   })
 
-  const makeRoom = async() =>{
-    console.log('make room called');
-    await apiInstance.post(`${baseUrl}/message/room`,{
-      name : " "
-    })
-    .then((res) =>{
-      console.log(res.data);
-      setIdRoom('id',res.data[0].id);
-      // setIdRoom(res.data[0].id);
-    })
-    .catch((err) => {
-      console.log('err',err);
+  const hasRoom = (rooms) =>{
+    const concatUserName = `${selectedUser.username + auth.user.username}`
+    console.log('rooms in hasRoom',concatUserName);
+    rooms.filter((room) =>{
+      if (room.name === `${concatUserName}`){
+        console.log('room');
+      }else{
+        console.log('no room');
+      }
     })
   }
-  console.log('idRoom',idRoom);
+
+  
   const handleUserClick = async (user) => {
     setSelectedUser(user);
+    // http://api.quilco.ir/message/has/room this api is for check if user has room or not 
+    
+    
     try {
       const res = await apiInstance.post(`${baseUrl}/message/room/` , {
-          name  : "test "
+        name  : `${user.username + auth.user.username}`,
       }
-    )
+      )
+      const rooms = await apiInstance.get(`${baseUrl}/message/room/`)
+      setRooms(rooms.data)
       setIdRoom(res.data.id);
       setConversation(true);
   } catch (error) {
       console.log(error);
     }
-    // makeRoom();
-    console.log('user clicked' , user.id);
   };
   const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
   
@@ -159,7 +163,7 @@ export default function ChatLayout({
             <div className=''>
               
               {users.map((user) => {
-                if(user.username === 'admin' && user.is_admin === true){
+                if(user.username === 'admin' && user.is_admin === true && user.username !== auth.user.username ){
                   return (
                     <div onClick={() => handleUserClick(user)} className='user'>
                       <img className='user_img' src={user.image !== '' ? user.image : defaultImg} alt="userIamge" />
@@ -174,12 +178,14 @@ export default function ChatLayout({
               {
                 filteredUsers.map((user) => {
                   
-                  return (
-                    <div onClick={() => handleUserClick(user)} className='user'>
-                      <img className='user_img' src={user.image !== '' ? user.image : defaultImg}  alt="userIamge" />
-                      <p>{user.username}</p>
-                    </div>
-                  )
+                  if (user.username !== auth.user.username) {
+                    return (
+                      <div onClick={() => handleUserClick(user)} className='user'>
+                        <img className='user_img' src={user.image !== '' ? user.image : defaultImg}  alt="userIamge" />
+                        <p>{user.username}</p>
+                      </div>
+                    )
+                  }
                 })
               }
             </div>
