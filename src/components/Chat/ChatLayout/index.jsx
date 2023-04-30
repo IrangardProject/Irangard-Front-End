@@ -57,19 +57,17 @@ export default function ChatLayout({
 
   const toggleShowChat= () =>{
     setShowChat(!showChat);
-    // console.log("showchat",showChat);
   };
-  console.log('users',users)
-  console.log(users);
   useEffect(() => {
     apiInstance.get(`${baseUrl}/accounts/users`)
     .then((res) =>{
       setUsers(res.data)
-      // console.log('res.data',res.data);
     })
     .catch((err) => {
       console.log(err);
     })
+    // hasRoom();
+
   },[])
 
   const handleSearchInputChange = (event) => {
@@ -79,37 +77,48 @@ export default function ChatLayout({
     return user.username.toLowerCase().includes(searchTerm.toLowerCase());
   })
 
-  const hasRoom = (rooms) =>{
-    const concatUserName = `${selectedUser.username + auth.user.username}`
-    console.log('rooms in hasRoom',concatUserName);
-    rooms.filter((room) =>{
-      if (room.name === `${concatUserName}`){
-        console.log('room');
-      }else{
-        console.log('no room');
-      }
-    })
-  }
-
   
+
+  // console.log('selectedUser',selectedUser);
   const handleUserClick = async (user) => {
     setSelectedUser(user);
-    // http://api.quilco.ir/message/has/room this api is for check if user has room or not 
-    
-    
+    await hasRoom();
     try {
-      const res = await apiInstance.post(`${baseUrl}/message/room/` , {
-        name  : `${user.username + auth.user.username}`,
-      }
-      )
-      const rooms = await apiInstance.get(`${baseUrl}/message/room/`)
-      setRooms(rooms.data)
-      setIdRoom(res.data.id);
+      // setIdRoom(res.data.id);
       setConversation(true);
   } catch (error) {
       console.log(error);
     }
   };
+  console.log('idRoom',idRoom);
+  const hasRoom = async() =>{
+    console.log('hasRoom Called');
+    if (!selectedUser) {
+    return;
+  }
+    const {data} = await apiInstance.post(`${baseUrl}/message/has/room`,{
+      user_one :  selectedUser.id,
+      user_two :auth.user.id
+    })
+    console.log('response of hasRoom',data);
+    try {
+      if (data.room_id === null) {
+       
+        await apiInstance.post(`${baseUrl}/message/room/` , {
+          name  : `${selectedUser.username + auth.user.username}`,
+        })
+
+        await apiInstance.post(`${baseUrl}/message/add/user/${selectedUser.id}/room/${idRoom}`);
+        await apiInstance.post(`${baseUrl}/message/add/user/${auth.user.id}/room/${idRoom}`);
+      }
+      else{
+        console.log('we are in if loop');
+        setIdRoom(data.room_id);
+      }
+    } catch (error) {
+      console.log('error',error);
+    }
+  }
   const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
   
   return (
@@ -142,6 +151,7 @@ export default function ChatLayout({
           // chatSocket={chatSocket}
           // messages={messages}
           contact_id = {selectedUser.id}
+          userName = {selectedUser.username}
           roomId = {idRoom}
         /> : null}
 
@@ -162,10 +172,10 @@ export default function ChatLayout({
           {searchTerm === '' ? (
             <div className=''>
               
-              {users.map((user) => {
+              {users.map((user,index) => {
                 if(user.username === 'admin' && user.is_admin === true && user.username !== auth.user.username ){
                   return (
-                    <div onClick={() => handleUserClick(user)} className='user'>
+                    <div key={index}  onClick={() => handleUserClick(user)} className='user'>
                       <img className='user_img' src={user.image !== '' ? user.image : defaultImg} alt="userIamge" />
                       <p>{user.username}</p>
                     </div>
@@ -176,11 +186,11 @@ export default function ChatLayout({
           ) : (
             <div className=''>
               {
-                filteredUsers.map((user) => {
+                filteredUsers.map((user,index) => {
                   
                   if (user.username !== auth.user.username) {
                     return (
-                      <div onClick={() => handleUserClick(user)} className='user'>
+                      <div key={index} onClick={() => handleUserClick(user)} className='user'>
                         <img className='user_img' src={user.image !== '' ? user.image : defaultImg}  alt="userIamge" />
                         <p>{user.username}</p>
                       </div>
