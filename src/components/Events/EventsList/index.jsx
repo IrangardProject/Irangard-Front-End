@@ -38,7 +38,7 @@ const defaultFilters = {
   startDate: '',
   endDate: '',
 };
-const EventFilters = ({ setEventData }) => {
+const EventFilters = ({ setEventData, setSearchedTitle, clearEventProvince, clearEventCity }) => {
   const filterKeys = {
     q: 'search',
   };
@@ -46,6 +46,7 @@ const EventFilters = ({ setEventData }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState(defaultFilters);
 
+  // const [inputTags, setInputTags] = useState([]);
   const [isStartDateSelected, setIsStartDateSelected] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [startDateBlured, setStartDateBlured] = useState(false);
@@ -135,8 +136,20 @@ const EventFilters = ({ setEventData }) => {
     searchParams.delete('start_date__gte');
     searchParams.delete('end_date__lte');
     setSearchParams(searchParams);
-    eventTagsRef.current.setOptions([]);
+    setSearchedTitle('');
+    clearEventProvince('');
+    clearEventCity('');
+    // setInputTags([]);
+    updateResult();
   };
+
+  // const removeTagsHandler = (tag) => {
+  //   setInputTags(inputTags.filter((t) => t !== tag));
+  // };
+
+  // const clearTagsHandler = () => {
+  //   setInputTags([]);
+  // };
 
   return (
     <div className="search-events__event-filters">
@@ -163,7 +176,7 @@ const EventFilters = ({ setEventData }) => {
               className="event-filters__filters-row-item-select"
               value={filters.type}
               // defaultValue={0}
-              onChange={e => setFilters({ ...filters, type: e.target.value  })}
+              onChange={e => setFilters({ ...filters, type: e.target.value })}
               placeholder="نوع رویداد"
             >
               {eventTypes.map((type, idx) => (
@@ -188,16 +201,32 @@ const EventFilters = ({ setEventData }) => {
             <label className="search-events__event-filters__filters-row__item-label">برچسب‌ها</label>
             <Autocomplete
               className="event-filters__filters-row__item-autocomplete"
-              ref={eventTagsRef}
+              // ref={eventTagsRef}
+              // value={inputTags}
               multiple
-              onChange={(e, value) => setFilters({ ...filters, tags: value })}
+              onChange={(e, value) => {
+                // setInputTags([...inputTags, value]);
+                setFilters({ ...filters, tags: value });
+              }}
+              // onRemove={(event, removedTag) => {
+              //   removeTagHandler(removedTag);
+              // }}
+              // clearOnEscape
               id="tags-filled"
               options={[]}
               defaultValue={[]}
               freeSolo
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
-                  <Chip className="tag-chip" variant="outlined" label={option} {...getTagProps({ index })} />
+                  <Chip
+                    className="tag-chip"
+                    variant="outlined"
+                    label={option}
+                    // onDelete={() => {
+                    //   handleRemoveTag(option);
+                    // }}
+                    {...getTagProps({ index })}
+                  />
                 ))
               }
               renderInput={params => (
@@ -470,7 +499,14 @@ function EventsList() {
               </form>
             </div>
             <div className="search-events__events-list">
-              {!isMobile && <EventFilters setEventData={setData} />}
+              {!isMobile && (
+                <EventFilters
+                  setEventData={setData}
+                  setSearchedTitle={setQ}
+                  clearEventProvince={setEventProvince}
+                  clearEventCity={setEventCity}
+                />
+              )}
               <div className="search-events__events-list__events">
                 {/* {data.map((event, index) => (
                   <EventCard key={index} event={event} />
