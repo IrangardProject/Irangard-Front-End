@@ -69,9 +69,9 @@ const EventFilters = ({ setEventData }) => {
     } else d.delete('is_free');
     if (filters.tags) d.set('tag', filters.tags);
     else d.delete('tag');
-    if (filters.type) d.set('event_type', filters.type);
+    if (filters.type) d.set('event_type', filters.type - 1);
     else d.delete('event_type');
-    if (filters.category) d.set('event_category', filters.category);
+    if (filters.category) d.set('event_category', filters.category - 1);
     else d.delete('event_category');
     if (filters.startDate) d.set('start_date__gte', convertJalaliDateToGeorgian(filters.startDate));
     else d.delete('start_date');
@@ -162,7 +162,8 @@ const EventFilters = ({ setEventData }) => {
             <Select
               className="event-filters__filters-row-item-select"
               value={filters.type}
-              onChange={e => setFilters({ ...filters, type: e.target.value })}
+              // defaultValue={0}
+              onChange={e => setFilters({ ...filters, type: e.target.value  })}
               placeholder="نوع رویداد"
             >
               {eventTypes.map((type, idx) => (
