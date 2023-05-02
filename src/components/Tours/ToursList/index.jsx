@@ -48,7 +48,7 @@ const tourCategories = [
   { label: 'سایر', value: 'other' },
 ];
 
-const TourFilters = ({ setTourData }) => {
+const TourFilters = ({ setTourData, setSearchedTitle }) => {
   const filterKeys = {
     q: 'search',
   };
@@ -69,7 +69,7 @@ const TourFilters = ({ setTourData }) => {
     console.log('the start date is: ', filters.startDate);
     // if (filters.tags) d.set('tag', filters.tags);
     // else d.delete('tag');
-    if (filters.type) d.set('tour_type', filters.type);
+    if (filters.type) d.set('tour_type', filters.type - 1);
     else d.delete('tour_type');
     if (filters.startDate) d.set('start_date__gte', convertJalaliDateToGeorgian(filters.startDate));
     else d.delete('start_date');
@@ -116,6 +116,8 @@ const TourFilters = ({ setTourData }) => {
     searchParams.delete('end_date__lte');
     searchParams.delete('title__contains');
     setSearchParams(searchParams);
+    setSearchedTitle('');
+    updateResult();
   };
 
   return (
@@ -137,7 +139,7 @@ const TourFilters = ({ setTourData }) => {
               placeholder="دسته بندی تور"
             >
               {tourCategories.map((category, idx) => (
-                <MenuItem value={idx}>{category.label}</MenuItem>
+                <MenuItem value={idx + 1}>{category.label}</MenuItem>
               ))}
             </Select>
           </div>
@@ -373,7 +375,7 @@ function ToursList() {
               </form>
             </div>
             <div className="search-tours__tours-list">
-              {!isMobile && <TourFilters setTourData={setData} />}
+              {!isMobile && <TourFilters setTourData={setData} setSearchedTitle={setQ} />}
               <div className="search-tours__tours-list__tours">
                 {data.length > 0 ? (
                   data.map((tour, index) => <TourCard key={index} tour={tour} />)
