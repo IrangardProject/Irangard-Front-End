@@ -21,7 +21,7 @@ export default function Messages(props) {
     return type == 'CLIENT';
   };
 
-  console.log(props.messages);
+  console.log('props in messages is :',props.message);
 
   return (
     <div id="messages" className="rcw-messages-container" ref={props.messageRef} dir="ltr">

@@ -8,19 +8,22 @@ import useAuth from 'src/context/AuthContext';
 import { baseUrl } from '../../../utils/constants';
 import './style.scss';
 import apiInstance from '../../../config/axios';
+import toast from 'react-hot-toast';
 
 export default function Conversation(props) {
   const [messageNumber, setMessageNumber] = useState(0);
   // const [messages, setMessages] = useState(props.messages);
   const [messages, setMessages] = useState([]);
+  console.log('message ',messages);
   const updateMessages = (sendMessage, message) => {
     setMessageNumber(messageNumber + 1);
     setMessages([...messages, sendMessage(message)]);
   };
   const chatSocket = useRef(null);
   const auth = useAuth()
-  console.log(props.roomId);
-  console.log(messages);
+  // console.log(props.roomId);
+  // console.log(props);
+  console.log("MessageNumber is :",messageNumber);
   // object room make 
   // get id of romm 
   // const fetchMessages = async () => {
@@ -54,12 +57,11 @@ export default function Conversation(props) {
   //   // auth, chatSocket, props.contact_username
   // };
   
+    console.log('props.roomId : ',props.roomId , 'props.hasRoomId : ', props.hasRoomId);
     
-    // fetchMessages();
-    // const get 
-
     const addUserToRoom = async(userId,roomId) =>{
-      console.log('addUserToRoom',userId,roomId);
+      // checkHasRoom()
+      // console.log('addUserToRoom',userId,roomId);
       try {
         const response = await apiInstance.post(`${baseUrl}/message/add/user/${userId}/room/${roomId}`);
         // console.log('response',response);
@@ -67,26 +69,32 @@ export default function Conversation(props) {
         console.log('error',error);
       }
     }
+    // /message/has/room
     // wss://api/quilco.ir/ws/{room_id}
-    const connecttionwss = async() =>{
+    // console.log('props.roomId',props.roomId);
+    const connecttionwss = async(room_ID) =>{
       try {
           if (auth && auth.user && auth.user.id ) {
-            const newChatSocket = new WebSocket(`wss://api.quilco.ir/ws/${props.roomId}/`);
+            const newChatSocket = new WebSocket(`wss://api.quilco.ir/ws/${room_ID}/`);
             console.log('newChatSocket',newChatSocket);
             newChatSocket.onclose = function (e) {
-              console.log('The socket close unexpectadly', e);
+              toast.error( 'ارتباط با سرور قطع شد' )
+              console.log(e);
             };
-            const response = await apiInstance.get(`${baseUrl}/message/room/chats/${props.roomId}`);
+            const response = await apiInstance.get(`${baseUrl}/message/room/chats/${room_ID}`);
+            // console.log('responseget',response);
             setMessages(response.data);
-            console.log('messages', messages);
+            // console.log('messages', messages);
             chatSocket.current = newChatSocket;
+            // chatSocket.current.on
+            console.log('chatSocket.current : ',chatSocket.current);
             chatSocket.current.onmessage = function (e) {
               console.log('onmessage',e);
               const data = JSON.parse(e.data);
-              console.log('data',data);
+              console.log('data message',data.message);
               updateMessages(
                 message => ({
-                  room: props.roomId ,
+                  room: room_ID ,
                   message: message,
                   userid : auth.user.id
                 }),
@@ -107,9 +115,20 @@ export default function Conversation(props) {
     // console.log('converstaion.js');
     useEffect(() => {
       // console.log('useEffect');
-      addUserToRoom(auth.user.id,props.roomId);
-      addUserToRoom(props.contact_id,props.roomId);
-      connecttionwss();
+      
+      // addUserToRoom(auth.user.id,props.roomId);
+      // addUserToRoom(props.contact_id,props.roomId);
+      // connecttionwss();
+      if (props.roomId === 0){
+        // console.log('in if : props.hasRoomId',props.hasRoomId);
+        connecttionwss(props.hasRoomId);
+      }
+      else{
+        // console.log('in else : props.roomId',props.roomId);
+        connecttionwss(props.roomId);
+        addUserToRoom(auth.user.id,props.roomId);
+        addUserToRoom(props.contact_id,props.roomId);
+      }
     },[ props.roomId,auth.user.id,props.contact_id ]);
   
   
@@ -118,9 +137,9 @@ export default function Conversation(props) {
     chatSocket.current.send(
       JSON.stringify({
         message: message,
-        username: auth.user.username,
-        room_name: auth.user.username,
-        sender_type: 'CLIENT',
+        userid : auth.user.id,
+        room: props.roomId,
+        // sender_type: 'CLIENT',
       })
     );
     // console.log("sent");
@@ -139,6 +158,7 @@ export default function Conversation(props) {
         profileAvatar={props.profileAvatar}
         profileClientAvatar={props.profileClientAvatar}
         showTimeStamp={props.showTimeStamp}
+        sender_type={'CLIENT'}
       />
 
       <Sender

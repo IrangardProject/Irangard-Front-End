@@ -25,11 +25,12 @@ function Sender(props, ref) {
 
 
   const sendMessage = (message) =>{
-      return {"sender":"emad","message":message,"showAvatar":false, sender_type:"CLIENT"}
+      return {"message":message,"showAvatar":false, sender_type:"CLIENT"}
   }
 
   const handleSendMessage = () => {
     const el = inputRef.current;
+    console.log(el);
     if(el.innerHTML) {
       props.updateMessages(sendMessage,el.innerText);
       props.handleNewUserMessage(el.innerText)

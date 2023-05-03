@@ -4,7 +4,7 @@
 .rcw-conversation-container {
 
   .rcw-header {
-    background-color: $turqois-1;
+    background-color: $blue;
     border-radius: 10px 10px 0 0;
     color: $white;
     display: flex;
@@ -21,6 +21,12 @@
 
   .rcw-close-button {
     display: none;
+  }
+  .header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
   }
 
   .avatar {

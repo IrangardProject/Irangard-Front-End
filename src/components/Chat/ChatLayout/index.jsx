@@ -48,7 +48,8 @@ export default function ChatLayout({
   const [selectedUser, setSelectedUser] = useState(null);
   const [conversation, setConversation] = useState(false);
   const [idRoom , setIdRoom] = useState(0);
-  const [rooms,setRooms] = useState([]);
+  const [hasRoomId,setHasRoomId] = useState(0)
+  // const [rooms,setRooms] = useState([]);
   const auth = useAuth();
   // console.log(selectedUser);
   // console.log('idRoom',idRoom);
@@ -57,17 +58,19 @@ export default function ChatLayout({
 
   const toggleShowChat= () =>{
     setShowChat(!showChat);
+    // console.log("showchat",showChat);
   };
+  console.log('users',users)
+  console.log(users);
   useEffect(() => {
     apiInstance.get(`${baseUrl}/accounts/users`)
     .then((res) =>{
       setUsers(res.data)
+      // console.log('res.data',res.data);
     })
     .catch((err) => {
       console.log(err);
     })
-    // hasRoom();
-
   },[])
 
   const handleSearchInputChange = (event) => {
@@ -77,48 +80,53 @@ export default function ChatLayout({
     return user.username.toLowerCase().includes(searchTerm.toLowerCase());
   })
 
-  
+  // const hasRoom = (rooms) =>{
+  //   const concatUserName = `${selectedUser.username + auth.user.username}`
+  //   console.log('rooms in hasRoom',concatUserName);
+  //   rooms.filter((room) =>{
+  //     if (room.name === `${concatUserName}`){
+  //       console.log('room');
+  //     }else{
+  //       console.log('no room');
+  //     }
+  //   })
+  // }
 
-  // console.log('selectedUser',selectedUser);
+  
   const handleUserClick = async (user) => {
     setSelectedUser(user);
-    await hasRoom();
+     
+    
+    // /message/has/room{
+
+    // }
+    const {data} =await apiInstance.post(`${baseUrl}/message/has/room`,{
+      user_one: user.id ,
+      user_two: auth.user.id
+    })
+    console.log(data);
+    if (data.room_id ==='null') {
+      const res = await apiInstance.post(`${baseUrl}/message/room/` , {
+        name  : `${user.username + auth.user.username}`,
+      }
+      )
+      setIdRoom(res.data.id);
+    }else{
+      console.log('else' , data.room_id);
+      setHasRoomId(data.room_id)
+      // setIdRoom(data.room_id)
+    }
+    // console.log(data);
+    setConversation(true);
     try {
-      // setIdRoom(res.data.id);
-      setConversation(true);
+      
+      // const rooms = await apiInstance.get(`${baseUrl}/message/room/`)
+      // setRooms(rooms.data)
+      
   } catch (error) {
       console.log(error);
     }
   };
-  console.log('idRoom',idRoom);
-  const hasRoom = async() =>{
-    console.log('hasRoom Called');
-    if (!selectedUser) {
-    return;
-  }
-    const {data} = await apiInstance.post(`${baseUrl}/message/has/room`,{
-      user_one :  selectedUser.id,
-      user_two :auth.user.id
-    })
-    console.log('response of hasRoom',data);
-    try {
-      if (data.room_id === null) {
-       
-        await apiInstance.post(`${baseUrl}/message/room/` , {
-          name  : `${selectedUser.username + auth.user.username}`,
-        })
-
-        await apiInstance.post(`${baseUrl}/message/add/user/${selectedUser.id}/room/${idRoom}`);
-        await apiInstance.post(`${baseUrl}/message/add/user/${auth.user.id}/room/${idRoom}`);
-      }
-      else{
-        console.log('we are in if loop');
-        setIdRoom(data.room_id);
-      }
-    } catch (error) {
-      console.log('error',error);
-    }
-  }
   const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
   
   return (
@@ -151,8 +159,8 @@ export default function ChatLayout({
           // chatSocket={chatSocket}
           // messages={messages}
           contact_id = {selectedUser.id}
-          userName = {selectedUser.username}
           roomId = {idRoom}
+          hasRoomId = {hasRoomId}
         /> : null}
 
           
@@ -172,10 +180,10 @@ export default function ChatLayout({
           {searchTerm === '' ? (
             <div className=''>
               
-              {users.map((user,index) => {
+              {users.map((user) => {
                 if(user.username === 'admin' && user.is_admin === true && user.username !== auth.user.username ){
                   return (
-                    <div key={index}  onClick={() => handleUserClick(user)} className='user'>
+                    <div onClick={() => handleUserClick(user)} className='user'>
                       <img className='user_img' src={user.image !== '' ? user.image : defaultImg} alt="userIamge" />
                       <p>{user.username}</p>
                     </div>
@@ -186,11 +194,11 @@ export default function ChatLayout({
           ) : (
             <div className=''>
               {
-                filteredUsers.map((user,index) => {
+                filteredUsers.map((user) => {
                   
                   if (user.username !== auth.user.username) {
                     return (
-                      <div key={index} onClick={() => handleUserClick(user)} className='user'>
+                      <div onClick={() => handleUserClick(user)} className='user'>
                         <img className='user_img' src={user.image !== '' ? user.image : defaultImg}  alt="userIamge" />
                         <p>{user.username}</p>
                       </div>
