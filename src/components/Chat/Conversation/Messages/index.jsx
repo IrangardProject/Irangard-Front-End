@@ -17,15 +17,26 @@ export default function Messages(props) {
   const auth = useAuth();
 
   const isClient = type => {
-    console.log('type', type);
-    return type == 'CLIENT';
+    // console.log('type', type);
+    // return type == 'CLIENT';
+    // auth.user is sender and type is client then it is client and the recieve is server please give the correct
+    if(auth.user){
+      return type == 'CLIENT'
+    }else{
+      return type == 'SERVER'
+    }
   };
 
-  console.log('props in messages is :',props.message);
+  console.log('props in messages is :',props);
+  // console.log('isClient' , isC)
+  // log output of isclient function
+
+
 
   return (
     <div id="messages" className="rcw-messages-container" ref={props.messageRef} dir="ltr">
       {props.messages?.map((message, index) => (
+        console.log(message.sender_type,message.sender),
         <div
           id={`${isClient(message.sender_type) ? 'rcw-message-client-id' : 'rcw-message-server-id'}`}
           className={`rcw-message ${isClient(message.sender_type) ? 'rcw-message-client' : 'rcw-message-server'}`}

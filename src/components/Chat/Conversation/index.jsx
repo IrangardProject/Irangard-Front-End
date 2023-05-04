@@ -23,7 +23,7 @@ export default function Conversation(props) {
   const auth = useAuth()
   // console.log(props.roomId);
   // console.log(props);
-  console.log("MessageNumber is :",messageNumber);
+  // console.log("MessageNumber is :",messageNumber);
   // object room make 
   // get id of romm 
   // const fetchMessages = async () => {
@@ -57,7 +57,7 @@ export default function Conversation(props) {
   //   // auth, chatSocket, props.contact_username
   // };
   
-    console.log('props.roomId : ',props.roomId , 'props.hasRoomId : ', props.hasRoomId);
+    // console.log('props.roomId : ',props.roomId , 'props.hasRoomId : ', props.hasRoomId);
     
     const addUserToRoom = async(userId,roomId) =>{
       // checkHasRoom()
@@ -96,7 +96,8 @@ export default function Conversation(props) {
                 message => ({
                   room: room_ID ,
                   message: message,
-                  userid : auth.user.id
+                  userid : auth.user.id,
+                  sender_type: 'CLIENT',
                 }),
                 data.message
               );
@@ -134,15 +135,25 @@ export default function Conversation(props) {
   
   const handleNewUserMessage = message => {
     console.log('sent',message,chatSocket.current);
+    console.log('chatSocket.current before : ',chatSocket.current);
+    let sendId = 0;
+    if (props.roomId ===0) {
+      sendId = props.hasRoomId
+    }
+    else{
+      sendId = props.roomId ;
+    }
+    const data = JSON.stringify({
+      message: message,
+      userid : auth.user.id,
+      room : sendId, 
+      sender_type: 'CLIENT',
+    })
     chatSocket.current.send(
-      JSON.stringify({
-        message: message,
-        userid : auth.user.id,
-        room: props.roomId,
-        // sender_type: 'CLIENT',
-      })
+      data
     );
-    // console.log("sent");
+    // console.log('chatSocket.current after : ',chatSocket.current);
+    console.log("sent data : ",data);
   };
   // chatSocket=chatSocket.current
   // messages=messages
@@ -158,7 +169,7 @@ export default function Conversation(props) {
         profileAvatar={props.profileAvatar}
         profileClientAvatar={props.profileClientAvatar}
         showTimeStamp={props.showTimeStamp}
-        sender_type={'CLIENT'}
+        // sender_type={'CLIENT'}
       />
 
       <Sender
