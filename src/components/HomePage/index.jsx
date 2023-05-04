@@ -8,6 +8,7 @@ import SearchBar from 'src/components/SearchBar/index';
 import ExperienceSlider from 'src/components/ExperienceSlider/index';
 import Footer from 'src/components/Footer';
 import Testimonial from 'src/components/Testimonial';
+import FavouriteEvents from '../FavouriteEvent';
 
 const HomePage = () => {
   return (
@@ -18,6 +19,7 @@ const HomePage = () => {
       </Helmet>
       <SearchBar />
       <CitySlider />
+      <FavouriteEvents/>
       <IranMap />
       <Testimonial />
       <ExperienceSlider />
