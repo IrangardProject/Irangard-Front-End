@@ -15,49 +15,13 @@ export default function Conversation(props) {
   // const [messages, setMessages] = useState(props.messages);
   const [messages, setMessages] = useState([]);
   console.log('message ',messages);
+
   const updateMessages = (sendMessage, message) => {
     setMessageNumber(messageNumber + 1);
     setMessages([...messages, sendMessage(message)]);
   };
   const chatSocket = useRef(null);
   const auth = useAuth()
-  // console.log(props.roomId);
-  // console.log(props);
-  // console.log("MessageNumber is :",messageNumber);
-  // object room make 
-  // get id of romm 
-  // const fetchMessages = async () => {
-  //   try {
-  //     if (auth && auth.user && auth.user.username && !chatSocket.current) {
-  //       const newChatSocket = new WebSocket(
-  //         'wss://' +
-  //         'api.quilco.ir'+
-  //         '/chat/room/' +
-  //         // message 
-  //         auth.user.username + '_'+ props.contact_username + 
-  //         // rood id 
-  //         '/'
-  //       );
-        
-  //       console.log('newChatSocket',newChatSocket);
-        
-  //       newChatSocket.onclose = function (e) {
-  //         console.log('The socket close unexpectadly', e);
-  //       };
-        
-  //       chatSocket.current = newChatSocket;
-        
-  //       const response = await apiInstance.get(`${baseUrl}/chat/room/messages/${auth.user.username + '_'+ props.contact_username }`);
-  //       setMessages(response.data);
-  //       console.log('messages', messages);
-  //     }
-  //   } catch (error) {
-  //     console.log('error',error);
-  //   }
-  //   // auth, chatSocket, props.contact_username
-  // };
-  
-    // console.log('props.roomId : ',props.roomId , 'props.hasRoomId : ', props.hasRoomId);
     
     const addUserToRoom = async(userId,roomId) =>{
       // checkHasRoom()
@@ -69,9 +33,7 @@ export default function Conversation(props) {
         console.log('error',error);
       }
     }
-    // /message/has/room
-    // wss://api/quilco.ir/ws/{room_id}
-    // console.log('props.roomId',props.roomId);
+
     const connecttionwss = async(room_ID) =>{
       try {
           if (auth && auth.user && auth.user.id ) {
@@ -97,7 +59,6 @@ export default function Conversation(props) {
                   room: room_ID ,
                   message: message,
                   userid : auth.user.id,
-                  sender_type: 'CLIENT',
                 }),
                 data.message
               );
@@ -112,20 +73,11 @@ export default function Conversation(props) {
     
     
     
-    // console.log('props.contact_username',props.contact_id);
-    // console.log('converstaion.js');
     useEffect(() => {
-      // console.log('useEffect');
-      
-      // addUserToRoom(auth.user.id,props.roomId);
-      // addUserToRoom(props.contact_id,props.roomId);
-      // connecttionwss();
       if (props.roomId === 0){
-        // console.log('in if : props.hasRoomId',props.hasRoomId);
         connecttionwss(props.hasRoomId);
       }
       else{
-        // console.log('in else : props.roomId',props.roomId);
         connecttionwss(props.roomId);
         addUserToRoom(auth.user.id,props.roomId);
         addUserToRoom(props.contact_id,props.roomId);
@@ -135,7 +87,6 @@ export default function Conversation(props) {
   
   const handleNewUserMessage = message => {
     console.log('sent',message,chatSocket.current);
-    console.log('chatSocket.current before : ',chatSocket.current);
     let sendId = 0;
     if (props.roomId ===0) {
       sendId = props.hasRoomId
@@ -143,22 +94,23 @@ export default function Conversation(props) {
     else{
       sendId = props.roomId ;
     }
-    const data = JSON.stringify({
-      message: message,
-      userid : auth.user.id,
-      room : sendId, 
-      sender_type: 'CLIENT',
-    })
+    // const data = JSON.stringify({
+    //   message: message,
+    //   userid : auth.user.id,
+    //   room : sendId, 
+    //   // sender_type: 'CLIENT',
+    // })
     chatSocket.current.send(
-      data
+      JSON.stringify({
+        message: message,
+        userid : auth.user.id,
+        room : sendId, 
+        // sender_type: 'CLIENT',
+      })
     );
-    // console.log('chatSocket.current after : ',chatSocket.current);
-    console.log("sent data : ",data);
+    // console.log("sent data : ",data);
   };
-  // chatSocket=chatSocket.current
-  // messages=messages
 
-  //  
 
   return (
     <div id="rcw-conversation-container" className={cn('rcw-conversation-container')} aria-live="polite">

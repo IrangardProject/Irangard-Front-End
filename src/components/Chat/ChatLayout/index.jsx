@@ -49,24 +49,17 @@ export default function ChatLayout({
   const [conversation, setConversation] = useState(false);
   const [idRoom , setIdRoom] = useState(0);
   const [hasRoomId,setHasRoomId] = useState(0)
-  // const [rooms,setRooms] = useState([]);
+
   const auth = useAuth();
-  // console.log(selectedUser);
-  // console.log('idRoom',idRoom);
-  
-  // const []
+
 
   const toggleShowChat= () =>{
     setShowChat(!showChat);
-    // console.log("showchat",showChat);
   };
-  console.log('users',users)
-  console.log(users);
   useEffect(() => {
     apiInstance.get(`${baseUrl}/accounts/users`)
     .then((res) =>{
       setUsers(res.data)
-      // console.log('res.data',res.data);
     })
     .catch((err) => {
       console.log(err);
@@ -80,26 +73,11 @@ export default function ChatLayout({
     return user.username.toLowerCase().includes(searchTerm.toLowerCase());
   })
 
-  // const hasRoom = (rooms) =>{
-  //   const concatUserName = `${selectedUser.username + auth.user.username}`
-  //   console.log('rooms in hasRoom',concatUserName);
-  //   rooms.filter((room) =>{
-  //     if (room.name === `${concatUserName}`){
-  //       console.log('room');
-  //     }else{
-  //       console.log('no room');
-  //     }
-  //   })
-  // }
 
   
   const handleUserClick = async (user) => {
     setSelectedUser(user);
      
-    
-    // /message/has/room{
-
-    // }
     const {data} =await apiInstance.post(`${baseUrl}/message/has/room`,{
       user_one: user.id ,
       user_two: auth.user.id
@@ -114,14 +92,10 @@ export default function ChatLayout({
     }else{
       console.log('else' , data.room_id);
       setHasRoomId(data.room_id)
-      // setIdRoom(data.room_id)
     }
-    // console.log(data);
     setConversation(true);
     try {
       
-      // const rooms = await apiInstance.get(`${baseUrl}/message/room/`)
-      // setRooms(rooms.data)
       
   } catch (error) {
       console.log(error);
@@ -139,25 +113,12 @@ export default function ChatLayout({
     >
         
       {showChat && (
-        // <Conversation
-        //   title={title}
-        //   subtitle={subtitle}
-        //   senderPlaceHolder={senderPlaceHolder}
-        //   handleNewUserMessage={handleNewUserMessage}
-        //   profileAvatar={profileAvatar}
-        //   chatSocket={chatSocket}
-        //   messages={messages}
-        // />
         <>
-        
         {conversation ? <Conversation 
           title={title}
           subtitle={subtitle}
           senderPlaceHolder={senderPlaceHolder}
-          // handleNewUserMessage={handleNewUserMessage}
           profileAvatar={profileAvatar}
-          // chatSocket={chatSocket}
-          // messages={messages}
           contact_id = {selectedUser.id}
           roomId = {idRoom}
           hasRoomId = {hasRoomId}
@@ -180,10 +141,10 @@ export default function ChatLayout({
           {searchTerm === '' ? (
             <div className=''>
               
-              {users.map((user) => {
+              {users.map((user,index) => {
                 if(user.username === 'admin' && user.is_admin === true && user.username !== auth.user.username ){
                   return (
-                    <div onClick={() => handleUserClick(user)} className='user'>
+                    <div key={index} onClick={() => handleUserClick(user)} className='user'>
                       <img className='user_img' src={user.image !== '' ? user.image : defaultImg} alt="userIamge" />
                       <p>{user.username}</p>
                     </div>
@@ -194,11 +155,11 @@ export default function ChatLayout({
           ) : (
             <div className=''>
               {
-                filteredUsers.map((user) => {
+                filteredUsers.map((user,index) => {
                   
                   if (user.username !== auth.user.username) {
                     return (
-                      <div onClick={() => handleUserClick(user)} className='user'>
+                      <div key={index} onClick={() => handleUserClick(user)} className='user'>
                         <img className='user_img' src={user.image !== '' ? user.image : defaultImg}  alt="userIamge" />
                         <p>{user.username}</p>
                       </div>

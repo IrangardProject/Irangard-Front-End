@@ -36,7 +36,7 @@ export default function Messages(props) {
   return (
     <div id="messages" className="rcw-messages-container" ref={props.messageRef} dir="ltr">
       {props.messages?.map((message, index) => (
-        console.log(message.sender_type,message.sender),
+        // console.log(message.sender_type,message.sender),
         <div
           id={`${isClient(message.sender_type) ? 'rcw-message-client-id' : 'rcw-message-server-id'}`}
           className={`rcw-message ${isClient(message.sender_type) ? 'rcw-message-client' : 'rcw-message-server'}`}
