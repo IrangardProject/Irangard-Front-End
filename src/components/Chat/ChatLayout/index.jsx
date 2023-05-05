@@ -49,6 +49,7 @@ export default function ChatLayout({
   const [conversation, setConversation] = useState(false);
   const [idRoom , setIdRoom] = useState(0);
   const [hasRoomId,setHasRoomId] = useState(0)
+  const [showUserList, setShowUserList] = useState(true);
 
   const auth = useAuth();
 
@@ -77,6 +78,8 @@ export default function ChatLayout({
   
   const handleUserClick = async (user) => {
     setSelectedUser(user);
+    setShowUserList(false);
+    setShowChat(true);
      
     const {data} =await apiInstance.post(`${baseUrl}/message/has/room`,{
       user_one: user.id ,
@@ -90,7 +93,6 @@ export default function ChatLayout({
       )
       setIdRoom(res.data.id);
     }else{
-      console.log('else' , data.room_id);
       setHasRoomId(data.room_id)
     }
     setConversation(true);
@@ -115,6 +117,8 @@ export default function ChatLayout({
       {showChat && (
         <>
         {conversation ? <Conversation 
+          setConverstaion={setConversation}
+          showChat={showChat}
           title={title}
           subtitle={subtitle}
           senderPlaceHolder={senderPlaceHolder}
@@ -122,6 +126,7 @@ export default function ChatLayout({
           contact_id = {selectedUser.id}
           roomId = {idRoom}
           hasRoomId = {hasRoomId}
+          setShowChat={setShowChat}
         /> : null}
 
           

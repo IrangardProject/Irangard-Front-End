@@ -5,8 +5,10 @@ import './style.scss';
 
 
 function Header(props) {
+  console.log('props',props);
   const handleBackClick = () => {
-    
+    // props.setShowChat(false);
+    props.setConverstaion(false);
   }
   return (
     <div className="rcw-header">
@@ -26,7 +28,7 @@ function Header(props) {
         </div>
         <p>
           {/* if click back to userList  */}
-          <KeyboardBackspaceIcon  onClick={handleBackClick} />
+          <KeyboardBackspaceIcon className='BackIcon'  onClick={handleBackClick} />
         </p>
       </div>
     </div>

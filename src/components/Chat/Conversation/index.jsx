@@ -12,7 +12,6 @@ import toast from 'react-hot-toast';
 
 export default function Conversation(props) {
   const [messageNumber, setMessageNumber] = useState(0);
-  // const [messages, setMessages] = useState(props.messages);
   const [messages, setMessages] = useState([]);
   console.log('message ',messages);
 
@@ -114,7 +113,7 @@ export default function Conversation(props) {
 
   return (
     <div id="rcw-conversation-container" className={cn('rcw-conversation-container')} aria-live="polite">
-      <Header title={props.title} subtitle={props.subtitle} />
+      <Header setConverstaion = {props.setConverstaion} setShowChat={props.setShowChat} conversation = {props.converstaion} showChat={props.showChat} title={props.title} subtitle={props.subtitle} />
       <Messages
         messages={messages}
         messageNumber={messageNumber}
