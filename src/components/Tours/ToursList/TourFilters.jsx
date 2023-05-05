@@ -6,17 +6,52 @@ import DatePicker from 'react-multi-date-picker';
 import Input from 'src/components/Input';
 import persian from 'react-date-object/calendars/persian';
 import persian_fa from 'react-date-object/locales/persian_fa';
-import { convertNumberToPersian, isPersianNumber, convertJalaliDateToGeorgian } from 'src/utils/formatters';
+import {
+  convertNumberToPersian,
+  isPersianNumber,
+  convertJalaliDateToGeorgian,
+  formatPrice,
+} from 'src/utils/formatters';
 import { useSearchParams } from 'react-router-dom';
-import { Autocomplete, Checkbox, MenuItem, Select, Switch, Chip, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Checkbox,
+  MenuItem,
+  Select,
+  Switch,
+  Chip,
+  Slider,
+  TextField,
+  InputAdornment,
+} from '@mui/material';
 import { MdSearch } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
+// import { styled } from '@mui/material/styles';
+// const StyledTextField = styled(TextField)(({theme}) => ({
+//     '& .MuiInputBase-input': {
+//       fontSize: '12px',
+//       [theme.breakpoints.up('sm')]: {
+//         fontSize: '18px',
+//       },
+//     },
+//   }));
 
 const defaultFilters = {
   type: '',
   startDate: '',
   endDate: '',
 };
+
+const tourCostRangeMarks = [
+  {
+    value: 0,
+    label: 'کمترین',
+  },
+  {
+    value: 200000000,
+    label: 'بیشترین',
+  },
+];
 
 const tourCategories = [
   { label: 'فرهنگی', value: 'cultural' },
@@ -44,6 +79,7 @@ const TourFilters = ({ setTourData }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [startDateBlured, setStartDateBlured] = useState(false);
   const [endDateBlured, setEndDateBlured] = useState(false);
+  const [tourCostRange, setTourCostRange] = useState([0, 200000000]);
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
 
@@ -100,8 +136,12 @@ const TourFilters = ({ setTourData }) => {
     searchParams.delete('end_date__lte');
     searchParams.delete('title__contains');
     setSearchParams(searchParams);
-    setQ('')
+    setQ('');
     updateResult();
+  };
+
+  const handleTourCostChange = (event, newValue) => {
+    setTourCostRange(newValue);
   };
 
   return (
@@ -146,6 +186,37 @@ const TourFilters = ({ setTourData }) => {
                 </button>
               </div>
             </form>
+          </div>
+
+          <hr className="filter-hr" />
+
+          <div className="search-tours__tour-filters__filters-row__item">
+            <div className="search-tours__tour-filters__filters-row__item from-to-price">
+              <TextField
+                dir="rtl"
+                //   type="number"
+                // value={formatPrice(convertNumberToPersian(tourCostRange[0]))}
+                value={`از ${formatPrice(convertNumberToPersian(tourCostRange[0]))} تومان`}
+                onChange={event => setTourCostRange([Number(event.target.value), tourCostRange[1]])}
+              />
+              <TextField
+                dir="rtl"
+                //   type="number"
+                // value={formatPrice(convertNumberToPersian(tourCostRange[1]))}
+                value={`تا ${formatPrice(convertNumberToPersian(tourCostRange[1]))} تومان`}
+                onChange={event => setTourCostRange([tourCostRange[0], Number(event.target.value)])}
+              />
+            </div>
+            <div className="search-tours__tour-filters__filters-row__item price-range">
+              <Slider
+                value={tourCostRange}
+                onChange={handleTourCostChange}
+                min={0}
+                max={200000000}
+                step={500000}
+                marks={tourCostRangeMarks}
+              />
+            </div>
           </div>
 
           <hr className="filter-hr" />
