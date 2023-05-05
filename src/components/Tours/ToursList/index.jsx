@@ -2,16 +2,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import Loader from 'src/components/Loader';
 import apiInstance from '../../../config/axios';
 import TourCard from '../TourCard';
-import useAuth from '../../../context/AuthContext';
 import './style.scss';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { baseUrl } from '../../../utils/constants';
 import Navbar from 'src/components/Navbar';
 import Footer from 'src/components/Footer';
 import { TbZoomCancel } from 'react-icons/tb';
 import { useMobile, useMobileFilters } from 'src/utils/hooks';
-import { useSearchParams } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { IconContext } from 'react-icons';
 import TourFilters from './TourFilters';
@@ -22,19 +19,9 @@ function ToursList() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [next, setNext] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-  // const [tourType, setTourType] = useState(searchParams.get('tour_type') || '');
-  // const [tourStartDate, setTourStartDate] = useState(searchParams.get('start_date') || '');
-  // const [tourEndDate, setTourEndDate] = useState(searchParams.get('end_date') || '');
   const isMobile = useMobile();
   const isMobileFilters = useMobileFilters();
   const [showFilters, setShowFilters] = useState(true);
-
-  const filterKeys = {
-    q: 'title__contains',
-  };
-  const auth = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     apiInstance
@@ -51,39 +38,6 @@ function ToursList() {
       .finally(() => setLoading(false));
     getSpecialUserTours();
   }, []);
-
-  // const updateResult = async e => {
-  //   if (e) e.preventDefault();
-  //   let query = '';
-  //   for (const [key, value] of searchParams) query += `${filterKeys[key] ?? key}=${value}&`;
-
-  //   setLoading(true);
-  //   await apiInstance.get(`tours/?${query}`).then(res => {
-  //     console.log('the result after sending the query is: ', res.data);
-  //     setData(res.data['results']);
-  //     setLoading(false);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   let d = searchParams;
-  //   console.log(d);
-  //   if (q) d.set('title__contains', q);
-  //   else if (q === '') d.delete('title__contains');
-
-  //   for (const [key, value] of d) {
-  //     console.log('the key is: ', key);
-  //     console.log('the value is: ', value);
-  //   }
-  //   setSearchParams(d);
-  // }, []);
-
-  // const handleIsOptionEqualToValue = (option, val) => {
-  //   if (val) {
-  //     if (val.label != option.label) return false;
-  //   }
-  //   return true;
-  // };
 
   useEffect(() => {
     if (isMobileFilters) setShowFilters(false);
@@ -116,24 +70,6 @@ function ToursList() {
   };
 
   return (
-    // <Layout title="لیست تورها">
-    //   {loading && <Loader />}
-    //   {!loading && (
-    //     <div className="tours-list">
-    //       <h1 className="tours-list__title">لیست تورها</h1>
-    //       {auth.isSpecial && (
-    //         <Button onClick={() => navigate('/tours/new')} className="tours-list__add-tour">
-    //           افزودن تور جدید
-    //         </Button>
-    //       )}
-    //       <div className="tours-list__tours">
-    //         {data.map((tour, index) => (
-    //           <TourCard key={index} tour={tour} />
-    //         ))}
-    //       </div>
-    //     </div>
-    //   )}
-    // </Layout>
     <ThemeProvider theme={yellowTheme}>
       <Navbar />
       <IconContext.Provider value={{ color: '#feb714', size: '1.3em' }}>
@@ -173,7 +109,6 @@ function ToursList() {
             <Footer />
           </div>
         )}
-        {/* </Layout> */}
       </IconContext.Provider>
     </ThemeProvider>
   );

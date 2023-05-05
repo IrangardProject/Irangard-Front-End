@@ -1,37 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Layout from 'src/components/Layout';
-import Loader from 'src/components/Loader';
 import Button from 'src/components/Button';
 import apiInstance from '../../../config/axios';
-import TourCard from '../TourCard';
-import useAuth from '../../../context/AuthContext';
 import './style.scss';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { baseUrl } from '../../../utils/constants';
 import DatePicker from 'react-multi-date-picker';
 import Input from 'src/components/Input';
 import persian from 'react-date-object/calendars/persian';
 import persian_fa from 'react-date-object/locales/persian_fa';
-import Navbar from 'src/components/Navbar';
-import Footer from 'src/components/Footer';
 import { convertNumberToPersian, isPersianNumber, convertJalaliDateToGeorgian } from 'src/utils/formatters';
-import { TbZoomCancel } from 'react-icons/tb';
-import { useMobile } from 'src/utils/hooks';
 import { useSearchParams } from 'react-router-dom';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Autocomplete, Checkbox, MenuItem, Select, Switch, Chip, TextField } from '@mui/material';
-import { MdLocationPin, MdOutlineLocationOn, MdSearch } from 'react-icons/md';
-import { IconContext } from 'react-icons';
+import { MdSearch } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
 
 const defaultFilters = {
   type: '',
   startDate: '',
   endDate: '',
-  // tags: '',
-  // province: '',
-  // city: '',
 };
 
 const tourCategories = [
@@ -67,8 +51,6 @@ const TourFilters = ({ setTourData }) => {
     let d = searchParams;
     console.log(d);
     console.log('the start date is: ', filters.startDate);
-    // if (filters.tags) d.set('tag', filters.tags);
-    // else d.delete('tag');
     if (q) d.set('title__contains', q);
     else if (q === '') d.delete('title__contains');
     if (filters.type) d.set('tour_type', filters.type - 1);
@@ -118,7 +100,6 @@ const TourFilters = ({ setTourData }) => {
     searchParams.delete('end_date__lte');
     searchParams.delete('title__contains');
     setSearchParams(searchParams);
-    // setSearchedTitle('');
     setQ('')
     updateResult();
   };

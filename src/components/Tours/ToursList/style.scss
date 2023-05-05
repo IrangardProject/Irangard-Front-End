@@ -1,21 +1,5 @@
 @import 'src/theme/main.scss';
 
-// .tours-list {
-//   background-color: $c-white;
-//   border-radius: 8px;
-//   margin: 32px 0;
-//   padding: 32px;
-
-//   &__title {
-//     font-size: 24px;
-//   }
-
-//   &__add-tour {
-//     width: auto;
-//     font-size: 14px;
-//   }
-// }
-
 .search-tours {
   background-color: whitesmoke;
 
@@ -24,12 +8,6 @@
     justify-content: center;
     align-items: center;
     margin: auto;
-    // &__loader {
-    //   border-radius: 50%;
-    //   max-width: 300px;
-    //   max-height: 300px;
-    // }
-
   }
 
   &__filters {
@@ -217,7 +195,6 @@
     fill: #feb714;
   }
   .icon {
-    // background-color: #FFE15D;
     color: #FFE15D;
     position: absolute;
     top: 50%;
