@@ -9,6 +9,7 @@ import ExperienceSlider from 'src/components/ExperienceSlider/index';
 import Footer from 'src/components/Footer';
 import Testimonial from 'src/components/Testimonial';
 import FavouriteEvents from '../FavouriteEvent';
+import TourCategories from 'src/components/TourCategories';
 
 const HomePage = () => {
   return (
@@ -23,6 +24,7 @@ const HomePage = () => {
       <IranMap />
       <Testimonial />
       <ExperienceSlider />
+      <TourCategories />
       <Footer />
     </>
   );
