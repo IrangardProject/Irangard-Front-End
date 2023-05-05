@@ -53,7 +53,7 @@ export default function Conversation(props) {
                   message: message,
                   userid : auth.user.id,
                 }),
-                data.message
+                data.message.filter((message) => message.userid !== auth.user.id)
               );
             };
           }
@@ -109,6 +109,7 @@ export default function Conversation(props) {
     <div id="rcw-conversation-container" className={cn('rcw-conversation-container')} aria-live="polite">
       <Header setConverstaion = {props.setConverstaion} setShowChat={props.setShowChat} conversation = {props.converstaion} showChat={props.showChat} title={props.title} subtitle={props.subtitle} />
       <Messages
+        userid = {auth.user.id}
         messages={messages}
         messageNumber={messageNumber}
         profileAvatar={props.profileAvatar}

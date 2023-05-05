@@ -19,38 +19,35 @@ export default function Messages(props) {
   const isClient = type => {
     // console.log('type', type);
     // return type == 'CLIENT';
-    // auth.user is sender and type is client then it is client and the recieve is server please give the correct
-    if(auth.user){
+    if(auth.user.id === type ){
       return type == 'CLIENT'
     }else{
       return type == 'SERVER'
     }
   };
 
-  // console.log('props in messages is :',props);
-  // console.log('isClient' , isC)
-  // log output of isclient function
+
 
 
 
   return (
     <div id="messages" className="rcw-messages-container" ref={props.messageRef} dir="ltr">
       {props.messages?.map((message, index) => (
-        // console.log(message.sender_type,message.sender),
+        // console.log(message.userId,message.sender),
         <div
-          id={`${isClient(message.sender_type) ? 'rcw-message-client-id' : 'rcw-message-server-id'}`}
-          className={`rcw-message ${isClient(message.sender_type) ? 'rcw-message-client' : 'rcw-message-server'}`}
+          id={`${isClient(message.userId) ? 'rcw-message-client-id' : 'rcw-message-server-id'}`}
+          className={`rcw-message ${isClient(message.userid) ? 'rcw-message-client' : 'rcw-message-server'}`}
           // key={`${index}-${format(message.timestamp, 'hh:mm')}`}
           key={`${index}`}
         >
-          {(!isClient(message.sender) || isClient(message.sender_type)) && true && (
+          {(!isClient(message.sender) || isClient(message.userId)) && true && (
             <img
-              src={isClient(message.sender_type) ? auth.user.image || avatar : serverAvatar }
-              className={`rcw-avatar ${isClient(message.sender_type) ? 'rcw-avatar-client' : ''}`}
+              src={isClient(message.userId) ? auth.user.image || avatar : serverAvatar }
+              className={`rcw-avatar ${isClient(message.userId) ? 'rcw-avatar-client' : ''}`}
               alt="profile"
             />
           )}
-          <Message message={message} showTimeStamp={false} is_server={isClient(message.sender_type)}/>
+          <Message message={message} showTimeStamp={false} is_server={isClient(message.userId)}/>
         </div>
       ))}
       <Loader typing={props.messages.length === 0} />
