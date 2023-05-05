@@ -1,0 +1,26 @@
+@import 'src/theme/main.scss';
+
+.tour-categories {
+    max-width: 1200px;
+    margin: 16px auto 64px;
+    padding: 16px;
+  
+    &__title {
+      color: $c-black;
+      font-size: 26px;
+      font-weight: 800;
+      text-align: right;
+      margin: 16px 0 32px;
+    }
+  
+    &__cards {
+      display: flex;
+      padding: 16px 0;
+  
+      &__slide {
+        // width: 350px;
+        display: flex;
+        overflow: visible !important;
+      }
+    }
+  }

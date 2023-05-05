@@ -1,0 +1,51 @@
+@import 'src/theme/main.scss';
+
+.tour-category-card {
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-align: right;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+    height: 260px;
+    width: 250px;
+    color: $c-black;
+    margin: 0 8px;
+  
+    &__img {
+      width: 100%;
+      min-height: 180px;
+      box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.1);
+    }
+  
+    &__title {
+      font-size: 16px;
+      font-weight: 800;
+      color: $c-black4;
+      line-height: 1.5;
+      padding: 0 16px;
+      margin: 16px 0 8px;
+    }
+  
+    &__description {
+      padding: 8px 16px;
+      font-size: 14px;
+      height: 100%;
+    }
+  
+    @media (max-width: 768px) {
+      height: 360px;
+      &__img {
+        min-height: 140px;
+      }
+    }
+  }
+  
+  .fav-icon {
+    color: $c-black;
+  }
+  
+  .filled-fav-icon {
+    color: $c-pink1;
+  }
+  
