@@ -12,55 +12,10 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlined';
 import { Link } from "react-router-dom";
+import { GoOrganization } from 'react-icons/go';
 
-
-const TourCard = ({tour}) => {
-    // console.log('tour in tourCard' , tour);
-    // {capacity
-    //     : 
-    //     30
-    //     cost
-    //     : 
-    //     25000000
-    //     date_created
-    //     : 
-    //     "2023-04-07T22:14:24.620131+04:30"
-    //     description
-    //     : 
-    //     "<p>&nbsp;بازدید از کویر به همراه صبحانه و کمپ رایگان.</p>"
-    //     end_date
-    //     : 
-    //     "2023-05-25T00:00:00+04:30"
-    //     id
-    //     : 
-    //     9
-    //     image
-    //     : 
-    //     "http://api.quilco.ir/media/images/tours/4deb755cee572-c8d026f9871-5da42d3274.jpg"
-    //     is_booked
-    //     : 
-    //     false
-    //     is_expired
-    //     : 
-    //     false
-    //     owner
-    //     : 
-    //     {user: 31, total_revenue: 100000}
-    //     remaining
-    //     : 
-    //     0
-    //     start_date
-    //     : 
-    //     "2023-05-20T00:00:00+04:30"
-    //     title
-    //     : 
-    //     "تور کویر لوت"
-    //     total_revenue
-    //     : 
-    //     0
-    //     tour_type
-    //     : 
-    //     "1"}
+const EventCard = ({event}) => {
+    console.log('event in eventCard' , event);
     return (
         <Card
             sx={{
@@ -78,17 +33,17 @@ const TourCard = ({tour}) => {
                 
             }}
         >
-            {/* show the nae of section تور های پیشنهادس */}
 
             
             <Grid container>
                 <Grid>
-                    <Link to={`/tours/${tour.id}`} >
+                    <Link to={`/events/${event.id}`} >
                         <CardMedia 
+                            
                             component="img"
                             // className={}
-                            image={tour.image}
-                            alt="tour image"
+                            image={event.images[0].image}
+                            alt="event image"
                         />
                     </Link>
                 </Grid>
@@ -111,7 +66,7 @@ const TourCard = ({tour}) => {
                                     marginBottom: "10px",
                                 }}
                             >
-                                <Link to={`/tours/${tour.id}`} >
+                                <Link to={`/events/${event.id}`} >
                                     <Typography
                                         noWrap
                                         component="div"
@@ -122,13 +77,17 @@ const TourCard = ({tour}) => {
                                             // fontSize: "12px",
                                         }}
                                     >
-                                        {tour.title}
+                                        {event.title}
                                     </Typography>
                                 </Link>
                             </Box>
                             <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
-                                <AirportShuttleOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
-                                <span>   ظرفیت تور  </span>{tour.capacity} نفر
+                                <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
+                                <span >   محل برگزاری  : &nbsp; </span> {event.city} 
+                            </Typography>
+                            <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
+                                <GoOrganization color="primary" sx={{fontSize:"15px"}}/>
+                                <span >  برگزارکننده : &nbsp; </span> {event.organizer} 
                             </Typography>
                             <Typography
                               component="div"
@@ -141,7 +100,7 @@ const TourCard = ({tour}) => {
                                 WebkitLineClamp: 1,
                                 overflow: "hidden",
                               }}
-                              dangerouslySetInnerHTML={{__html: tour.description}}
+                              dangerouslySetInnerHTML={{__html: event.description}}
                             />
                         </CardContent>
                     </Box>
@@ -160,8 +119,8 @@ const TourCard = ({tour}) => {
                             borderRadius:"10px",
                         }}
                     >
-                        <Link to={`/tours/${tour.id}`} style={{textDecoration:"none",color:"white"}}>
-                            مشاهده تور
+                        <Link to={`/events/${event.id}`} style={{textDecoration:"none",color:"white"}}>
+                            مشاهده رویداد
                         </Link>
                     </Button>
                 </Grid>
@@ -170,4 +129,4 @@ const TourCard = ({tour}) => {
     );
 }
  
-export default TourCard;
+export default EventCard;

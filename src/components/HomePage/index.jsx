@@ -9,6 +9,7 @@ import ExperienceSlider from 'src/components/ExperienceSlider/index';
 import Footer from 'src/components/Footer';
 import Testimonial from 'src/components/Testimonial';
 import FavouriteEvents from '../FavouriteEvent';
+import PopularEvent from '../PopularEvent';
 
 const HomePage = () => {
   return (
@@ -19,8 +20,9 @@ const HomePage = () => {
       </Helmet>
       <SearchBar />
       <CitySlider />
-      <FavouriteEvents/>
       <IranMap />
+      <FavouriteEvents/>
+      <PopularEvent/>
       <Testimonial />
       <ExperienceSlider />
       <Footer />
