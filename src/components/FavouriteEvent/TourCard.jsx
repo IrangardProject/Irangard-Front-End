@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 
 
 const TourCard = ({tour}) => {
-    console.log('tour in tourCard' , tour);
     // {capacity
     //     : 
     //     30
