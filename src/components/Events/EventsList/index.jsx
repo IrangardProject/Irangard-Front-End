@@ -58,25 +58,25 @@ const EventsList = () => {
     setCities(await (await fetch(`/assets/data/cities/${eventProvince?.value ?? IranStateKeys[state]}.json`)).json());
   }, [eventProvince]);
 
-  useEffect(() => {
-    let d = searchParams;
-    console.log(d);
-    if (q) d.set('title__contains', q);
-    else if (q === '') d.delete('title__contains');
-    if (eventProvince?.label) {
-      d.set('province', eventProvince.label);
-      if (eventCity?.label) d.set('city', eventCity.label);
-      else if (!eventCity) d.delete('city');
-    } else if (!eventProvince) {
-      d.delete('city');
-      d.delete('province');
-    }
-    for (const [key, value] of d) {
-      console.log('the key is: ', key);
-      console.log('the value is: ', value);
-    }
-    setSearchParams(d);
-  }, [eventProvince, eventCity]);
+  // useEffect(() => {
+  //   let d = searchParams;
+  //   console.log(d);
+  //   if (q) d.set('title__contains', q);
+  //   else if (q === '') d.delete('title__contains');
+  //   if (eventProvince?.label) {
+  //     d.set('province', eventProvince.label);
+  //     if (eventCity?.label) d.set('city', eventCity.label);
+  //     else if (!eventCity) d.delete('city');
+  //   } else if (!eventProvince) {
+  //     d.delete('city');
+  //     d.delete('province');
+  //   }
+  //   for (const [key, value] of d) {
+  //     console.log('the key is: ', key);
+  //     console.log('the value is: ', value);
+  //   }
+  //   setSearchParams(d);
+  // }, [eventProvince, eventCity]);
 
   useEffect(() => {
     if (isMobileFilters) setShowFilters(false);
