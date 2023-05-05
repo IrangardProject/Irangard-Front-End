@@ -13,21 +13,20 @@ import toast from 'react-hot-toast';
 export default function Conversation(props) {
   const [messageNumber, setMessageNumber] = useState(0);
   const [messages, setMessages] = useState([]);
-  console.log('message ',messages);
+  console.log('initial messages:', messages);
 
   const updateMessages = (sendMessage, message) => {
     setMessageNumber(messageNumber + 1);
-    setMessages([...messages, sendMessage(message)]);
+    setMessages(prevMessages => [...prevMessages, sendMessage(message)]);
+    console.log('updated messages:', messages);
   };
+  
   const chatSocket = useRef(null);
   const auth = useAuth()
     
     const addUserToRoom = async(userId,roomId) =>{
-      // checkHasRoom()
-      // console.log('addUserToRoom',userId,roomId);
       try {
         const response = await apiInstance.post(`${baseUrl}/message/add/user/${userId}/room/${roomId}`);
-        // console.log('response',response);
       } catch (error) {
         console.log('error',error);
       }
@@ -37,22 +36,17 @@ export default function Conversation(props) {
       try {
           if (auth && auth.user && auth.user.id ) {
             const newChatSocket = new WebSocket(`wss://api.quilco.ir/ws/${room_ID}/`);
-            console.log('newChatSocket',newChatSocket);
             newChatSocket.onclose = function (e) {
               toast.error( 'ارتباط با سرور قطع شد' )
               console.log(e);
             };
             const response = await apiInstance.get(`${baseUrl}/message/room/chats/${room_ID}`);
-            // console.log('responseget',response);
             setMessages(response.data);
-            // console.log('messages', messages);
+            console.log('messages after fetching:', messages);
             chatSocket.current = newChatSocket;
-            // chatSocket.current.on
-            console.log('chatSocket.current : ',chatSocket.current);
             chatSocket.current.onmessage = function (e) {
-              console.log('onmessage',e);
               const data = JSON.parse(e.data);
-              console.log('data message',data.message);
+              console.log('received message:', data.message);
               updateMessages(
                 message => ({
                   room: room_ID ,
@@ -85,7 +79,7 @@ export default function Conversation(props) {
   
   
   const handleNewUserMessage = message => {
-    console.log('sent',message,chatSocket.current);
+    console.log('sending message:', message);
     let sendId = 0;
     if (props.roomId ===0) {
       sendId = props.hasRoomId
@@ -107,7 +101,7 @@ export default function Conversation(props) {
         // sender_type: 'CLIENT',
       })
     );
-    // console.log("sent data : ",data);
+    console.log('sent message:', message);
   };
 
 

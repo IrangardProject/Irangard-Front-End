@@ -27,7 +27,7 @@ export default function Messages(props) {
     }
   };
 
-  console.log('props in messages is :',props);
+  // console.log('props in messages is :',props);
   // console.log('isClient' , isC)
   // log output of isclient function
 

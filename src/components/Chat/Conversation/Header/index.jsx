@@ -5,7 +5,7 @@ import './style.scss';
 
 
 function Header(props) {
-  console.log('props',props);
+  // console.log('props',props);
   const handleBackClick = () => {
     // props.setShowChat(false);
     props.setConverstaion(false);
