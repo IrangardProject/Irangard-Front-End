@@ -1,21 +1,5 @@
 @import 'src/theme/main.scss';
 
-// .tours-list {
-//   background-color: $c-white;
-//   border-radius: 8px;
-//   margin: 32px 0;
-//   padding: 32px;
-
-//   &__title {
-//     font-size: 24px;
-//   }
-
-//   &__add-tour {
-//     width: auto;
-//     font-size: 14px;
-//   }
-// }
-
 .search-tours {
   background-color: whitesmoke;
 
@@ -24,30 +8,11 @@
     justify-content: center;
     align-items: center;
     margin: auto;
-    // &__loader {
-    //   border-radius: 50%;
-    //   max-width: 300px;
-    //   max-height: 300px;
-    // }
-
-  }
-  &__header {
-    z-index: 10;
-    position: sticky;
-    top: 75px;
-    padding-top: 30px;
-    background-color: white;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    height: 130px;
-    margin-top: 10px;
-    @media (max-width: 800px) {
-      max-width: 100%;
-      height: 300px;
-    }
   }
 
   &__filters {
     display: flex;
+    flex-direction: column;
     margin: auto;
 
     .province-city {
@@ -70,17 +35,41 @@
       width: 95%;
       flex-direction: column;
     }
+    @media (max-width: 1000px) {
+      width: 100%;
+    }
+  }
+  .searchbar {
+    width: 100%;
   }
   &__tours-list {
     display: flex;
     flex-direction: row;
     gap: 30px;
     border-radius: 8px;
-    margin: 32px 0;
+    margin: 0 0;
     padding: 32px;
 
     &__title {
       font-size: 24px;
+    }
+
+    &__show-filters {
+      &__button {
+        display: flex;
+        flex-direction: row;
+        background-color: white;
+        width: 100px;
+        padding: 0;
+        svg {
+          fill: black;
+        }
+        &__text {
+          color: black !important;
+          font-size: 13px;
+          margin: auto 10px;
+        }
+      }
     }
 
     &__tours {
@@ -91,6 +80,14 @@
       @media (max-width: 800px) {
         margin: auto;
       }
+      @media (max-width: 1000px) {
+        width: 100%;
+      }
+    }
+    @media (max-width: 1000px) {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
   }
   &__tour-filters {
@@ -103,10 +100,34 @@
       flex-direction: column;
       gap: 5px;
     }
+    .from-to-price {
+      .MuiInputBase-input {
+        // padding: 0;
+        font-size: 13px;
+        @media (max-width: 1000px) {
+          font-size: 17px;
+        }
+      }
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      // align-items: center;
+      margin: auto;
+      // margin-top: 500px;
+      gap: 20px;
+      @media (max-width: 800px) {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+    .price-range {
+      margin: 30px 15px;
+    }
     .cancel-filters-btn {
       display: flex;
       flex-direction: row;
       background-color: white;
+      padding: 0;
       .cancel-filters-btn__text {
         color: black;
         font-size: 13px;
@@ -121,11 +142,24 @@
         }
       }
     }
+    &__header {
+      background-color: white;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      @media (max-width: 800px) {
+        max-width: 100%;
+        height: 110px;
+      }
+    }
+    @media (max-width: 1000px) {
+      width: 100%;
+      margin-bottom: 30px;
+    }
     border-radius: 10px;
     background-color: $c-white;
     padding: 20px;
     width: 25%;
-    max-height: 450px;
+    max-height: 1100px;
     &__filters-row {
       display: flex;
       flex-direction: column;
@@ -134,6 +168,7 @@
     .date-input {
       display: none;
     }
+
   }
   &__tours {
     width: 75%;
@@ -141,32 +176,39 @@
     flex-direction: column;
     gap: 30px;
   }
-  .search-btn {
-    border: none;
-    height: 100%;
-    width: 100%;
-    background-color: #feb714;
-    border-radius: 32px;
-    -webkit-transition: background-color 0.2s linear;
-    -o-transition: background-color 0.2s linear;
-    transition: background-color 0.2s linear;
-    padding: 5px 0px;
-
-    cursor: pointer;
-    @media (min-width: 800px) {
-      margin: 0px 30px;
-      padding: 10px 0px;
-    }
-    &:hover {
-      background-color: #FFE15D;
-    }
-    p {
-      margin: 0;
-      vertical-align: middle;
-      font-size: 16px;
-      font-weight: bold;
-      color: black;
-      display: inline-block;
+  .search-submit {
+    display: flex;
+    align-items: center;
+    &__search-btn {
+      border: none;
+      width: 190px;
+      @media (max-width: 1260px) {
+        width: 130px;
+      }
+      background-color: #feb714;
+      border-radius: 32px;
+      -webkit-transition: background-color 0.2s linear;
+      -o-transition: background-color 0.2s linear;
+      transition: background-color 0.2s linear;
+      padding: 5px 0px;
+      margin: auto;
+  
+      cursor: pointer;
+      @media (min-width: 800px) {
+        margin: 0px 30px;
+        padding: 10px 0px;
+      }
+      &:hover {
+        background-color: #FFE15D;
+      }
+      p {
+        margin: 0;
+        vertical-align: middle;
+        font-size: 16px;
+        font-weight: bold;
+        color: black;
+        display: inline-block;
+      }
     }
   }
 }
@@ -177,7 +219,6 @@
     fill: #feb714;
   }
   .icon {
-    // background-color: #FFE15D;
     color: #FFE15D;
     position: absolute;
     top: 50%;
@@ -225,4 +266,8 @@
   &__title {
     text-align: center;
   } 
+}
+
+.filter-hr {
+  margin-bottom: 20px;
 }
