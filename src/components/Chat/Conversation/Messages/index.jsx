@@ -14,14 +14,18 @@ import useAuth from 'src/context/AuthContext';
 import avatar from 'src/assets/images/avatar.png';
 
 export default function Messages(props) {
+  console.log('message property:', props);
   const auth = useAuth();
 
   const isClient = type => {
-    // console.log('type', type);
+    console.log('type', type);
     // return type == 'CLIENT';
     if(auth.user.id === type ){
+      console.log('client');
       return type == 'CLIENT'
+      
     }else{
+      console.log('server');
       return type == 'SERVER'
     }
   };
@@ -35,19 +39,19 @@ export default function Messages(props) {
       {props.messages?.map((message, index) => (
         // console.log(message.userId,message.sender),
         <div
-          id={`${isClient(message.userId) ? 'rcw-message-client-id' : 'rcw-message-server-id'}`}
+          id={`${isClient(message.userid) ? 'rcw-message-client-id' : 'rcw-message-server-id'}`}
           className={`rcw-message ${isClient(message.userid) ? 'rcw-message-client' : 'rcw-message-server'}`}
           // key={`${index}-${format(message.timestamp, 'hh:mm')}`}
           key={`${index}`}
         >
-          {(!isClient(message.sender) || isClient(message.userId)) && true && (
+          {(!isClient(message.sender) || isClient(message.userid)) && true && (
             <img
-              src={isClient(message.userId) ? auth.user.image || avatar : serverAvatar }
-              className={`rcw-avatar ${isClient(message.userId) ? 'rcw-avatar-client' : ''}`}
+              src={isClient(message.userid) ? auth.user.image || avatar : serverAvatar }
+              className={`rcw-avatar ${isClient(message.userid) ? 'rcw-avatar-client' : ''}`}
               alt="profile"
             />
           )}
-          <Message message={message} showTimeStamp={false} is_server={isClient(message.userId)}/>
+          <Message message={message} showTimeStamp={false} is_server={isClient(message.userid)}/>
         </div>
       ))}
       <Loader typing={props.messages.length === 0} />

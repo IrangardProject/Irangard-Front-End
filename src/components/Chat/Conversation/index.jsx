@@ -13,12 +13,12 @@ import toast from 'react-hot-toast';
 export default function Conversation(props) {
   const [messageNumber, setMessageNumber] = useState(0);
   const [messages, setMessages] = useState([]);
-  console.log('initial messages:', messages);
+  // console.log('initial messages:', messages);
 
   const updateMessages = (sendMessage, message) => {
     setMessageNumber(messageNumber + 1);
     setMessages(prevMessages => [...prevMessages, sendMessage(message)]);
-    console.log('updated messages:', messages);
+    // console.log('updated messages:', messages);
   };
   
   const chatSocket = useRef(null);
@@ -42,11 +42,11 @@ export default function Conversation(props) {
             };
             const response = await apiInstance.get(`${baseUrl}/message/room/chats/${room_ID}`);
             setMessages(response.data);
-            console.log('messages after fetching:', messages);
+            // console.log('messages after fetching:', messages);
             chatSocket.current = newChatSocket;
             chatSocket.current.onmessage = function (e) {
               const data = JSON.parse(e.data);
-              console.log('received message:', data.message);
+              // console.log('received message:', data.message);
               updateMessages(
                 message => ({
                   room: room_ID ,
@@ -79,7 +79,7 @@ export default function Conversation(props) {
   
   
   const handleNewUserMessage = message => {
-    console.log('sending message:', message);
+    // console.log('sending message:', message);
     let sendId = 0;
     if (props.roomId ===0) {
       sendId = props.hasRoomId
@@ -101,7 +101,7 @@ export default function Conversation(props) {
         // sender_type: 'CLIENT',
       })
     );
-    console.log('sent message:', message);
+    // console.log('sent message:', message);
   };
 
 
