@@ -6,12 +6,7 @@ import DatePicker from 'react-multi-date-picker';
 import Input from 'src/components/Input';
 import persian from 'react-date-object/calendars/persian';
 import persian_fa from 'react-date-object/locales/persian_fa';
-import {
-  convertNumberToPersian,
-  isPersianNumber,
-  convertJalaliDateToGeorgian,
-  formatPrice,
-} from 'src/utils/formatters';
+import { convertNumberToPersian, convertJalaliDateToGeorgian, formatPrice } from 'src/utils/formatters';
 import { useSearchParams } from 'react-router-dom';
 import {
   Autocomplete,
@@ -26,20 +21,12 @@ import {
 } from '@mui/material';
 import { MdSearch } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
-// import { styled } from '@mui/material/styles';
-// const StyledTextField = styled(TextField)(({theme}) => ({
-//     '& .MuiInputBase-input': {
-//       fontSize: '12px',
-//       [theme.breakpoints.up('sm')]: {
-//         fontSize: '18px',
-//       },
-//     },
-//   }));
 
 const defaultFilters = {
   type: '',
   startDate: '',
   endDate: '',
+  tourCostRange: [],
 };
 
 const tourCostRangeMarks = [
@@ -80,6 +67,7 @@ const TourFilters = ({ setTourData }) => {
   const [startDateBlured, setStartDateBlured] = useState(false);
   const [endDateBlured, setEndDateBlured] = useState(false);
   const [tourCostRange, setTourCostRange] = useState([0, 200000000]);
+
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
 
@@ -95,6 +83,10 @@ const TourFilters = ({ setTourData }) => {
     else d.delete('start_date');
     if (filters.endDate) d.set('end_date__lte', convertJalaliDateToGeorgian(filters.endDate));
     else d.delete('end_date');
+    if (filters.tourCostRange[0]) d.set('cost__gte', filters.tourCostRange[0]);
+    else d.delete('cost__gte');
+    if (filters.tourCostRange[1]) d.set('cost__lte', filters.tourCostRange[1]);
+    else d.delete('cost__lte');
 
     for (const [key, value] of d) {
       console.log('the key is: ', key);
@@ -135,13 +127,17 @@ const TourFilters = ({ setTourData }) => {
     searchParams.delete('start_date__gte');
     searchParams.delete('end_date__lte');
     searchParams.delete('title__contains');
+    searchParams.delete('cost__gte');
+    searchParams.delete('cost__lte');
     setSearchParams(searchParams);
     setQ('');
+    setTourCostRange([0, 200000000]);
     updateResult();
   };
 
   const handleTourCostChange = (event, newValue) => {
     setTourCostRange(newValue);
+    setFilters({ ...filters, tourCostRange: newValue });
   };
 
   return (
@@ -197,14 +193,20 @@ const TourFilters = ({ setTourData }) => {
                 //   type="number"
                 // value={formatPrice(convertNumberToPersian(tourCostRange[0]))}
                 value={`از ${formatPrice(convertNumberToPersian(tourCostRange[0]))} تومان`}
-                onChange={event => setTourCostRange([Number(event.target.value), tourCostRange[1]])}
+                onChange={event => {
+                  setFilters({ ...filters, tourCostRange: [Number(tour.target.value), tourCostRange[1]] });
+                  setTourCostRange([Number(event.target.value), tourCostRange[1]]);
+                }}
               />
               <TextField
                 dir="rtl"
                 //   type="number"
                 // value={formatPrice(convertNumberToPersian(tourCostRange[1]))}
                 value={`تا ${formatPrice(convertNumberToPersian(tourCostRange[1]))} تومان`}
-                onChange={event => setTourCostRange([tourCostRange[0], Number(event.target.value)])}
+                onChange={event => {
+                  setFilters({ ...filters, tourCostRange: [tourCostRange[0], Number(tour.target.value)] });
+                  setTourCostRange([tourCostRange[0], Number(event.target.value)]);
+                }}
               />
             </div>
             <div className="search-tours__tour-filters__filters-row__item price-range">
