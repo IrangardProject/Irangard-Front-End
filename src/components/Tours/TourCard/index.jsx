@@ -16,7 +16,7 @@ function TourCard({ tour }) {
           <div className="tour-card__capacity">
             ظرفیت تور: {convertNumberToPersian(tour.capacity - tour.bookers.length)} نفر
           </div>
-          <div className="tour-card__cost">قیمت تور: {formatPrice(convertNumberToPersian(tour.cost))} ریال</div>
+          <div className="tour-card__cost">قیمت تور: {formatPrice(convertNumberToPersian(tour.cost))} تومان</div>
         </div>
         <div className="tour-card__date">
           <div className="tour-card__start">تاریخ رفت: {formatDate(tour.start_date)}</div>
