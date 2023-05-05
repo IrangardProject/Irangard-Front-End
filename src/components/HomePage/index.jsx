@@ -19,8 +19,8 @@ const HomePage = () => {
       </Helmet>
       <SearchBar />
       <CitySlider />
-      <FavouriteEvents/>
       <IranMap />
+      <FavouriteEvents/>
       <Testimonial />
       <ExperienceSlider />
       <Footer />
