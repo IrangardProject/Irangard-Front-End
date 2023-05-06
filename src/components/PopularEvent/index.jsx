@@ -9,6 +9,7 @@ import apiInstance from "../../config/axios";
 import { baseUrl } from "../../utils/constants";
 import { useEffect } from "react";
 import EventCard from './EventCard'
+import './styles.scss'
 
 const PopularEvent = () => {
     const [popularEvents,setPopularEvents] = useState([]);

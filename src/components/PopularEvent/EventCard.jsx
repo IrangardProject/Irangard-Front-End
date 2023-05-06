@@ -12,8 +12,7 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlined';
 import { Link } from "react-router-dom";
-import { GoOrganization } from 'react-icons/go';
-
+import PeopleIcon from '@mui/icons-material/People';
 const EventCard = ({event}) => {
     console.log('event in eventCard' , event);
     return (
@@ -86,7 +85,7 @@ const EventCard = ({event}) => {
                                 <span >   محل برگزاری  : &nbsp; </span> {event.city} 
                             </Typography>
                             <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
-                                <GoOrganization color="primary" sx={{fontSize:"15px"}}/>
+                                <PeopleIcon color="primary" sx={{fontSize:"15px"}}/>
                                 <span >  برگزارکننده : &nbsp; </span> {event.organizer} 
                             </Typography>
                             <Typography
