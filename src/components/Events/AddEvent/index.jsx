@@ -7,7 +7,8 @@ import Button from 'src/components/Button';
 import useAuth from 'src/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from 'src/utils/constants';
-import { AddEventSteps as Steps, eventTypes, eventCategories } from './info';
+import { AddEventSteps as Steps } from './info';
+import { eventTypes, eventCategories } from 'src/utils/constants'
 import { BaseInfoSection, MapSection, TimeAndDateSection, AdditionalInfoSection } from './Sections';
 import { useAddEvent, updateEvent } from 'src/api/Events';
 import './styles.scss';

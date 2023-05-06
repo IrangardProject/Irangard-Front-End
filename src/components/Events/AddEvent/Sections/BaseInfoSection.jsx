@@ -5,10 +5,9 @@ import { useMediaQuery, Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
 import Button from 'src/components/Button';
-import {eventTypes, eventCategories} from '../info';
+import { eventTypes, eventCategories } from 'src/utils/constants';
 
 const TagList = ({ tags, onDeleteTag }) => {
-  // console.log('the tags: ', typeof tags, tags);
   return (
     <div className="user-tags">
       {tags.map(tag => (
