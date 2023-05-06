@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import {
   RiMarkPenLine,
@@ -8,22 +8,37 @@ import {
   RiShipLine,
   RiAncientPavilionFill,
 } from 'react-icons/ri';
-import { BsCalendarEvent } from 'react-icons/bs';
+import { BsCalendarEvent, BsList } from 'react-icons/bs';
+import { MdPlace } from 'react-icons/md';
 import Navbar from '../Navbar';
 import './style.scss';
 
 const Header = () => {
+  const [thingsToDoSearchOpen, setThingsToDoSearchOpen] = useState(false);
+  const openThingsToDoSearchHandler = () => {
+    setThingsToDoSearchOpen(true);
+  }
+
   return (
     <>
       <div className="header__nav-items-wrapper">
-        <Link to="/Search?place_type=0" className="header__nav-item">
+        {/* <Link to="/Search?place_type=0" className="header__nav-item">
           <div className="txt">رستوران‌ها</div>
           <RiRestaurantLine size={20} />
         </Link>
         <Link to="/Search?place_type=1" className="header__nav-item">
           <div className="txt">اقامتگاه‌ها</div>
           <RiHome3Line size={20} />
+        </Link> */}
+        <Link to="/Search" className="header__nav-item">
+          <div className="txt">مکان‌ها</div>
+          <MdPlace size={20} />
         </Link>
+
+        <button className="header__nav-item" onClick={openThingsToDoSearchHandler}>
+          <div className="txt">انجام‌دادنی‌ها</div>
+          <BsList size={20} />
+        </button>
 
         <Link to="tours" className="header__nav-item">
           <div className="txt">تورها</div>
