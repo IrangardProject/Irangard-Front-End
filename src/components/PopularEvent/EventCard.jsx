@@ -93,8 +93,8 @@ const EventCard = ({event}) => {
                                 {/*ساعت شروع و ساعت پایان */}
                                 <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
                                     <DateRangeIcon color="primary" sx={{fontSize:"15px"}}/>
-                                    <span >  ساعت برگزاری : &nbsp; </span> {event.start_time} 
-                                    <span >  &nbsp; </span>تا  {event.end_time}
+                                    <span >  ساعت شروع : &nbsp; </span> {event.start_time} 
+                                    
                                 </Typography>
                             </Box>
                             {/* <Typography
