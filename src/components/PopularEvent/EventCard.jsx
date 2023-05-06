@@ -13,16 +13,17 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlined';
 import { Link } from "react-router-dom";
 import PeopleIcon from '@mui/icons-material/People';
+import DateRangeIcon from '@mui/icons-material/DateRange';
 const EventCard = ({event}) => {
     console.log('event in eventCard' , event);
     return (
         <Card
             sx={{
-                marginRight:'100px',
+                // marginRight:'100px',
                 m: 2,
                 display: "flex",
                 borderRadius: "10px",
-                maxWidth: "80%",
+                width: "80%",
                 boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.2)",
                 transition: "all 0.3s ease-in-out",
                 "&:hover": {
@@ -88,7 +89,15 @@ const EventCard = ({event}) => {
                                 <PeopleIcon color="primary" sx={{fontSize:"15px"}}/>
                                 <span >  برگزارکننده : &nbsp; </span> {event.organizer} 
                             </Typography>
-                            <Typography
+                            <Box>
+                                {/*ساعت شروع و ساعت پایان */}
+                                <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
+                                    <DateRangeIcon color="primary" sx={{fontSize:"15px"}}/>
+                                    <span >  ساعت برگزاری : &nbsp; </span> {event.start_time} 
+                                    <span >  &nbsp; </span>تا  {event.end_time}
+                                </Typography>
+                            </Box>
+                            {/* <Typography
                               component="div"
                               variant="caption"
                               color="text.secondary"
@@ -100,7 +109,7 @@ const EventCard = ({event}) => {
                                 overflow: "hidden",
                               }}
                               dangerouslySetInnerHTML={{__html: event.description}}
-                            />
+                            /> */}
                         </CardContent>
                     </Box>
                 </Grid>
