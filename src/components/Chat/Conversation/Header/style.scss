@@ -2,9 +2,20 @@
 @import '../../scss/common';
 
 .rcw-conversation-container {
-
+  .BackIcon{
+    cursor: pointer;
+    // padding: 1px;
+    color: #054751;
+    border-radius: 50%;
+    border: 1px solid #054751 ;
+    background-color: rgb(180, 180, 180);
+  }
+  .BackIcon:hover{
+    color: aliceblue;
+    background-color: #054751;
+  }
   .rcw-header {
-    background-color: $turqois-1;
+    background-color: $blue;
     border-radius: 10px 10px 0 0;
     color: $white;
     display: flex;
@@ -21,6 +32,12 @@
 
   .rcw-close-button {
     display: none;
+  }
+  .header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
   }
 
   .avatar {
