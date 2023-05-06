@@ -23,7 +23,6 @@ function ToursList() {
   const isMobile = useMobile();
   const isMobileFilters = useMobileFilters();
   const [showFilters, setShowFilters] = useState(true);
-  // const [primaryTourType, setPrimaryTourType] = useState('');
 
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,71 +30,7 @@ function ToursList() {
   const [tourTypeParam, setTourTypeParam] = useState(urlSearchParams.get('tour_type'));
   console.log('the tourTypeParam', tourTypeParam, typeof tourTypeParam);
 
-  const updateResult = async (e, query) => {
-    console.log('in update result');
-    if (e) e.preventDefault();
-    // let query = '';
-    // for (const [key, value] of searchParams) {
-    //   console.log('filterKeys[key]', filterKeys[key]);
-    //   console.log('the key is: ', key);
-    //   query += `${filterKeys[key] ?? key}=${value}&`;
-    // }
-    // // console.log("the search params: ", searchParams);
-
-    // console.log('this is the query: ', query);
-
-    setLoading(true);
-    await apiInstance.get(`tours/?${query}`).then(res => {
-      console.log('this is the res: ', res.data['results']);
-      setData(res.data['results']);
-      setLoading(false);
-    });
-  };
-
-  // useEffect(() => {
-  //   console.log('in the useEffect');
-  //   const searchParams = new URLSearchParams(location.search);
-  //   const tourTypeParam = searchParams.get('tour_type');
-  //   if (tourTypeParam) {
-  //     let d = searchParams;
-  //     let query = '';
-  //     d.set('tour_type', tourTypeParam);
-  //     for (const [key, value] of d) {
-  //       console.log('the key is: ', key);
-  //       console.log('the value is: ', value);
-  //       query += `${key}=${value}&`;
-  //     }
-  //     setSearchParams(d);
-  //     console.log('this is the query: ', query);
-  //     updateResult(null, query);
-  //   }
-
-  // updateResult();
-  // setPrimaryTourType(tourTypeParam);
-  // console.log("the tour type received from the url: " + tourTypeParam);
-  // }, []);
-
   useEffect(() => {
-    // console.log('in the useEffect, the tourTypeParam: ', tourTypeParam);
-    // console.log('the tour type received from the url: ' + tourTypeParam);
-    // const searchParams = new URLSearchParams(location.search);
-    // const tourTypeParam = searchParams.get('tour_type');
-    // setTourTypeParam(searchParams.get('tour_type'));
-    // console.log("the tourTypeParam", tourTypeParam);
-    // if (tourTypeParam) {
-    //   let d = searchParams;
-    //   let query = '';
-    //   d.set('tour_type', tourTypeParam);
-    //   for (const [key, value] of d) {
-    //     console.log('the key is: ', key);
-    //     console.log('the value is: ', value);
-    //     query += `${key}=${value}&`;
-    //   }
-    //   setSearchParams(d);
-    //   console.log('this is the query: ', query);
-    //   updateResult(null, query);
-    //   // setTourTypeParam(null);
-    // } else {
     apiInstance
       .get('/tours')
       .then(res => res.data)
@@ -108,7 +43,6 @@ function ToursList() {
         console.log(error);
       })
       .finally(() => setLoading(false));
-    // }
     getSpecialUserTours();
   }, []);
 
@@ -165,7 +99,11 @@ function ToursList() {
                   </Button>
                 </div>
               )}
-              <TourFilters showTourFilters={showFilters} setTourData={setData} primaryTourType={Number(tourTypeParam) + 1} />
+              <TourFilters
+                showTourFilters={showFilters}
+                setTourData={setData}
+                primaryTourType={Number(tourTypeParam) + 1}
+              />
               <div className="search-tours__tours-list__tours">
                 {data.length > 0 ? (
                   data.map((tour, index) => <TourCard key={index} tour={tour} />)

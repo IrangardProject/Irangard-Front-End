@@ -7,16 +7,8 @@ import Input from 'src/components/Input';
 import persian from 'react-date-object/calendars/persian';
 import persian_fa from 'react-date-object/locales/persian_fa';
 import { convertNumberToPersian, convertJalaliDateToGeorgian, formatPrice } from 'src/utils/formatters';
-import { useSearchParams, useLocation } from 'react-router-dom';
-import {
-  MenuItem,
-  Select,
-  Switch,
-  Chip,
-  Slider,
-  TextField,
-  InputAdornment,
-} from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
+import { MenuItem, Select, Slider, TextField } from '@mui/material';
 import { MdSearch } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { tourCategories } from 'src/utils/constants';
@@ -56,28 +48,10 @@ const TourFilters = ({ showTourFilters, setTourData, primaryTourType }) => {
   const [endDateBlured, setEndDateBlured] = useState(false);
   const [tourCostRange, setTourCostRange] = useState([0, 200000000]);
 
-  // const location = useLocation();
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
 
-  // useEffect(() => {
-  //   const searchParams = new URLSearchParams(location.search);
-  //   const tourTypeParam = searchParams.get('tour_type');
-  //   // setTourType(tourTypeParam);
-  //   // let d = searchParams;
-  //   // d.set('start_date__gte', convertJalaliDateToGeorgian(tourTypeParam));
-  //   // for (const [key, value] of d) {
-  //   //   console.log('the key is: ', key);
-  //   //   console.log('the value is: ', value);
-  //   // }
-  //   // setSearchParams(d);
-  //   // updateResult();
-  //   console.log("the tour type is: ", tourTypeParam)
-  //   setFilters({ ...filters, type: tourTypeParam })
-  // }, [location]);
-
   useEffect(() => {
-    // console.log("in the use effect in TourFilters, the tour type is: ", tourType)
     let d = searchParams;
     console.log(d);
     console.log('the start date is: ', filters.startDate);
@@ -124,14 +98,7 @@ const TourFilters = ({ showTourFilters, setTourData, primaryTourType }) => {
   useEffect(() => {
     console.log('updating the info');
     console.log('the filters are: ', filters);
-    // console.log("the tourType in TourFilters: ", primaryTourType);
-    // const isTrue = !primaryTourType;
-    // console.log('isTrue: ', isTrue);
-    // if (!primaryTourType) {
     updateResult();
-    // } else {
-    //   setPrimaryTourType(null);
-    // }
   }, [filters]);
 
   const cancelFiltersHandle = () => {
