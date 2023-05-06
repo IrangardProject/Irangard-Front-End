@@ -20,7 +20,7 @@ const HomePage = () => {
       </Helmet>
       <SearchBar />
       <CitySlider />
-      <FavouriteEvents/>
+      <FavouriteEvents />
       <IranMap />
       <Testimonial />
       <ExperienceSlider />
