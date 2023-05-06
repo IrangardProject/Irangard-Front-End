@@ -22,7 +22,6 @@ const HomePage = () => {
       <SearchBar />
       <CitySlider />
       <IranMap />
-      <IranMap />
       <FavouriteEvents/>
       <PopularEvent/>
       <Testimonial />
