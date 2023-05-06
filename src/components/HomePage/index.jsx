@@ -10,6 +10,7 @@ import Footer from 'src/components/Footer';
 import Testimonial from 'src/components/Testimonial';
 import FavouriteEvents from '../FavouriteEvent';
 import TourCategories from 'src/components/TourCategories';
+import PopularEvent from '../PopularEvent';
 
 const HomePage = () => {
   return (
@@ -21,7 +22,9 @@ const HomePage = () => {
       <SearchBar />
       <CitySlider />
       <IranMap />
+      <IranMap />
       <FavouriteEvents/>
+      <PopularEvent/>
       <Testimonial />
       <ExperienceSlider />
       <TourCategories />
