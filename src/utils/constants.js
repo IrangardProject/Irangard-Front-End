@@ -14,5 +14,6 @@ export const tourCategories = [
   { label: 'طبیعت گردی', value: 'nature' },
   { label: 'کویری', value: 'desert' },
   { label: 'قطاری', value: 'train' },
+  { label: 'یک روزه', value: 'oneday' },
   { label: 'سایر', value: 'other' },
 ];
