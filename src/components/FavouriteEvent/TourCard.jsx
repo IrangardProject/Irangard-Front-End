@@ -11,11 +11,13 @@ import {
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlined';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { Link } from "react-router-dom";
+import './index.scss';
 
 
 const TourCard = ({tour}) => {
-
+    console.log('tour',tour);
     return (
         <Card
             sx={{
@@ -81,22 +83,36 @@ const TourCard = ({tour}) => {
                                 </Link>
                             </Box>
                             <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
-                                <AirportShuttleOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
-                                <span>   ظرفیت تور  </span>{tour.capacity} نفر
+                                <div className="tourCost">
+                                    <AirportShuttleOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
+                                    <div className="tourCost_span">
+                                        <span> ظرفیت  تور </span><span> </span>&nbsp;
+                                        <span className="price">{tour.capacity}</span>&nbsp;<span>نفر</span>
+                                    </div>
+                                </div>
                             </Typography>
                             <Typography
                               component="div"
                               variant="caption"
-                              color="text.secondary"
+                              color="text"
                               sx={{
                                 fontSize: "12px",
-                                display:'-webkit-box',
-                                WebkitBoxOrient: 'vertical',
-                                WebkitLineClamp: 1,
+                                display: 'flex',
+                                alignItems: 'center',
+                                '-webkit-box-orient': 'vertical',
+                                '-webkit-line-clamp': 1,
                                 overflow: "hidden",
                               }}
-                              dangerouslySetInnerHTML={{__html: tour.description}}
-                            />
+                              >
+                                <div className="tourCost">
+                                    <AttachMoneyIcon color="primary" sx={{fontSize:"15px"}}/>
+                                    <div className="tourCost_span">
+                                        <span> هزینه  تور </span><span> </span>&nbsp;
+                                        <span className="price">{tour.cost}</span>&nbsp;<span>ریال</span>
+
+                                    </div>
+                                </div>
+                              </Typography>
                         </CardContent>
                     </Box>
                 </Grid>
@@ -104,14 +120,14 @@ const TourCard = ({tour}) => {
                     sx={{
                         display: "flex",
                         justifyContent:"center",
-                        padding :'0px 10px 10px 10px'
+                        padding :'0px 10px 30px 10px'
                     }}>
                     <Button
                         variant="contained"
-                        color="primary"
                         endIcon={<KeyboardArrowLeftIcon />}
                         sx={{
                             borderRadius:"10px",
+                            // width:"100%",
                         }}
                     >
                         <Link to={`/tours/${tour.id}`} style={{textDecoration:"none",color:"white"}}>

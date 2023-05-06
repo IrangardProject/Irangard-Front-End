@@ -1,7 +1,24 @@
 @import 'src/theme/main.scss';
 .tourRecomended{
-  margin-right: 50px;
+  // margin-right: 50px;
+  padding: 16px;
+}
+.tourCost{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
+}
+.tourCost_span{
+  margin-right: 1px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.tourCost_span .price{
+  font-size: 16px;
+  // font-weight:1;
+  // color: #0dd075;
 }
 .tourRecomended h2{
   font-size: 26px;
@@ -45,4 +62,8 @@ div.tourRecomended .swiper-pagination {
 
 
 
-
+@media (max-width: 600px) {
+  .MuiButton-root {
+    width: 100%;
+  }
+}
