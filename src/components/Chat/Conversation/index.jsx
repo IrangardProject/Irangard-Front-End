@@ -8,100 +8,115 @@ import useAuth from 'src/context/AuthContext';
 import { baseUrl } from '../../../utils/constants';
 import './style.scss';
 import apiInstance from '../../../config/axios';
+import toast from 'react-hot-toast';
 
 export default function Conversation(props) {
   const [messageNumber, setMessageNumber] = useState(0);
-  // const [messages, setMessages] = useState(props.messages);
   const [messages, setMessages] = useState([]);
+  // console.log('initial messages:', messages);
+
   const updateMessages = (sendMessage, message) => {
     setMessageNumber(messageNumber + 1);
-    setMessages([...messages, sendMessage(message)]);
+    setMessages(prevMessages => [...prevMessages, sendMessage(message)]);
+    // console.log('updated messages:', messages);
   };
+  
   const chatSocket = useRef(null);
   const auth = useAuth()
-  console.log(props.roomId);
-  // object room make 
-  // get id of romm 
-  // const fetchMessages = async () => {
-  //   try {
-  //     if (auth && auth.user && auth.user.username && !chatSocket.current) {
-  //       const newChatSocket = new WebSocket(
-  //         'wss://' +
-  //         'api.quilco.ir'+
-  //         '/chat/room/' +
-  //         // message 
-  //         auth.user.username + '_'+ props.contact_username + 
-  //         // rood id 
-  //         '/'
-  //       );
-        
-  //       console.log('newChatSocket',newChatSocket);
-        
-  //       newChatSocket.onclose = function (e) {
-  //         console.log('The socket close unexpectadly', e);
-  //       };
-        
-  //       chatSocket.current = newChatSocket;
-        
-  //       const response = await apiInstance.get(`${baseUrl}/chat/room/messages/${auth.user.username + '_'+ props.contact_username }`);
-  //       setMessages(response.data);
-  //       console.log('messages', messages);
-  //     }
-  //   } catch (error) {
-  //     console.log('error',error);
-  //   }
-  //   // auth, chatSocket, props.contact_username
-  // };
-  
     
-    // fetchMessages();
+    const addUserToRoom = async(userId,roomId) =>{
+      try {
+        const response = await apiInstance.post(`${baseUrl}/message/add/user/${userId}/room/${roomId}`);
+      } catch (error) {
+        console.log('error',error);
+      }
+    }
+
+    const connecttionwss = async(room_ID) =>{
+      try {
+          if (auth && auth.user && auth.user.id ) {
+            const newChatSocket = new WebSocket(`wss://api.quilco.ir/ws/${room_ID}/`);
+            newChatSocket.onclose = function (e) {
+              toast.error( 'ارتباط با سرور قطع شد' )
+              console.log(e);
+            };
+            const response = await apiInstance.get(`${baseUrl}/message/room/chats/${room_ID}`);
+            setMessages(response.data);
+            // console.log('messages after fetching:', messages);
+            chatSocket.current = newChatSocket;
+            chatSocket.current.onmessage = function (e) {
+              const data = JSON.parse(e.data);
+              // console.log('received message:', data.message);
+              updateMessages(
+                message => ({
+                  room: room_ID ,
+                  message: message,
+                  userid : auth.user.id,
+                }),
+                data.message.filter((message) => message.userid !== auth.user.id)
+              );
+            };
+          }
+      } catch (error) {
+        console.log('error',error);
+      }
+    }
     
-    console.log(props.contact_username);
-    console.log('converstaion.js');
+
+    
+    
+    
     useEffect(() => {
-      console.log('useEffect');
-    },[]);
+      if (props.roomId === 0){
+        connecttionwss(props.hasRoomId);
+      }
+      else{
+        connecttionwss(props.roomId);
+        addUserToRoom(auth.user.id,props.roomId);
+        addUserToRoom(props.contact_id,props.roomId);
+      }
+    },[ props.roomId,auth.user.id,props.contact_id ]);
   
   
   const handleNewUserMessage = message => {
-    console.log('sent',message,chatSocket.current);
+    // console.log('sending message:', message);
+    let sendId = 0;
+    if (props.roomId ===0) {
+      sendId = props.hasRoomId
+    }
+    else{
+      sendId = props.roomId ;
+    }
+    // const data = JSON.stringify({
+    //   message: message,
+    //   userid : auth.user.id,
+    //   room : sendId, 
+    //   // sender_type: 'CLIENT',
+    // })
     chatSocket.current.send(
       JSON.stringify({
         message: message,
-        username: auth.user.username,
-        room_name: auth.user.username,
-        sender_type: 'CLIENT',
+        userid : auth.user.id,
+        room : sendId, 
+        // sender_type: 'CLIENT',
       })
     );
-    // console.log("sent");
+    // console.log('sent message:', message);
   };
-  // chatSocket=chatSocket.current
-  // messages=messages
 
-  props.chatSocket.onmessage = function (e) {
-    console.log('onmessage');
-    const data = JSON.parse(e.data);
-    // console.log(data);
-    if (data.message) {
-      console.log(data);
-      if (data.sender_type === 'SERVER') {
-        setMessages([...messages, { message: data.message ,sender_type: 'SERVER',showTimeStamp:false}]);
-      }
-    } else {
-      alert('The message is empty!');
-    }
-  };
 
   return (
     <div id="rcw-conversation-container" className={cn('rcw-conversation-container')} aria-live="polite">
-      <Header title={props.title} subtitle={props.subtitle} />
-      {/* <Messages
+      <Header setConverstaion = {props.setConverstaion} setShowChat={props.setShowChat} conversation = {props.converstaion} showChat={props.showChat} title={props.title} subtitle={props.subtitle} />
+      <Messages
+        userid = {auth.user.id}
         messages={messages}
         messageNumber={messageNumber}
         profileAvatar={props.profileAvatar}
         profileClientAvatar={props.profileClientAvatar}
         showTimeStamp={props.showTimeStamp}
-      /> */}
+        // sender_type={'CLIENT'}
+      />
 
       <Sender
         updateMessages={updateMessages}

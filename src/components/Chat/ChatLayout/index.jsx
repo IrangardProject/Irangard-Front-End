@@ -7,6 +7,7 @@ import './style.scss';
 import profileAvatar from '../assets/avatar.png';
 import { baseUrl } from 'src/utils/constants';
 import apiInstance from '../../../config/axios'
+import useAuth from 'src/context/AuthContext';
 // import {defaultImg} from '../../../../public/images/img/defaultImg.jpg'
 export default function ChatLayout({
   title,
@@ -47,23 +48,19 @@ export default function ChatLayout({
   const [selectedUser, setSelectedUser] = useState(null);
   const [conversation, setConversation] = useState(false);
   const [idRoom , setIdRoom] = useState(0);
-  // console.log(selectedUser);
-  // console.log('idRoom',idRoom);
-  
-  // const []
+  const [hasRoomId,setHasRoomId] = useState(0)
+  const [showUserList, setShowUserList] = useState(true);
+
+  const auth = useAuth();
+
 
   const toggleShowChat= () =>{
     setShowChat(!showChat);
-    // console.log("showchat",showChat);
   };
-  console.log('users',users)
-  console.log(users);
   useEffect(() => {
-    // console.log('useEffect called');
     apiInstance.get(`${baseUrl}/accounts/users`)
     .then((res) =>{
       setUsers(res.data)
-      // console.log('res.data',res.data);
     })
     .catch((err) => {
       console.log(err);
@@ -77,35 +74,34 @@ export default function ChatLayout({
     return user.username.toLowerCase().includes(searchTerm.toLowerCase());
   })
 
-  const makeRoom = async() =>{
-    console.log('make room called');
-    await apiInstance.get(`${baseUrl}/message/room`,{
-      name : " "
-    })
-    .then((res) =>{
-      console.log(res.data);
-      setIdRoom('id',res.data[0].id);
-      // setIdRoom(res.data[0].id);
-    })
-    .catch((err) => {
-      console.log('err',err);
-    })
-  }
-  console.log('idRoom',idRoom);
+
+  
   const handleUserClick = async (user) => {
     setSelectedUser(user);
-    try {
-      const res = await apiInstance.get(`${baseUrl}/message/room` , {
-          name  : ""
+    setShowUserList(false);
+    setShowChat(true);
+     
+    const {data} =await apiInstance.post(`${baseUrl}/message/has/room`,{
+      user_one: user.id ,
+      user_two: auth.user.id
+    })
+    console.log(data);
+    if (data.room_id ==='null') {
+      const res = await apiInstance.post(`${baseUrl}/message/room/` , {
+        name  : `${user.username + auth.user.username}`,
       }
-    )
-      setIdRoom(res.data[0].id);
-      setConversation(true);
+      )
+      setIdRoom(res.data.id);
+    }else{
+      setHasRoomId(data.room_id)
+    }
+    setConversation(true);
+    try {
+      
+      
   } catch (error) {
       console.log(error);
     }
-    // makeRoom();
-    console.log('user clicked' , user.id);
   };
   const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
   
@@ -119,31 +115,21 @@ export default function ChatLayout({
     >
         
       {showChat && (
-        // instead of showing converstion I want to show a list of users and when I click on a user it should show the conversation with that user
-        // <Conversation
-        //   title={title}
-        //   subtitle={subtitle}
-        //   senderPlaceHolder={senderPlaceHolder}
-        //   handleNewUserMessage={handleNewUserMessage}
-        //   profileAvatar={profileAvatar}
-        //   chatSocket={chatSocket}
-        //   messages={messages}
-        // />
         <>
-        
         {conversation ? <Conversation 
+          setConverstaion={setConversation}
+          showChat={showChat}
           title={title}
           subtitle={subtitle}
           senderPlaceHolder={senderPlaceHolder}
-          // handleNewUserMessage={handleNewUserMessage}
           profileAvatar={profileAvatar}
-          // chatSocket={chatSocket}
-          // messages={messages}
-          contact_username = {selectedUser.username}
+          contact_id = {selectedUser.id}
           roomId = {idRoom}
+          hasRoomId = {hasRoomId}
+          setShowChat={setShowChat}
         /> : null}
 
-          {/* if converstaion true hide this section  */}
+          
           {
             conversation === false ? 
               <div>
@@ -160,10 +146,10 @@ export default function ChatLayout({
           {searchTerm === '' ? (
             <div className=''>
               
-              {users.map((user) => {
-                if(user.username === 'admin' && user.is_admin === true){
+              {users.map((user,index) => {
+                if(user.username === 'admin' && user.is_admin === true && user.username !== auth.user.username ){
                   return (
-                    <div onClick={() => handleUserClick(user)} className='user'>
+                    <div key={index} onClick={() => handleUserClick(user)} className='user'>
                       <img className='user_img' src={user.image !== '' ? user.image : defaultImg} alt="userIamge" />
                       <p>{user.username}</p>
                     </div>
@@ -174,14 +160,16 @@ export default function ChatLayout({
           ) : (
             <div className=''>
               {
-                filteredUsers.map((user) => {
+                filteredUsers.map((user,index) => {
                   
-                  return (
-                    <div onClick={() => handleUserClick(user)} className='user'>
-                      <img className='user_img' src={user.image !== '' ? user.image : defaultImg}  alt="userIamge" />
-                      <p>{user.username}</p>
-                    </div>
-                  )
+                  if (user.username !== auth.user.username) {
+                    return (
+                      <div key={index} onClick={() => handleUserClick(user)} className='user'>
+                        <img className='user_img' src={user.image !== '' ? user.image : defaultImg}  alt="userIamge" />
+                        <p>{user.username}</p>
+                      </div>
+                    )
+                  }
                 })
               }
             </div>

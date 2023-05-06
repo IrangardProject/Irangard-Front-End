@@ -11,21 +11,19 @@ import {
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlined';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { Link } from "react-router-dom";
-import './index.scss';
-
-
-const TourCard = ({tour}) => {
-    console.log('tour',tour);
+import PeopleIcon from '@mui/icons-material/People';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+const EventCard = ({event}) => {
+    console.log('event in eventCard' , event);
     return (
         <Card
             sx={{
-                marginRight:'100px',
+                // marginRight:'100px',
                 m: 2,
                 display: "flex",
                 borderRadius: "10px",
-                maxWidth: "80%",
+                width: "80%",
                 boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.2)",
                 transition: "all 0.3s ease-in-out",
                 "&:hover": {
@@ -39,12 +37,13 @@ const TourCard = ({tour}) => {
             
             <Grid container>
                 <Grid>
-                    <Link to={`/tours/${tour.id}`} >
+                    <Link to={`/events/${event.id}`} >
                         <CardMedia 
+                            
                             component="img"
                             // className={}
-                            image={tour.image}
-                            alt="tour image"
+                            image={event.images[0].image}
+                            alt="event image"
                         />
                     </Link>
                 </Grid>
@@ -67,7 +66,7 @@ const TourCard = ({tour}) => {
                                     marginBottom: "10px",
                                 }}
                             >
-                                <Link to={`/tours/${tour.id}`} >
+                                <Link to={`/events/${event.id}`} >
                                     <Typography
                                         noWrap
                                         component="div"
@@ -78,41 +77,39 @@ const TourCard = ({tour}) => {
                                             // fontSize: "12px",
                                         }}
                                     >
-                                        {tour.title}
+                                        {event.title}
                                     </Typography>
                                 </Link>
                             </Box>
                             <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
-                                <div className="tourCost">
-                                    <AirportShuttleOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
-                                    <div className="tourCost_span">
-                                        <span> ظرفیت  تور </span><span> </span>&nbsp;
-                                        <span className="price">{tour.capacity}</span>&nbsp;<span>نفر</span>
-                                    </div>
-                                </div>
+                                <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
+                                <span >   محل برگزاری  : &nbsp; </span> {event.city} 
                             </Typography>
-                            <Typography
+                            <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
+                                <PeopleIcon color="primary" sx={{fontSize:"15px"}}/>
+                                <span >  برگزارکننده : &nbsp; </span> {event.organizer} 
+                            </Typography>
+                            <Box>
+                                {/*ساعت شروع و ساعت پایان */}
+                                <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
+                                    <DateRangeIcon color="primary" sx={{fontSize:"15px"}}/>
+                                    <span >  ساعت شروع : &nbsp; </span> {event.start_time} 
+                                    
+                                </Typography>
+                            </Box>
+                            {/* <Typography
                               component="div"
                               variant="caption"
-                              color="text"
+                              color="text.secondary"
                               sx={{
                                 fontSize: "12px",
-                                display: 'flex',
-                                alignItems: 'center',
-                                '-webkit-box-orient': 'vertical',
-                                '-webkit-line-clamp': 1,
+                                display:'-webkit-box',
+                                WebkitBoxOrient: 'vertical',
+                                WebkitLineClamp: 1,
                                 overflow: "hidden",
                               }}
-                              >
-                                <div className="tourCost">
-                                    <AttachMoneyIcon color="primary" sx={{fontSize:"15px"}}/>
-                                    <div className="tourCost_span">
-                                        <span> هزینه  تور </span><span> </span>&nbsp;
-                                        <span className="price">{tour.cost}</span>&nbsp;<span>ریال</span>
-
-                                    </div>
-                                </div>
-                              </Typography>
+                              dangerouslySetInnerHTML={{__html: event.description}}
+                            /> */}
                         </CardContent>
                     </Box>
                 </Grid>
@@ -120,18 +117,18 @@ const TourCard = ({tour}) => {
                     sx={{
                         display: "flex",
                         justifyContent:"center",
-                        padding :'0px 10px 30px 10px'
+                        padding :'0px 10px 10px 10px'
                     }}>
                     <Button
                         variant="contained"
+                        color="primary"
                         endIcon={<KeyboardArrowLeftIcon />}
                         sx={{
                             borderRadius:"10px",
-                            // width:"100%",
                         }}
                     >
-                        <Link to={`/tours/${tour.id}`} style={{textDecoration:"none",color:"white"}}>
-                            مشاهده تور
+                        <Link to={`/events/${event.id}`} style={{textDecoration:"none",color:"white"}}>
+                            مشاهده رویداد
                         </Link>
                     </Button>
                 </Grid>
@@ -140,4 +137,4 @@ const TourCard = ({tour}) => {
     );
 }
  
-export default TourCard;
+export default EventCard;
