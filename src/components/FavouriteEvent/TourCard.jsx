@@ -15,51 +15,7 @@ import { Link } from "react-router-dom";
 
 
 const TourCard = ({tour}) => {
-    // {capacity
-    //     : 
-    //     30
-    //     cost
-    //     : 
-    //     25000000
-    //     date_created
-    //     : 
-    //     "2023-04-07T22:14:24.620131+04:30"
-    //     description
-    //     : 
-    //     "<p>&nbsp;بازدید از کویر به همراه صبحانه و کمپ رایگان.</p>"
-    //     end_date
-    //     : 
-    //     "2023-05-25T00:00:00+04:30"
-    //     id
-    //     : 
-    //     9
-    //     image
-    //     : 
-    //     "http://api.quilco.ir/media/images/tours/4deb755cee572-c8d026f9871-5da42d3274.jpg"
-    //     is_booked
-    //     : 
-    //     false
-    //     is_expired
-    //     : 
-    //     false
-    //     owner
-    //     : 
-    //     {user: 31, total_revenue: 100000}
-    //     remaining
-    //     : 
-    //     0
-    //     start_date
-    //     : 
-    //     "2023-05-20T00:00:00+04:30"
-    //     title
-    //     : 
-    //     "تور کویر لوت"
-    //     total_revenue
-    //     : 
-    //     0
-    //     tour_type
-    //     : 
-    //     "1"}
+
     return (
         <Card
             sx={{
@@ -77,7 +33,6 @@ const TourCard = ({tour}) => {
                 
             }}
         >
-            {/* show the nae of section تور های پیشنهادس */}
 
             
             <Grid container>
