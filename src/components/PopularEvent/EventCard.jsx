@@ -14,6 +14,7 @@ import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlin
 import { Link } from "react-router-dom";
 import PeopleIcon from '@mui/icons-material/People';
 import DateRangeIcon from '@mui/icons-material/DateRange';
+import React from "react";
 const EventCard = ({event}) => {
     console.log('event in eventCard' , event);
     return (
@@ -42,7 +43,7 @@ const EventCard = ({event}) => {
                             
                             component="img"
                             // className={}
-                            image={event.images[0].image}
+                            image={event.images?.[0]?.image}
                             alt="event image"
                         />
                     </Link>
