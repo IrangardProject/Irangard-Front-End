@@ -8,19 +8,10 @@ import persian from 'react-date-object/calendars/persian';
 import persian_fa from 'react-date-object/locales/persian_fa';
 import { convertNumberToPersian, convertJalaliDateToGeorgian, formatPrice } from 'src/utils/formatters';
 import { useSearchParams } from 'react-router-dom';
-import {
-  Autocomplete,
-  Checkbox,
-  MenuItem,
-  Select,
-  Switch,
-  Chip,
-  Slider,
-  TextField,
-  InputAdornment,
-} from '@mui/material';
+import { MenuItem, Select, Slider, TextField } from '@mui/material';
 import { MdSearch } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { tourCategories } from 'src/utils/constants';
 
 const defaultFilters = {
   type: '',
@@ -40,27 +31,16 @@ const tourCostRangeMarks = [
   },
 ];
 
-const tourCategories = [
-  { label: 'فرهنگی', value: 'cultural' },
-  { label: 'ماجراجویی', value: 'adventural' },
-  { label: 'تفریحی', value: 'entertainment' },
-  { label: 'حیات وحش', value: 'wildlife' },
-  { label: 'آشپزی', value: 'culinary' },
-  { label: 'معنوی', value: 'spiritual' },
-  { label: 'عکاسی', value: 'photography' },
-  { label: 'تاریخی', value: 'historical' },
-  { label: 'طبیعت گردی', value: 'nature' },
-  { label: 'سفرهای آموزشی', value: 'educational' },
-  { label: 'سایر', value: 'other' },
-];
-
-const TourFilters = ({ setTourData }) => {
+const TourFilters = ({ showTourFilters, setTourData, primaryTourType }) => {
+  console.log('the primary tour type is ' + primaryTourType);
   const filterKeys = {
     q: 'search',
   };
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filters, setFilters] = useState(defaultFilters);
+  const [filters, setFilters] = useState(
+    primaryTourType ? { ...defaultFilters, type: primaryTourType } : defaultFilters
+  );
   const [q, setQ] = useState(searchParams.get('title__contains') || '');
   const [isStartDateSelected, setIsStartDateSelected] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -141,102 +121,104 @@ const TourFilters = ({ setTourData }) => {
   };
 
   return (
-    <div className="search-tours__tour-filters">
-      <div className="search-tours__tour-filters__filters">
-        <div className="search-tours__tour-filters__filters-row">
-          <div className="search-tours__tour-filters__filters-row__item">
-            <Button className="cancel-filters-btn" variant="text" onClick={cancelFiltersHandle}>
-              <AiOutlineDelete style={{ color: 'black', fontSize: '17px', minWidth: '20px' }} />
-              <p className="cancel-filters-btn__text">حذف فیلتر ها</p>
-            </Button>
-          </div>
+    <>
+      {showTourFilters && (
+        <div className="search-tours__tour-filters">
+          <div className="search-tours__tour-filters__filters">
+            <div className="search-tours__tour-filters__filters-row">
+              <div className="search-tours__tour-filters__filters-row__item">
+                <Button className="cancel-filters-btn" variant="text" onClick={cancelFiltersHandle}>
+                  <AiOutlineDelete style={{ color: 'black', fontSize: '17px', minWidth: '20px' }} />
+                  <p className="cancel-filters-btn__text">حذف فیلتر ها</p>
+                </Button>
+              </div>
 
-          <hr className="filter-hr" />
+              <hr className="filter-hr" />
 
-          <div className="search-tours__tour-filters__header">
-            <form className="search-tours__filters" onSubmit={updateResult}>
-              <div className="search-tours__searchbar">
-                <div className="yellow-field">
-                  <MdSearch className="icon" />
-                  <input
-                    autoComplete="off"
-                    className="field-input"
-                    type="text"
-                    id="mainSearch"
-                    value={q}
-                    onChange={e => {
-                      let v = e.target.value;
-                      setQ(v);
-                      let d = searchParams;
-                      d.set('title__contains', v);
-                      setSearchParams(d);
+              <div className="search-tours__tour-filters__header">
+                <form className="search-tours__filters" onSubmit={updateResult}>
+                  <div className="search-tours__searchbar">
+                    <div className="yellow-field">
+                      <MdSearch className="icon" />
+                      <input
+                        autoComplete="off"
+                        className="field-input"
+                        type="text"
+                        id="mainSearch"
+                        value={q}
+                        onChange={e => {
+                          let v = e.target.value;
+                          setQ(v);
+                          let d = searchParams;
+                          d.set('title__contains', v);
+                          setSearchParams(d);
+                        }}
+                        placeholder="جست‌و‌جو برای تور..."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="search-submit">
+                    <button type="submit" className="search-submit__search-btn">
+                      <p>بگرد</p>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <hr className="filter-hr" />
+
+              <div className="search-tours__tour-filters__filters-row__item">
+                <div className="search-tours__tour-filters__filters-row__item from-to-price">
+                  <TextField
+                    dir="rtl"
+                    //   type="number"
+                    // value={formatPrice(convertNumberToPersian(tourCostRange[0]))}
+                    value={`از ${formatPrice(convertNumberToPersian(tourCostRange[0]))} تومان`}
+                    onChange={event => {
+                      setFilters({ ...filters, tourCostRange: [Number(tour.target.value), tourCostRange[1]] });
+                      setTourCostRange([Number(event.target.value), tourCostRange[1]]);
                     }}
-                    placeholder="جست‌و‌جو برای تور..."
+                  />
+                  <TextField
+                    dir="rtl"
+                    //   type="number"
+                    // value={formatPrice(convertNumberToPersian(tourCostRange[1]))}
+                    value={`تا ${formatPrice(convertNumberToPersian(tourCostRange[1]))} تومان`}
+                    onChange={event => {
+                      setFilters({ ...filters, tourCostRange: [tourCostRange[0], Number(tour.target.value)] });
+                      setTourCostRange([tourCostRange[0], Number(event.target.value)]);
+                    }}
+                  />
+                </div>
+                <div className="search-tours__tour-filters__filters-row__item price-range">
+                  <Slider
+                    value={tourCostRange}
+                    onChange={handleTourCostChange}
+                    min={0}
+                    max={200000000}
+                    step={500000}
+                    marks={tourCostRangeMarks}
                   />
                 </div>
               </div>
 
-              <div className="search-submit">
-                <button type="submit" className="search-submit__search-btn">
-                  <p>بگرد</p>
-                </button>
+              <hr className="filter-hr" />
+
+              <div className="search-tours__tour-filters__filters-row__item type-category">
+                <label className="search-tours__tour-filters__filters-row__item-label">دسته بندی تور</label>
+                <Select
+                  className="tour-filters__filters-row-item-select"
+                  value={filters.type}
+                  onChange={e => setFilters({ ...filters, type: e.target.value })}
+                  placeholder="دسته بندی تور"
+                >
+                  {tourCategories.map((category, idx) => (
+                    <MenuItem value={idx + 1}>{category.label}</MenuItem>
+                  ))}
+                </Select>
               </div>
-            </form>
-          </div>
-
-          <hr className="filter-hr" />
-
-          <div className="search-tours__tour-filters__filters-row__item">
-            <div className="search-tours__tour-filters__filters-row__item from-to-price">
-              <TextField
-                dir="rtl"
-                //   type="number"
-                // value={formatPrice(convertNumberToPersian(tourCostRange[0]))}
-                value={`از ${formatPrice(convertNumberToPersian(tourCostRange[0]))} تومان`}
-                onChange={event => {
-                  setFilters({ ...filters, tourCostRange: [Number(tour.target.value), tourCostRange[1]] });
-                  setTourCostRange([Number(event.target.value), tourCostRange[1]]);
-                }}
-              />
-              <TextField
-                dir="rtl"
-                //   type="number"
-                // value={formatPrice(convertNumberToPersian(tourCostRange[1]))}
-                value={`تا ${formatPrice(convertNumberToPersian(tourCostRange[1]))} تومان`}
-                onChange={event => {
-                  setFilters({ ...filters, tourCostRange: [tourCostRange[0], Number(tour.target.value)] });
-                  setTourCostRange([tourCostRange[0], Number(event.target.value)]);
-                }}
-              />
-            </div>
-            <div className="search-tours__tour-filters__filters-row__item price-range">
-              <Slider
-                value={tourCostRange}
-                onChange={handleTourCostChange}
-                min={0}
-                max={200000000}
-                step={500000}
-                marks={tourCostRangeMarks}
-              />
-            </div>
-          </div>
-
-          <hr className="filter-hr" />
-
-          <div className="search-tours__tour-filters__filters-row__item type-category">
-            <label className="search-tours__tour-filters__filters-row__item-label">دسته بندی تور</label>
-            <Select
-              className="tour-filters__filters-row-item-select"
-              value={filters.type}
-              onChange={e => setFilters({ ...filters, type: e.target.value })}
-              placeholder="دسته بندی تور"
-            >
-              {tourCategories.map((category, idx) => (
-                <MenuItem value={idx + 1}>{category.label}</MenuItem>
-              ))}
-            </Select>
-          </div>
-          {/* <div className="search-tours__tour-filters__filters-row__item type-category">
+              {/* <div className="search-tours__tour-filters__filters-row__item type-category">
               <label className="search-tours__tour-filters__filters-row__item-label">برچسب‌ها</label>
               <Autocomplete
                 className="tour-filters__filters-row-item-autocomplete"
@@ -259,65 +241,67 @@ const TourFilters = ({ setTourData }) => {
                 )}
               />
             </div> */}
-        </div>
-        <div className="search-tours__tour-filters__filters-row date-picker-filter">
-          <div className="search-tours__tour-filters__filters-row__item">
-            <Input
-              autoComplete="off"
-              onBlur={() => setStartDateBlured(true)}
-              onFocus={() => startDatePickerRef.current.openCalendar()}
-              onClick={() => startDatePickerRef.current.openCalendar()}
-              placeholder={isStartDateSelected ? 'انتخاب تاریخ شروع' : 'انتخاب تاریخ شروع'}
-              type="text"
-              id="start-date"
-              value={filters.startDate ? convertNumberToPersian(filters.startDate.toString()) : ''}
-            />
-            <div className="date-picker">
-              <DatePicker
-                ref={startDatePickerRef}
-                inputClass="date-input"
-                className="rmdp-mobile"
-                onChange={date => {
-                  setFilters({ ...filters, startDate: date });
-                  setIsStartDateSelected(true);
-                }}
-                calendar={persian}
-                locale={persian_fa}
-                minDate={new Date()}
-              />
+            </div>
+            <div className="search-tours__tour-filters__filters-row date-picker-filter">
+              <div className="search-tours__tour-filters__filters-row__item">
+                <Input
+                  autoComplete="off"
+                  onBlur={() => setStartDateBlured(true)}
+                  onFocus={() => startDatePickerRef.current.openCalendar()}
+                  onClick={() => startDatePickerRef.current.openCalendar()}
+                  placeholder={isStartDateSelected ? 'انتخاب تاریخ شروع' : 'انتخاب تاریخ شروع'}
+                  type="text"
+                  id="start-date"
+                  value={filters.startDate ? convertNumberToPersian(filters.startDate.toString()) : ''}
+                />
+                <div className="date-picker">
+                  <DatePicker
+                    ref={startDatePickerRef}
+                    inputClass="date-input"
+                    className="rmdp-mobile"
+                    onChange={date => {
+                      setFilters({ ...filters, startDate: date });
+                      setIsStartDateSelected(true);
+                    }}
+                    calendar={persian}
+                    locale={persian_fa}
+                    minDate={new Date()}
+                  />
+                </div>
+              </div>
+              <div className="search-tours__tour-filters__filters-row__item">
+                <Input
+                  autoComplete="off"
+                  onBlur={() => setEndDateBlured(true)}
+                  onFocus={() => endDatePickerRef.current.openCalendar()}
+                  onClick={() => {
+                    setShowDatePicker(true);
+                    endDatePickerRef.current.openCalendar();
+                  }}
+                  placeholder="انتخاب تاریخ پایان"
+                  type="text"
+                  id="end-date"
+                  value={filters.endDate ? convertNumberToPersian(filters.endDate.toString()) : ''}
+                />
+                <div className="date-picker">
+                  <DatePicker
+                    ref={endDatePickerRef}
+                    inputClass="date-input"
+                    className="rmdp-mobile"
+                    onChange={date => {
+                      setFilters({ ...filters, endDate: date });
+                    }}
+                    calendar={persian}
+                    locale={persian_fa}
+                    minDate={filters.startDate ? filters.startDate : new Date()}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          <div className="search-tours__tour-filters__filters-row__item">
-            <Input
-              autoComplete="off"
-              onBlur={() => setEndDateBlured(true)}
-              onFocus={() => endDatePickerRef.current.openCalendar()}
-              onClick={() => {
-                setShowDatePicker(true);
-                endDatePickerRef.current.openCalendar();
-              }}
-              placeholder="انتخاب تاریخ پایان"
-              type="text"
-              id="end-date"
-              value={filters.endDate ? convertNumberToPersian(filters.endDate.toString()) : ''}
-            />
-            <div className="date-picker">
-              <DatePicker
-                ref={endDatePickerRef}
-                inputClass="date-input"
-                className="rmdp-mobile"
-                onChange={date => {
-                  setFilters({ ...filters, endDate: date });
-                }}
-                calendar={persian}
-                locale={persian_fa}
-                minDate={filters.startDate ? filters.startDate : new Date()}
-              />
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

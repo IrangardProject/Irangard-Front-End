@@ -14,6 +14,7 @@ import { IconContext } from 'react-icons';
 import TourFilters from './TourFilters';
 import { BsFilterRight } from 'react-icons/bs';
 import Button from 'src/components/Button';
+import { useSearchParams, useLocation } from 'react-router-dom';
 
 function ToursList() {
   const [loading, setLoading] = useState(true);
@@ -22,6 +23,12 @@ function ToursList() {
   const isMobile = useMobile();
   const isMobileFilters = useMobileFilters();
   const [showFilters, setShowFilters] = useState(true);
+
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlSearchParams = new URLSearchParams(location.search);
+  const [tourTypeParam, setTourTypeParam] = useState(urlSearchParams.get('tour_type'));
+  console.log('the tourTypeParam', tourTypeParam, typeof tourTypeParam);
 
   useEffect(() => {
     apiInstance
@@ -92,7 +99,11 @@ function ToursList() {
                   </Button>
                 </div>
               )}
-              {showFilters && <TourFilters setTourData={setData} />}
+              <TourFilters
+                showTourFilters={showFilters}
+                setTourData={setData}
+                primaryTourType={Number(tourTypeParam) + 1}
+              />
               <div className="search-tours__tours-list__tours">
                 {data.length > 0 ? (
                   data.map((tour, index) => <TourCard key={index} tour={tour} />)

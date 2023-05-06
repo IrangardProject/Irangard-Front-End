@@ -9,7 +9,7 @@ import Input from 'src/components/Input';
 import persian from 'react-date-object/calendars/persian';
 import persian_fa from 'react-date-object/locales/persian_fa';
 import { convertNumberToPersian, isPersianNumber, convertJalaliDateToGeorgian } from 'src/utils/formatters';
-import { eventTypes, eventCategories } from 'src/components/Events/AddEvent/info';
+import { eventTypes, eventCategories } from 'src/utils/constants';
 import Button from 'src/components/Button';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { MdLocationPin, MdOutlineLocationOn, MdSearch } from 'react-icons/md';

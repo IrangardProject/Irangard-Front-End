@@ -1,0 +1,43 @@
+@import 'src/theme/main.scss';
+
+.tour-categories-container {
+  background-color: $c-black-20;
+}
+
+.tour-categories {
+    max-width: 1200px;
+    margin: 16px auto 64px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    &__title {
+      color: $c-black;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      margin: 16px 0 45px;
+      @media (max-width: 768px) {
+        font-size: 12px;
+        margin: 16px 0 24px;
+      }
+    }
+  
+    &__cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 8px;
+      margin: 0 75px;
+      margin-bottom: 10px;
+      &__slide {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 16px;
+        :hover {
+          box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+      }
+      @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fit, minmax(103px, 1fr));
+        margin: 0 20px;
+      }
+    }
+  }
