@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   RiMarkPenLine,
@@ -12,12 +12,14 @@ import { BsCalendarEvent, BsList } from 'react-icons/bs';
 import { MdPlace } from 'react-icons/md';
 import Navbar from '../Navbar';
 import './style.scss';
+import PlaceThingsToDoSearch from '../PlaceThingsToDoSearch';
+import Button from 'src/components/Button'
 
 const Header = () => {
   const [thingsToDoSearchOpen, setThingsToDoSearchOpen] = useState(false);
   const openThingsToDoSearchHandler = () => {
     setThingsToDoSearchOpen(true);
-  }
+  };
 
   return (
     <>
@@ -35,10 +37,16 @@ const Header = () => {
           <MdPlace size={20} />
         </Link>
 
-        <button className="header__nav-item" onClick={openThingsToDoSearchHandler}>
+        {/* <Button className="header__nav-item" onClick={openThingsToDoSearchHandler}>
           <div className="txt">انجام‌دادنی‌ها</div>
           <BsList size={20} />
-        </button>
+        </Button> */}
+        <div className="header__nav-item" onClick={openThingsToDoSearchHandler}>
+          <div className="txt">انجام‌دادنی‌ها</div>
+          <BsList size={20} />
+        </div>
+
+        <PlaceThingsToDoSearch open={thingsToDoSearchOpen} setOpen={setThingsToDoSearchOpen} />
 
         <Link to="tours" className="header__nav-item">
           <div className="txt">تورها</div>
