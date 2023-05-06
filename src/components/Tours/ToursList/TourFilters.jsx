@@ -21,6 +21,7 @@ import {
 } from '@mui/material';
 import { MdSearch } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { tourCategories } from 'src/utils/constants';
 
 const defaultFilters = {
   type: '',
@@ -38,20 +39,6 @@ const tourCostRangeMarks = [
     value: 200000000,
     label: 'بیشترین',
   },
-];
-
-const tourCategories = [
-  { label: 'فرهنگی', value: 'cultural' },
-  { label: 'ماجراجویی', value: 'adventural' },
-  { label: 'تفریحی', value: 'entertainment' },
-  { label: 'حیات وحش', value: 'wildlife' },
-  { label: 'آشپزی', value: 'culinary' },
-  { label: 'معنوی', value: 'spiritual' },
-  { label: 'عکاسی', value: 'photography' },
-  { label: 'تاریخی', value: 'historical' },
-  { label: 'طبیعت گردی', value: 'nature' },
-  { label: 'سفرهای آموزشی', value: 'educational' },
-  { label: 'سایر', value: 'other' },
 ];
 
 const TourFilters = ({ setTourData }) => {
