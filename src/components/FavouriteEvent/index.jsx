@@ -32,6 +32,8 @@ const RecommendedTour = () => {
   },[])
 
   return (
+    <div className='tourContainer'>
+
     <div className='tourRecomended'>
       <h2>تور های ایرانگرد</h2>
       <Swiper
@@ -68,6 +70,7 @@ const RecommendedTour = () => {
         <div className="swiper-button-next swiper-button-white"></div>
         <div className="swiper-button-prev swiper-button-white"></div>
       </Swiper>
+    </div>
     </div>
   );
 };
