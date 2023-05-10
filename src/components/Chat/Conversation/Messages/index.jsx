@@ -17,16 +17,13 @@ export default function Messages(props) {
   console.log('message property:', props);
   const auth = useAuth();
 
-  const isClient = type => {
-    console.log('type', type);
-    // return type == 'CLIENT';
-    if(auth.user.id === type ){
-      console.log('client');
-      return type == 'CLIENT'
+  const isClient = (type,sender_type='') => {
+    console.log()
+    if(auth.user.id === type || sender_type === 'CLIENT' ){
+      return true
       
     }else{
-      console.log('server');
-      return type == 'SERVER'
+      return false
     }
   };
 
@@ -36,24 +33,26 @@ export default function Messages(props) {
 
   return (
     <div id="messages" className="rcw-messages-container" ref={props.messageRef} dir="ltr">
-      {props.messages?.map((message, index) => (
+      {props.messages?.map((message, index) => {
         // console.log(message.userId,message.sender),
-        <div
-          id={`${isClient(message.userid) ? 'rcw-message-client-id' : 'rcw-message-server-id'}`}
-          className={`rcw-message ${isClient(message.userid) ? 'rcw-message-client' : 'rcw-message-server'}`}
+        console.log('isClient(props.userid',isClient(message.sender),message.sender,auth.user.id,message)
+
+       return(<div
+          id={`${isClient(message.sender,message.sender_type) ? 'rcw-message-client-id' : 'rcw-message-server-id'}`}
+          className={`rcw-message ${isClient(props.userid) ? 'rcw-message-client' : 'rcw-message-server'}`}
           // key={`${index}-${format(message.timestamp, 'hh:mm')}`}
           key={`${index}`}
         >
-          {(!isClient(message.sender) || isClient(message.userid)) && true && (
+          {(!isClient(message.sender) || isClient(props.userid)) && true && (
             <img
-              src={isClient(message.userid) ? auth.user.image || avatar : serverAvatar }
-              className={`rcw-avatar ${isClient(message.userid) ? 'rcw-avatar-client' : ''}`}
+              src={isClient(props.userid) ? auth.user.image || avatar : serverAvatar }
+              className={`rcw-avatar ${isClient(props.userid) ? 'rcw-avatar-client' : ''}`}
               alt="profile"
             />
           )}
-          <Message message={message} showTimeStamp={false} is_server={isClient(message.userid)}/>
-        </div>
-      ))}
+          <Message message={message} showTimeStamp={false} is_server={isClient(props.userid)}/>
+        </div>)
+})}
       <Loader typing={props.messages.length === 0} />
     </div>
   );

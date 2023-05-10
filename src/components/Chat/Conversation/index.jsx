@@ -52,6 +52,7 @@ export default function Conversation(props) {
                   room: room_ID ,
                   message: message,
                   userid : auth.user.id,
+                  sender:auth.user.id
                 }),
                 data.message.filter((message) => message.userid !== auth.user.id)
               );
