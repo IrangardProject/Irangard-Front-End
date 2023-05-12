@@ -14,6 +14,67 @@ import useAuth from '../../context/AuthContext';
 import EditProfileModal from '../EditProfileModal';
 import './style.scss';
 import defaultProfileImg from '../../assets/images/avatar.png';
+import { styled } from '@mui/material/styles';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+
+const StyledTabs = styled(props => (
+  <Tabs
+    sx={{ display: 'flex', justifyContent: 'center' }}
+    {...props}
+    TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
+  />
+))({
+  '& .MuiTabs-flexContainer': {
+    justifyContent: 'center',
+  },
+  '& .MuiTabs-indicator': {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    // alignItems: 'center',
+  },
+  '& .MuiTabs-indicatorSpan': {
+    maxWidth: 40,
+    width: '100%',
+    // backgroundColor: '#635ee7',
+    backgroundColor: '#000',
+  },
+});
+
+const StyledTab = styled(props => <Tab disableRipple {...props} />)(({ theme }) => ({
+  textTransform: 'none',
+  fontWeight: theme.typography.fontWeightRegular,
+  fontSize: theme.typography.pxToRem(15),
+  marginRight: theme.spacing(1),
+  // color: 'rgba(255, 255, 255, 0.7)',
+  color: '#000',
+  '&.Mui-selected': {
+    // color: '#fff',
+    color: '#000',
+  },
+  '&.Mui-focusVisible': {
+    // backgroundColor: 'rgba(100, 95, 228, 0.32)',
+    // backgroundColor: '#fff',
+    backgroundColor: '#000',
+  },
+}));
+
+const TabPanel = props => {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div role="tabpanel" hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} {...other}>
+      {value === index && (
+        <Box sx={{}}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+};
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -43,7 +104,7 @@ const Profile = () => {
       .get(`${baseUrl}/accounts/profile/${usernameQuery}`)
       .then(res => res.data)
       .then(data => {
-        console.log("the data received: ", data)
+        console.log('the data received: ', data);
         setData(data);
         // setData({
         //   ...data,
@@ -132,6 +193,12 @@ const Profile = () => {
       .then(data => {
         setData(data);
       });
+  };
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   return (
@@ -236,7 +303,37 @@ const Profile = () => {
           </div>
         </>
       )}
-      {!experiencesLoading && <ExperiencesList experiences={experiences} />}
+      {/* {!experiencesLoading && <ExperiencesList experiences={experiences} />} */}
+      {/* <div className="profile-tabs">
+        <div className="profile-tabs__tabs">
+          <div
+            className={`profile-tabs__tab ${tabIndex === 0 ? 'profile-tabs__tab--active' : ''}`}
+            onClick={() => handleTabClick(0)}
+          >
+            تجربیات
+          </div>
+          <div
+            className={`profile-tabs__tab ${tabIndex === 1 ? 'profile-tabs__tab--active' : ''}`}
+            onClick={() => handleTabClick(1)}
+          >
+            پست‌ها
+          </div>
+        </div>
+        <div className="profile-tabs__content">
+          {tabIndex === 0 && <ExperiencesList experiences={experiences} />}
+          {tabIndex === 1 && <PostsList posts={posts} />}
+        </div>
+      </div> */}
+      <Box sx={{ bgcolor: '#fff', borderRadius: '8px' }}>
+        <StyledTabs value={value} onChange={handleChange} aria-label="styled tabs example">
+          <StyledTab label="Workflows" />
+          <StyledTab label="Datasets" />
+          <StyledTab label="Connections" />
+        </StyledTabs>
+        <TabPanel value={value} index={0}>
+          <ExperiencesList experiences={experiences} />
+        </TabPanel>
+      </Box>
     </Layout>
   );
 };
