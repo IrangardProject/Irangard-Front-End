@@ -19,6 +19,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { TbZoomCancel } from 'react-icons/tb';
+import TourCard from 'src/components/Tours/TourCard';
+import EventCard from 'src/components/Events/EventCard';
 
 const StyledTabs = styled(props => (
   <Tabs
@@ -29,6 +32,8 @@ const StyledTabs = styled(props => (
 ))({
   '& .MuiTabs-flexContainer': {
     justifyContent: 'center',
+    marginTop: '20px',
+    // marginBottom: '20px',
   },
   '& .MuiTabs-indicator': {
     display: 'flex',
@@ -68,8 +73,8 @@ const TabPanel = props => {
   return (
     <div role="tabpanel" hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} {...other}>
       {value === index && (
-        <Box sx={{}}>
-          <Typography>{children}</Typography>
+        <Box sx={{  }}>
+          <Typography sx={{paddingTop: '20px', paddingLeft: '30px', paddingRight: '30px'}}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -86,8 +91,14 @@ const Profile = () => {
   const [followers, setFollowers] = useState([]);
   const [followings, setFollowings] = useState([]);
   const [following, setFollowing] = useState(false);
+
   const [experiences, setExperiences] = useState([]);
   const [experiencesLoading, setExperiencesLoading] = useState(false);
+  const [tours, setTours] = useState([]);
+  const [toursLoading, setToursLoading] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
+
   const [followLoading, setFollowLoading] = useState(false);
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const auth = useAuth();
@@ -136,6 +147,37 @@ const Profile = () => {
         console.log(error);
       });
     setExperiencesLoading(false);
+
+    if (auth.isSpecial) {
+      setToursLoading(true);
+      console.log("looking for special user tours")
+      await axios
+        .get(`${baseUrl}/tours/?user__username=${usernameQuery}&size=50`)
+        .then(res => res.data)
+        .then(data => {
+          console.log('the tours fetched: ', data.results);
+          setTours(data.results);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      setToursLoading(false);
+    }
+
+    if (auth.isSpecial) {
+      setEventsLoading(true);
+      await axios
+        .get(`${baseUrl}/events/?user__username=${usernameQuery}&size=50`)
+        .then(res => res.data)
+        .then(data => {
+          console.log('the events fetched: ', data.results);
+          setEvents(data.results);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      setEventsLoading(false);
+    }
   }, [usernameQuery]);
 
   const handleOpen = () => {
@@ -324,14 +366,41 @@ const Profile = () => {
           {tabIndex === 1 && <PostsList posts={posts} />}
         </div>
       </div> */}
-      <Box sx={{ bgcolor: '#fff', borderRadius: '8px' }}>
+      <Box sx={{ bgcolor: '#fff', borderRadius: '8px', paddingBottom: '30px' }}>
         <StyledTabs value={value} onChange={handleChange} aria-label="styled tabs example">
-          <StyledTab label="Workflows" />
-          <StyledTab label="Datasets" />
-          <StyledTab label="Connections" />
+          <StyledTab label="تجربه ها" />
+          {auth.isSpecial && <StyledTab label="تور‌‌ها" />}
+          {console.log("user.username and data.username, usernameQuery", auth.user.username, data.username, usernameQuery)}
+          {/* {auth.isSpecial && auth.user.username === data.username && <StyledTab label="تور‌‌ها" />} */}
+          {auth.isSpecial && <StyledTab label="رویداد‌ها" />}
+          {/* {auth.isSpecial && auth.user.username === data.username && <StyledTab label="رویداد‌ها" />} */}
         </StyledTabs>
         <TabPanel value={value} index={0}>
           <ExperiencesList experiences={experiences} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          {tours.length > 0 ? (
+            tours.map((tour, index) => <TourCard key={index} tour={tour} />)
+          ) : (
+            <div className="no-tour-wrapper">
+              <div className="no-tours">
+                <TbZoomCancel style={{ fontSize: '48px', color: '#feb714' }} />
+                <h3 className="no-tours__title">توری یافت نشد.</h3>
+              </div>
+            </div>
+          )}
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          {events.length > 0 ? (
+            events.map((event, index) => <EventCard key={index} event={event} />)
+          ) : (
+            <div className="no-event-wrapper">
+              <div className="no-events">
+                <TbZoomCancel style={{ fontSize: '48px', color: 'rgb(0, 170, 108)' }} />
+                <h3 className="no-events__title">رویدادی یافت نشد.</h3>
+              </div>
+            </div>
+          )}
         </TabPanel>
       </Box>
     </Layout>
