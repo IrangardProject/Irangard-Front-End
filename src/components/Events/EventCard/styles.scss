@@ -10,6 +10,10 @@
   display: flex;
   align-items: center;
 
+  &:hover {
+    box-shadow: 0 0 30px $c-black-40;
+  }
+
   &__img {
     height: 160px;
     width: 240px;
