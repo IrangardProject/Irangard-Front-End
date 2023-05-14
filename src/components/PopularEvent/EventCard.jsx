@@ -31,7 +31,7 @@ const EventCard = ({event}) => {
                     boxShadow: "0px 0px 30px 0px rgba(0,0,0,0.2)",
                 },
 
-                height:'60vh',
+                // height:'60vh',
             }}
         >
 
