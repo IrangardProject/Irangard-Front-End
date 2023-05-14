@@ -14,6 +14,12 @@ export const convertNumberToPersian = input => {
   return res;
 };
 
+export function convertTimeToPersian (time){
+  const perisnaTime = moment(time,"HH:mm:ss").format('HH:mm');
+  const persianTimeWithPerisnaDigits = convertNumberToPersian(perisnaTime);
+  return persianTimeWithPerisnaDigits;
+}
+
 export const convertNumberToEnglish = input => {
   input = `${input}`;
   const english = { '۰': '0', '۱': '1', '۲': '2', '۳': 3, '۴': 4, '۵': 5, '۶': 6, '۷': 7, '۸': 8, '۹': 9 };

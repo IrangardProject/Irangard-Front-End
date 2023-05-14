@@ -14,6 +14,7 @@ import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlin
 import { Link } from "react-router-dom";
 import PeopleIcon from '@mui/icons-material/People';
 import DateRangeIcon from '@mui/icons-material/DateRange';
+import {convertTimeToPersian} from '../../utils/formatters'
 const EventCard = ({event}) => {
     console.log('event in eventCard' , event);
     return (
@@ -30,7 +31,7 @@ const EventCard = ({event}) => {
                     boxShadow: "0px 0px 30px 0px rgba(0,0,0,0.2)",
                 },
 
-                
+                height:'60vh',
             }}
         >
 
@@ -45,7 +46,7 @@ const EventCard = ({event}) => {
                             image={event.images[0].image}
                             alt="event image"
                             sx={{
-                                height:"200px",
+                                // height:"200px",
                                 objectFit:"cover"
                             }}
                         />
@@ -97,7 +98,7 @@ const EventCard = ({event}) => {
                                 {/*ساعت شروع و ساعت پایان */}
                                 <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
                                     <DateRangeIcon color="primary" sx={{fontSize:"15px"}}/>
-                                    <span >  ساعت شروع : &nbsp; </span> {event.start_time} 
+                                    <span >  ساعت شروع : &nbsp; </span>{ convertTimeToPersian(event.start_time)}
                                     
                                 </Typography>
                             </Box>
