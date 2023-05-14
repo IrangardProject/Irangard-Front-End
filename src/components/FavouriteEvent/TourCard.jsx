@@ -46,6 +46,10 @@ const TourCard = ({tour}) => {
                             // className={}
                             image={tour.image}
                             alt="tour image"
+                            sx={{
+                                height:"200px",
+                                objectFit:"cover"
+                            }}
                         />
                     </Link>
                 </Grid>
