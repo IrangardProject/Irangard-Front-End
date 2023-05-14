@@ -44,6 +44,10 @@ const EventCard = ({event}) => {
                             // className={}
                             image={event.images[0].image}
                             alt="event image"
+                            sx={{
+                                height:"200px",
+                                objectFit:"cover"
+                            }}
                         />
                     </Link>
                 </Grid>
