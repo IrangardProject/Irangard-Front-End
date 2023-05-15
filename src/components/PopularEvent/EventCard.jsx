@@ -17,20 +17,22 @@ const ExperienceCard = ({start_time,organizer, city, id, imgSrc, title, descript
       <img src={imgSrc.image || defaultXpImg} alt={title} className="experience-card__img" />
       <div className="experience-card__rating-wrapper"></div>
       <h3 className="experience-card__title">{ title}</h3>
-      <p className="experience-card__description">
-      {/* {description?.length > 40 ? description.slice(0, 60) + '...' : description} */}
+      <p className="experience-card__description">      
       </p>
       <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
-          <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
-          <span >   محل برگزاری  : &nbsp; </span> {city}
+          <div className='experience-card__location'>
+            <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
+            <span  >   محل برگزاری  : &nbsp; </span> {city}
+          </div>
       </Typography>
       <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
-        <DateRangeIcon color="primary" sx={{fontSize:"15px"}}/>
-        <span >  ساعت شروع : &nbsp; </span>{ convertTimeToPersian(start_time)}
+        <div className='experience-card__start_time'>
+          <DateRangeIcon color="primary" sx={{fontSize:"15px"}}/>
+          <span >  ساعت شروع : &nbsp; </span>{ convertTimeToPersian(start_time)}
+        </div>
       </Typography>
       <Link to={`/events/${id}`}>
         <div className="experience-card__footer">
-          {/* <img src={userImgSrc || avatar} alt={userName} className="experience-card__user-img" /> */}
           <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
               <PeopleIcon color="primary" sx={{fontSize:"15px"}}/>
               <span >  برگزارکننده : &nbsp; </span> {organizer.length > 16 ? organizer.slice(0, 16) + '...' : organizer} 
