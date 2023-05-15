@@ -18,8 +18,9 @@ export default function Conversation(props) {
   const updateMessages = (sendMessage, message) => {
     setMessageNumber(messageNumber + 1);
     setMessages(prevMessages => [...prevMessages, sendMessage(message)]);
-    // console.log('updated messages:', messages);
+    console.log('updated messages:',messages);
   };
+  
   
   const chatSocket = useRef(null);
   const auth = useAuth()
@@ -42,18 +43,21 @@ export default function Conversation(props) {
             };
             const response = await apiInstance.get(`${baseUrl}/message/room/chats/${room_ID}`);
             setMessages(response.data);
-            // console.log('messages after fetching:', messages);
+            console.log('messages after fetching:', messages);
             chatSocket.current = newChatSocket;
             chatSocket.current.onmessage = function (e) {
               const data = JSON.parse(e.data);
-              // console.log('received message:', data.message);
+              console.log('received message:', data);
               updateMessages(
                 message => ({
                   room: room_ID ,
                   message: message,
                   userid : auth.user.id,
-                  sender:auth.user.id
+                  // sender:auth.user.id
                 }),
+                // console.log('data.message',data.message),
+                // // log the result of updated messages
+                // console.log('messages after updating:', data),
                 data.message.filter((message) => message.userid !== auth.user.id)
               );
             };
@@ -80,9 +84,9 @@ export default function Conversation(props) {
   
   
   const handleNewUserMessage = message => {
-    // console.log('sending message:', message);
+    console.log('sending message:', message);
     let sendId = 0;
-    if (props.roomId ===0) {
+    if (props.roomId === 0) {
       sendId = props.hasRoomId
     }
     else{
@@ -94,15 +98,17 @@ export default function Conversation(props) {
     //   room : sendId, 
     //   // sender_type: 'CLIENT',
     // })
+    const data = JSON.stringify({
+      message: message,
+      userid : auth.user.id,
+      room : sendId, 
+      // sender_type: 'CLIENT',
+    })
+    console.log('data:', data);
     chatSocket.current.send(
-      JSON.stringify({
-        message: message,
-        userid : auth.user.id,
-        room : sendId, 
-        // sender_type: 'CLIENT',
-      })
+      data
     );
-    // console.log('sent message:', message);
+    console.log('sent message:', message);
   };
 
 
