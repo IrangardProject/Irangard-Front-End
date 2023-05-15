@@ -1,65 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useKeenSlider } from 'keen-slider/react';
+// import ExperienceCard from './ExperienceCard';
+import apiInstance from '../../config/axios';
+import { baseUrl } from '../../utils/constants';
 import 'keen-slider/keen-slider.min.css';
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import apiInstance from "../../config/axios";
-import { baseUrl } from "../../utils/constants";
-import { useEffect } from "react";
-import EventCard from './EventCard'
-import './styles.scss'
+import './styles.scss';
+import EventCard from './EventCard';
 
-const PopularEvent = () => {
-    const [popularEvents,setPopularEvents] = useState([]);
-    const [loading, setLoading] = useState(true);
-    // console.log('events',popularEvents);
-    const getPopularEvents = async () =>{
-        const {data} =await apiInstance.get(`${baseUrl}/events/recommended_events/`)
-        setPopularEvents(data);
+const ExperienceSlider = () => {
+  const isMobile = window.innerWidth < 480;
+  const isTablet = window.innerWidth < 768;
+  console.log('is tablet: ', isTablet);
+  console.log('is mobile: ', isMobile);
+  const [loading, setLoading] = useState(true);
+  const [topExperiences, setTopExperiences] = useState([]);
+  const [sliderRef] = useKeenSlider({
+    loop: true,
+    mode: 'free',
+    slides: { perView: isMobile ? 1.5 : isTablet ? 2.5 : 4.4, spacing: isMobile ? 4 : 8 },
+    rtl: true,
+  });
+
+  
+
+  const getPopularEvents = async () =>{
+    const {data} =await apiInstance.get(`${baseUrl}/events/recommended_events/`)
+    setTopExperiences(data);
+    // console.log('data ' , data);
     }
-    console.log('popularEvents',popularEvents);
+    console.log('popularEvents',topExperiences);
     useEffect(() => {
-        if (loading) {
+        
           getPopularEvents();
-        }
+        
       },[])
-
-    return (
-        <div className="popularEvent">
-            <h2>رویداد های پرطرفدار</h2>
-            <Swiper
-                modules={[Navigation, Pagination]}
-                pagination={{
-                    clickable: true,
-                }}
-                spaceBetween={-40}
-                navigation
-                loop
-                speed={800}
-                breakpoints={{
-                    600: {
-                        slidesPerView: 2,
-                    },
-                    900: {
-                        slidesPerView: 4,
-                    },
-                    1200: {
-                        slidesPerView: 5,
-                    }
-                }}
-            >
-                {popularEvents.map((event,index) =>{
-                    return (
-                        <SwiperSlide key={index}>
-                            <EventCard event={event} />
-                        </SwiperSlide>
-                    );
-                })}
-            </Swiper>
+  return (
+    <div className="home-experiences">
+      <h2 className="home-experiences__title">تجربه‌ها و سفرنامه‌های برتر</h2>
+      {loading && <div>در حال بارگیری تجربه‌های برتر...</div>}
+      {!loading && topExperiences.length > 0 && (
+        <div ref={sliderRef} className="keen-slider">
+          {topExperiences.map(item => (
+            <div key={item.id} className="keen-slider__slide">
+              <EventCard
+                id={item.id}
+                title={item.title}
+                description={item.summary}
+                userName={item.user_username}
+                userImgSrc={`${baseUrl}` + item.user_image}
+                imgSrc={item.image}
+              />
+            </div>
+          ))}
         </div>
-    );
-}
- 
-export default PopularEvent;
+      )}
+    </div>
+  );
+};
+
+export default ExperienceSlider;
