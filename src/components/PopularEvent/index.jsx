@@ -21,34 +21,37 @@ const ExperienceSlider = () => {
     rtl: true,
   });
 
-  
+  // /events/recommended_events/
+  useEffect(() => {
+    apiInstance.get(`${baseUrl}/events/recommended_events/`)
+      .then(res => {
+        // console.log('res in recommended events: ', res);
+        setTopExperiences(res.data)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  } , [])
+  console.log('top experiences: ', topExperiences);
 
-  const getPopularEvents = async () =>{
-    const {data} =await apiInstance.get(`${baseUrl}/events/recommended_events/`)
-    setTopExperiences(data);
-    // console.log('data ' , data);
-    }
-    console.log('popularEvents',topExperiences);
-    useEffect(() => {
-        
-          getPopularEvents();
-        
-      },[])
   return (
     <div className="home-experiences">
-      <h2 className="home-experiences__title">تجربه‌ها و سفرنامه‌های برتر</h2>
-      {loading && <div>در حال بارگیری تجربه‌های برتر...</div>}
-      {!loading && topExperiences.length > 0 && (
+      <h2 className="home-experiences__title">رویداد های پیشنهادی</h2>
+      {/* {loading && <div>در حال بارگیری  ...</div>} */}
+      { topExperiences.length > 0 && (
         <div ref={sliderRef} className="keen-slider">
           {topExperiences.map(item => (
             <div key={item.id} className="keen-slider__slide">
               <EventCard
                 id={item.id}
                 title={item.title}
-                description={item.summary}
-                userName={item.user_username}
-                userImgSrc={`${baseUrl}` + item.user_image}
-                imgSrc={item.image}
+                description={item.description}
+                userName={item.organizer}
+                // userImgSrc={`${baseUrl}` + item.user_image}
+                imgSrc={item.images[0]}
+                city={item.city}
+                organizer={item.organizer}
+                start_time = {item.start_time}
               />
             </div>
           ))}
