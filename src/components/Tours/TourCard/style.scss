@@ -1,122 +1,71 @@
 @import 'src/theme/main.scss';
 
 .tour-card {
-  border: 1px solid #eee;
   background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  margin: 5px 0;
+  border-radius: 8px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
 
+  height: 430px;
+  width: 320px;
+  padding: 10px;
+  // height: 340px;
+  // width: 270px;
+
+  margin: 0 8px;
   &:hover {
     box-shadow: 0 0 30px $c-black-40;
   }
 
   &__img {
-    height: 160px;
-    width: 240px;
-    max-width: 100%;
-    display: block;
+    width: 100%;
+    min-height: 190px;
+    height: 70%;
     border-radius: 8px;
-    margin-left: 16px;
-  }
+    @media (max-width: 768px) {
+      min-height: 80px;
+    }
 
+  }
   &__title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-
-  &__cost-capacity {
-    display: flex;
-    align-items: center;
-  }
-
-  &__capacity {
-    color: #666;
     font-size: 16px;
-    font-weight: 800;
-    margin-left: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 0 16px;
+    margin: 10px 0 5px;
+    @media (max-width: 768px) {
+      width: 80px;
+      font-size: 10.5px;
+      margin: 8px 10px 4px 4px;
+    }
   }
-
-  &__cost {
-    color: #2979fe;
-    font-weight: 800;
-    font-size: 18px;
-  }
-
   &__date {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
+    margin-bottom: 15px;
+    &__date-icon {
+      font-size: 20px;
+      margin-right: 12px;
+      
+      margin-left: 4px;
+    }
+    &__text {
+      padding-top: 10px;
+      font-size: 14px;
+    }
   }
+}
 
-  &__start,
-  &__end {
-    font-size: 14px;
-    margin: 8px 0;
-    font-weight: 700;
-    padding: 8px;
-    border-radius: 8px;
-    width: auto;
-  }
-
-  &__start {
-    color: #006a33;
-    background-color: #f7fafb;
-    border: 1px solid #006a33;
-    margin-left: 16px;
-  }
-
-  &__end {
-    color: #e40300;
-    background-color: #fdeded;
-    border: 1px solid #e40300;
-  }
-
-  &__more {
-    background-color: #feb714;
-    color: $c-black;
-    font-size: 14px;
-    font-weight: 700;
-    padding: 8px;
-    margin: 8px 0;
-    width: auto;
+@media (max-width: 1286px) {
+  .tour-card {
+    height: 340px;
+    width: 270px;
   }
 }
 
 @media (max-width: 768px) {
   .tour-card {
     flex-direction: column;
-
-    &__left {
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-      width: 100%;
-    }
-
-    &__title {
-      margin: 8px 0;
-    }
-
-    &__cost-capacity {
-      flex-direction: column;
-    }
-
-    &__capacity {
-      margin: 8px 0;
-    }
-
-    &__date {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    &__start {
-      margin-left: 0;
-    }
   }
 }

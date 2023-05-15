@@ -73,8 +73,8 @@ const TabPanel = props => {
   return (
     <div role="tabpanel" hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} {...other}>
       {value === index && (
-        <Box sx={{  }}>
-          <Typography sx={{paddingTop: '20px', paddingLeft: '30px', paddingRight: '30px'}}>{children}</Typography>
+        <Box sx={{}}>
+          <Typography sx={{ paddingTop: '20px', paddingLeft: '30px', paddingRight: '30px' }}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -136,6 +136,7 @@ const Profile = () => {
   }, [usernameQuery]);
 
   useEffect(async () => {
+    console.log('running the useEffect, the usernameQuery is: ', usernameQuery);
     setExperiencesLoading(true);
     await axios
       .get(`${baseUrl}/experiences/?user__username=${usernameQuery}&size=50`)
@@ -147,10 +148,10 @@ const Profile = () => {
         console.log(error);
       });
     setExperiencesLoading(false);
-
+    console.log('the auth in useEffect is: ', auth);
     if (auth.isSpecial) {
       setToursLoading(true);
-      console.log("looking for special user tours")
+      console.log('looking for special user tours');
       await axios
         .get(`${baseUrl}/tours/?user__username=${usernameQuery}&size=50`)
         .then(res => res.data)
@@ -370,7 +371,7 @@ const Profile = () => {
         <StyledTabs value={value} onChange={handleChange} aria-label="styled tabs example">
           <StyledTab label="تجربه ها" />
           {auth.isSpecial && <StyledTab label="تور‌‌ها" />}
-          {console.log("user.username and data.username, usernameQuery", auth.user.username, data.username, usernameQuery)}
+          {console.log('user.username and data.username, usernameQuery', data.username, usernameQuery)}
           {/* {auth.isSpecial && auth.user.username === data.username && <StyledTab label="تور‌‌ها" />} */}
           {auth.isSpecial && <StyledTab label="رویداد‌ها" />}
           {/* {auth.isSpecial && auth.user.username === data.username && <StyledTab label="رویداد‌ها" />} */}
@@ -379,16 +380,18 @@ const Profile = () => {
           <ExperiencesList experiences={experiences} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {tours.length > 0 ? (
-            tours.map((tour, index) => <TourCard key={index} tour={tour} />)
-          ) : (
-            <div className="no-tour-wrapper">
-              <div className="no-tours">
-                <TbZoomCancel style={{ fontSize: '48px', color: '#feb714' }} />
-                <h3 className="no-tours__title">توری یافت نشد.</h3>
+          <div className="tours">
+            {tours.length > 0 ? (
+              tours.map((tour, index) => <TourCard key={index} tour={tour} />)
+            ) : (
+              <div className="no-tour-wrapper">
+                <div className="no-tours">
+                  <TbZoomCancel style={{ fontSize: '48px', color: '#feb714' }} />
+                  <h3 className="no-tours__title">توری یافت نشد.</h3>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </TabPanel>
         <TabPanel value={value} index={2}>
           {events.length > 0 ? (

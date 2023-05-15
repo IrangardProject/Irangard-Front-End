@@ -349,3 +349,33 @@
   }
   
 }
+
+.tours {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 8px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  min-width: 300px;
+  // align-items: center;
+  // flex-direction: column;
+  // width: 72%;
+  @media (max-width: 800px) {
+    margin: auto;
+  }
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
+}
+@media (max-width: 617px) {
+  .tours {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+// @media (max-width: 1000px) {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// }
