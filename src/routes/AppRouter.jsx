@@ -27,6 +27,7 @@ import EventDetailsPage from 'src/components/Events/EventDetailsPage';
 import EventDashboard from 'src/components/Events/EventDashboard';
 import EventsList from 'src/components/Events/EventsList';
 import PlaceThingsToDo from 'src/components/PlaceThingsToDo';
+import AdminVerify from '../components/AdminPanel/AdminVarify';
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -65,6 +66,7 @@ const AppRouter = () => {
         <Route path="/events/new" element={<AddEvent />} />
         <Route path="/events/:id" element={<EventDetailsPage />} />
         <Route path="/events/:id/dashboard" element={<EventDashboard />} />
+        <Route path='/panel/verify' element={<AdminVerify/>} />
         {/* <Route path="/things-to-do" element={<PlaceThingsToDo />} /> */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
