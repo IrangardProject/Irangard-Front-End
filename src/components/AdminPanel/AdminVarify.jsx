@@ -12,7 +12,7 @@ const AdminVerify = () => {
     const [data,setData] = useState([])
 
     const getAllPendingTours = async() =>{
-        await apiInstance.get(`${baseUrl}/tours/pending_tours/`)
+        await apiInstance.get(`${baseUrl}/events/pending_events/`)
         .then((res) =>[
             // console.log(res)
             setData(res.data)
@@ -33,7 +33,7 @@ const AdminVerify = () => {
             </div>
             <div className="search-tours__tours-list__tours" >
                 {data.length > 0 ? (
-                  data.map((tour, index) => <PanelEventCard key={index} tour={tour} />)
+                  data.map((event, index) => <PanelEventCard key={index} tour={event} />)
                 ) : (
                   <div className="no-tour-wrapper">
                     <div className="no-tours">

@@ -7,8 +7,11 @@ import defaultTourImg from 'src/assets/images/defaultTourImg.jpeg';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import axios from 'axios';
 import { baseUrl } from '../../utils/constants';
+import apiInstance from '../../config/axios';
 
 const PanelEventCard = ({ tour }) => {
+  console.log('events is :' , tour);
+  console.log();
   const findNumberOfDays = (endDate, startDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -16,9 +19,17 @@ const PanelEventCard = ({ tour }) => {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   };
-
+  
   const acceptTour = (id) =>{
-      axios.patch(`${baseUrl}​/events​/${id}​/admin_acceptance​`)
+    const access_token = localStorage.getItem('access-token');
+    if (access_token) {
+        console.log(id);
+        const headers = {
+          Authorization: `JWT ${access_token}`,
+        }
+        console.log(headers);
+      }
+      apiInstance.put(`${baseUrl}/events/${id}/admin_acceptance/​`)
       .then((res) =>{
         console.log(res);
       }).catch((err) =>[
@@ -35,21 +46,21 @@ const PanelEventCard = ({ tour }) => {
             <p style={{ display: 'flex', flexDirection: 'row', marginRight: '12px' }}>
               <p style={{ fontSize: '12px', marginLeft: '12px' }}>
                 {' '}
-                ({findNumberOfDays(tour.end_date, tour.start_date)} روزه)
+                {/* ({findNumberOfDays(tour.end_date, tour.start_date)} روزه) */}
               </p>{' '}
-              <p style={{ fontWeight: 'bold' }}>{formatPrice(convertNumberToPersian(tour.cost))}</p>
+              {/* <p style={{ fontWeight: 'bold' }}>{formatPrice(convertNumberToPersian(tour.cost))}</p> */}
               <p style={{ fontSize: '12px', marginRight: '5px', paddingTop: '4px' }}>تومان</p>
             </p>
           </div>
           <div className="tour-card__capacity">
             <p style={{ fontSize: '14px', marginRight: '12px' }}>
-              ظرفیت تور: {convertNumberToPersian(tour.capacity - tour.bookers.length)} نفر
+              {/* ظرفیت تور: {convertNumberToPersian(tour.capacity - tour.bookers.length)} نفر */}
             </p>
           </div>
         </div>
         <div className="tour-card__date">
           <AiOutlineCalendar style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} />
-          <span className="tour-card__date__text">{formatDate(tour.start_date)}</span>
+          {/* <span className="tour-card__date__text">{formatDate(tour.start_date)}</span> */}
         </div>
         <div className='tour-card__buttons'>
           <button onClick={() => acceptTour(tour.id) } className='tour-card__buttons__accept'>
