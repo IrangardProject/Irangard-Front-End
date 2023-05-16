@@ -6,14 +6,20 @@ import LoginModal from '../LoginModal';
 import ProfileMenu from 'src/components/ProfileMenu';
 import useAuth from 'src/context/AuthContext';
 import './style.scss';
+import { BsCreditCard2Back } from 'react-icons/bs';
+import UserWallet from 'src/components/UserWallet';
 
 const Navbar = ({}) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [userWalletOpen, setUserWalletOpen] = useState(false);
   const auth = useAuth();
   console.log('auth:', auth);
   const navigate = useNavigate();
   const handleClose = () => {
     setOpen(false);
+  };
+  const userWalletOpenHandler = () => {
+    setUserWalletOpen(true);
   };
   return (
     <>
@@ -28,6 +34,15 @@ const Navbar = ({}) => {
               نوشتن تجربه
               <RiMarkPenLine size={24} />
             </button>
+            <button
+              className="header__user-wallet"
+              onClick={userWalletOpenHandler}
+            >
+              <BsCreditCard2Back size={24} />
+            </button>
+
+            <UserWallet open={userWalletOpen} setOpen={setUserWalletOpen}/>
+
             {auth.isLoggedIn && (
               <StyledEngineProvider injectFirst>
                 <ProfileMenu />
@@ -38,17 +53,6 @@ const Navbar = ({}) => {
                 ورود
               </button>
             )}
-            {/* {auth.isLoggedIn && (
-              <button
-                className="header__signin-btn"
-                onClick={() => {
-                  auth.logout();
-                  window.location.reload(false);
-                }}
-              >
-                خروج
-              </button>
-            )} */}
           </div>
         </div>
       </div>
