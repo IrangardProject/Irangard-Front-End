@@ -36,7 +36,7 @@ const ExperienceSlider = () => {
 
   return (
     <div className="home-experiences">
-      <h2 className="home-experiences__title">رویداد های پیشنهادی</h2>
+      <h2 className="home-experiences__title">رویداد های پرطرفدار</h2>
       {/* {loading && <div>در حال بارگیری  ...</div>} */}
       { topExperiences.length > 0 && (
         <div ref={sliderRef} className="keen-slider">
