@@ -34,14 +34,13 @@ const Navbar = ({}) => {
               نوشتن تجربه
               <RiMarkPenLine size={24} />
             </button>
-            <button
-              className="header__user-wallet"
-              onClick={userWalletOpenHandler}
-            >
-              <BsCreditCard2Back size={24} />
-            </button>
+            {auth.isLoggedIn && (
+              <button className="user-wallet" onClick={userWalletOpenHandler}>
+                <BsCreditCard2Back size={24} />
+              </button>
+            )}
 
-            <UserWallet open={userWalletOpen} setOpen={setUserWalletOpen}/>
+            <UserWallet open={userWalletOpen} setOpen={setUserWalletOpen} />
 
             {auth.isLoggedIn && (
               <StyledEngineProvider injectFirst>
