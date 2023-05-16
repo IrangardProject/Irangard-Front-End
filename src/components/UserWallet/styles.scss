@@ -1,1 +1,179 @@
 @import 'src/theme/main.scss';
+
+.wallet-wrapper {
+    display: 'flex'; 
+    justify-content: 'center'; 
+    align-items: 'center'; 
+    overflow-y: 'auto';
+    margin-top: 150px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    &__container {
+        padding-left: 24px;
+        padding-right: 24px;
+        margin: auto;
+        width: 750px;
+        height: 390px;
+        background-color: #F0F0F0;
+        border-radius: 8px;
+        &__header {
+            display: flex;
+            justify-content: flex-start;
+            .user-wallet-title {
+                margin-top: 12px;
+                margin-right: 10px;
+                font-size: 24px;
+                font-weight: 400;
+                color: #000000;
+            }
+            .user-wallet-close {
+                cursor: pointer;
+                margin-top: 12px;
+                margin-right: auto;
+                border-color: transparent;
+                font-size: 24px;
+            }
+        }
+    }
+    @media (max-width: 768px) {
+        &__container {
+            width: 350px;
+            height: 390px;
+            &__header {
+                .user-wallet-title {
+                    margin-top: 16px;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}
+
+.current-credit {
+    margin-top: 10px;
+    &__title {
+        margin-right: 13px;
+        font-size: 20px;
+        font-weight: 400;
+        color: #000000;
+        margin-bottom: 20px;
+    }
+    &__amount {
+        font-size: 20px;
+        font-weight: 400;
+        color: #000000;
+        margin-bottom: 20px;
+        margin-right: 8px;
+    }
+    @media (max-width: 768px) {
+        &__title {
+            font-size: 16px;
+        }
+        &__amount {
+            font-size: 16px;
+        }
+    }
+}
+
+.user-wallet-hr {
+    width: 90%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 0.25px solid #B2B2B2;
+}
+
+.increase-credit {
+    &__title {
+        margin-top: 50px;
+        margin-right: 20px;
+        font-size: 20px;
+        font-weight: 400;
+        color: #000000;
+        margin-bottom: 20px;
+    }
+    &__amount {
+        &__suggestions {
+            margin-right: 10px;
+            margin-left: 10px;
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            &__button {
+                margin-top: 20px;
+                width: 400px;
+                height: 40px;
+                background-color: transparent;
+                color: black;
+                border-color: black;
+                border-radius: 8px;
+                border-width: 0.5px;
+                cursor: pointer;
+                // hover
+                &:hover {
+                    background-color: #000000;
+                    color: #FFFFFF;
+                }
+            }
+        }
+    }
+    @media (max-width: 768px) {
+        &__title {
+            font-size: 16px;
+        }
+        &__amount {
+            &__suggestions {
+                &__button {
+                    width: 200px;
+                }
+            }
+        }
+    }
+}
+
+.credit-input {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    &__plus {
+        border-radius: 8px;
+        border-width: 1px;
+        margin-top: 25px;
+        margin-right: 10px;
+        width: 50px;
+        height: 40px;
+        cursor: pointer;
+        // hover
+        &:hover {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+    }
+    &__minus {
+        border-radius: 8px;
+        border-width: 1px;
+        margin-top: 25px;
+        margin-left: 10px;
+        width: 50px;
+        height: 40px;
+        cursor: pointer;
+        // hover
+        &:hover {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+    }
+}
+
+.pay-button {
+    width: 95%;
+    margin-top: 40px;
+    margin-right: 20px;
+    background-color: #04aa6c;
+    @media (max-width: 768px) {
+        width: 100%;
+        margin-right: 0px;
+    }
+}

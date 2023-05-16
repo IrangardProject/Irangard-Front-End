@@ -26,56 +26,65 @@ const UserWallet = ({ open, setOpen }) => {
     }
   };
   return (
-    <Modal className="wrapper" open={open} onClose={userWalletCloseButtonHandler}>
-      <div className="wrapper__container">
-        <div className="current-credit">
-          <span className="current-credit__title">موجودی شما</span>
-          <span className="current-credit__amount">{formatPrice(convertNumberToPersian(userCredit))} تومان</span>
-          <button className="current-credit__close" onClick={() => setOpen(false)}>
+    <Modal className="wallet-wrapper" open={open} onClose={userWalletCloseButtonHandler}>
+      <div className="wallet-wrapper__container">
+        <div className="wallet-wrapper__container__header">
+        <span className="user-wallet-title">کیف پول ایران‌گرد</span>
+          <button className="user-wallet-close" onClick={() => setOpen(false)}>
             <AiOutlineCloseCircle />
           </button>
         </div>
+        <div className="current-credit">
+          <span className="current-credit__title">موجودی شما</span>
+          <span className="current-credit__amount">{formatPrice(convertNumberToPersian(userCredit))} تومان</span>
+        </div>
+        <hr className="user-wallet-hr"/>
         <div className="increase-credit">
           <span className="increase-credit__title">افزایش موجودی</span>
           <div className="increase-credit__amount">
             <div className="increase-credit__amount__suggestions">
-              <Button
+              <button
+                className="increase-credit__amount__suggestions__button"
                 onClick={() => {
                   setUserCredit(userCredit + 100000);
                 }}
               >
                 {formatPrice(convertNumberToPersian(100000))} تومان
-              </Button>
-              <Button
+              </button>
+              <button
+                className="increase-credit__amount__suggestions__button"
                 onClick={() => {
                   setUserCredit(userCredit + 200000);
                 }}
               >
                 {formatPrice(convertNumberToPersian(200000))} تومان
-              </Button>
-              <Button
+              </button>
+              <button
+                className="increase-credit__amount__suggestions__button"
                 onClick={() => {
                   setUserCredit(userCredit + 500000);
                 }}
               >
                 {formatPrice(convertNumberToPersian(500000))} تومان
-              </Button>
+              </button>
             </div>
             {/* <input type="number" placeholder="مبلغ مورد نظر را وارد کنید" /> */}
-            <Button onClick={plusButtonHandler}>
-              <AiOutlinePlus />
-            </Button>
-            <Input
-              type="number"
-              placeholder="مبلغ مورد نظر را وارد کنید"
-              value={userCredit}
-              onChange={userCreditHandler}
-            />
-            <Button onClick={minusButtonHandler}>
-              <AiOutlineMinus />
-            </Button>
+            <div className="credit-input">
+              <button className="credit-input__plus" onClick={plusButtonHandler}>
+                <AiOutlinePlus />
+              </button>
+              <Input
+                type="number"
+                placeholder="مبلغ مورد نظر را وارد کنید"
+                value={userCredit}
+                onChange={userCreditHandler}
+              />
+              <button className="credit-input__minus" onClick={minusButtonHandler}>
+                <AiOutlineMinus />
+              </button>
+            </div>
           </div>
-          <Button>پرداخت</Button>
+          <Button className="pay-button">پرداخت</Button>
         </div>
       </div>
     </Modal>
