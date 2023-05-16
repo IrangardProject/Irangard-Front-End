@@ -48,6 +48,11 @@
     justify-content: center;
     margin-right: 4.5%;
   }
+  &__section{
+    display: flex;
+    margin-right: 3px;
+    font-weight: 600;
+  }
 
   &__location{
     display: flex;

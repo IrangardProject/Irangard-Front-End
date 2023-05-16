@@ -19,23 +19,47 @@ const ExperienceCard = ({start_time,organizer, city, id, imgSrc, title, descript
       <h3 className="experience-card__title">{ title}</h3>
       <p className="experience-card__description">      
       </p>
-      <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
+      <Typography variant="body2" sx={{
+        fontSize:"12px",
+        marginBottom:"10px",
+        display:"flex"
+        }}>
           <div className='experience-card__location'>
             <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
-            <span  >   محل برگزاری  : &nbsp; </span> {city}
+            <section 
+            className='experience-card__section' 
+            >
+              <span  >   محل برگزاری  : &nbsp; </span> {city}
+            </section>
           </div>
       </Typography>
-      <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
+      <Typography variant="body2" sx={{
+        fontSize:"12px",
+        marginBottom:"10px",
+        display:"flex"
+      }}>
         <div className='experience-card__start_time'>
           <DateRangeIcon color="primary" sx={{fontSize:"15px"}}/>
-          <span >  ساعت شروع : &nbsp; </span>{ convertTimeToPersian(start_time)}
+          <section
+            className='experience-card__section'
+          >
+            <span >  ساعت شروع : &nbsp; </span>{ convertTimeToPersian(start_time)}
+          </section>
         </div>
       </Typography>
       <Link to={`/events/${id}`}>
         <div className="experience-card__footer">
-          <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
+          <Typography variant="body2" sx={{
+            fontSize:"12px",
+            marginBottom:"10px",
+            display:"flex"
+          }}>
               <PeopleIcon color="primary" sx={{fontSize:"15px"}}/>
-              <span >  برگزارکننده : &nbsp; </span> {organizer.length > 16 ? organizer.slice(0, 16) + '...' : organizer} 
+              <section 
+                className='experience-card__section'
+              >
+                <span >  برگزارکننده : &nbsp; </span> {organizer.length > 16 ? organizer.slice(0, 16) + '...' : organizer} 
+              </section>
           </Typography>
         </div>
       </Link>
