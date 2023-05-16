@@ -31,7 +31,7 @@ const Navbar = ({}) => {
             ایران<span className="header__logo--green">گرد</span>
           </Link>
           <div className="header__navbar-left">
-            <button className="header__write-btn" onClick={() => navigate('/experiences/new')}>
+            <button className="compose-experience" onClick={() => navigate('/experiences/new')}>
               نوشتن تجربه
               <RiMarkPenLine size={24} />
             </button>

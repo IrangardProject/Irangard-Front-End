@@ -28,26 +28,6 @@
         display: flex;
     }
 
-    &__write-btn {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: $c-white;
-        color: $c-black;
-        // padding: 10px 10px;
-        border-radius: 21px;
-        border: none;
-        font-size: 16px;
-        font-weight: 600;
-        margin-left: 5px;
-        transition: all 0.3s;
-        cursor: pointer;
-
-        &:hover {
-            background-color: $c-black-20;
-        }
-    }
-
     &__signin-btn {
         background-color: $c-black;
         color: $c-white;
@@ -62,6 +42,25 @@
         &:hover {
             background-color: $c-black-80;
         }
+    }
+}
+
+.compose-experience {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $c-white;
+    color: $c-black;
+    border-radius: 21px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 15px;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $c-black-20;
     }
 }
 

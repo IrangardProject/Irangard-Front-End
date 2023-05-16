@@ -20,12 +20,15 @@ function ToursDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const auth = useAuth();
+  console.log('the user: ', auth);
   const [pageLoading, setPageLoading] = useState(true);
   const [newCost, setNewCost] = useState(null);
   const [data, setData] = useState({});
   const [code, setCode] = useState('');
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('درگاه پرداخت اینترنتی');
+  const [showDiscountBox, setShowDiscountBox] = useState(true);
+  const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(auth.user?.wallet_credit > data.cost ? false : true);
   useEffect(() => {
     apiInstance
       .get(`/tours/${id}`)
@@ -56,18 +59,55 @@ function ToursDetailPage() {
 
   const handleSubmitBookTour = e => {
     e.preventDefault();
-    apiInstance
-      .post(`/tours/${id}/book/`, {
-        // discount_code_code: code,
-      })
-      .then(res => res.data)
-      .then(data => {
-        console.log(data);
-        window.location.href = data.link;
-      })
-      .catch(error => {
-        console.log(error);
+    if (paymentMethod === 'درگاه پرداخت اینترنتی') {
+      apiInstance
+        .post(`/tours/${id}/book/`, {
+          // discount_code_code: code,
+        })
+        .then(res => res.data)
+        .then(data => {
+          console.log(data);
+          window.location.href = data.link;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      // apiInstance
+      //   .post(`/tours/${id}/book/`, {
+      //     // discount_code_code: code,
+      //   })
+      //   .then(res => res.data)
+      //   .then(data => {
+      //     console.log(data);
+      //     window.location.href = data.link;
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+      console.log('the data sending to backend: ', {
+        amount: newCost || data.cost,
       });
+      apiInstance
+        .post(`/accounts/wallet/decrease/`, {
+          amount: newCost || data.cost,
+        })
+        .then(res => res.data)
+        .then(data => {
+          console.log(data);
+          // toast.success('تور با موفقیت رزرو شد.');
+          // navigate('/tours');
+        });
+      apiInstance
+        .post(`/tours/${id}/book/`)
+        .then(res => res.data)
+        .then(data => {
+          console.log('the result of booking the tour', data);
+          toast.success('تور با موفقیت رزرو شد.');
+          window.location.reload();
+          navigate('/tours');
+        });
+    }
   };
 
   const handleDiscountCodeSubmit = e => {
@@ -85,6 +125,13 @@ function ToursDetailPage() {
         toast.error('کد تخفیف اشتباه است.');
         setNewCost(null);
       });
+
+    if (newCost <= auth.user?.wallet_credit) {
+      setUserWalletButtonDisabled(false);
+    } else {
+      setUserWalletButtonDisabled(true);
+    }
+    setShowDiscountBox(false);
   };
 
   return (
@@ -108,7 +155,7 @@ function ToursDetailPage() {
           <div className="tour-detail__capacity">
             ظرفیت تور: {convertNumberToPersian(data.capacity - data.bookers.length)} نفر
           </div>
-          <div className="tour-detail__cost">قیمت تور: {formatPrice(convertNumberToPersian(data.cost))} ریال</div>
+          <div className="tour-detail__cost">قیمت تور: {formatPrice(convertNumberToPersian(data.cost))} تومان</div>
           {!data.is_booked && data.owner.user !== auth.user?.id && (
             <Button className="tour-detail__book" onClick={handleBookTour}>
               ثبت‌نام در تور
@@ -134,21 +181,22 @@ function ToursDetailPage() {
       >
         <div className="tour-detail__register-modal">
           <div className="tour-detail__register-modal__title">ثبت‌نام در تور</div>
-          <div className="tour-detail__register-modal__form-container">
-            <form className="tour-detail__register-modal__form-container__form" onSubmit={handleDiscountCodeSubmit}>
-              <Input
-                // label="کد تخفیف:"
-                className="tour-detail__register-modal__form-container__form__input"
-                placeholder="کد تخفیف..."
-                value={code}
-                onChange={e => setCode(e.target.value)}
-              />
-              <Button className="tour-detail__register-modal__form-container__form__submit" type="submit">
-                اعمال کد تخفیف
-              </Button>
-            </form>
-          </div>
-          {newCost && (
+          {showDiscountBox && (
+            <div className="tour-detail__register-modal__form-container">
+              <form className="tour-detail__register-modal__form-container__form" onSubmit={handleDiscountCodeSubmit}>
+                <Input
+                  className="tour-detail__register-modal__form-container__form__input"
+                  placeholder="کد تخفیف..."
+                  value={code}
+                  onChange={e => setCode(e.target.value)}
+                />
+                <Button className="tour-detail__register-modal__form-container__form__submit" type="submit">
+                  اعمال کد تخفیف
+                </Button>
+              </form>
+            </div>
+          )}
+          {!showDiscountBox && newCost && (
             <>
               <p className="tour-detail__code-stroke">
                 قیمت تور قبل از اعمال تخفیف: {formatPrice(convertNumberToPersian(data.cost))} تومان
@@ -161,50 +209,57 @@ function ToursDetailPage() {
           <hr className="tour-detail__hr" />
           <div className="tour-detail__register-modal__payment-way-container">
             <FormControl>
-              <FormLabel>روش پرداخت</FormLabel>
+              <FormLabel className="form-label-title">روش پرداخت</FormLabel>
               <RadioGroup
-                // sx={{
-                //   '& .MuiFormControlLabel-root': {
-                //     borderWidth: '2px',
-                //     borderColor: '#000',
-                //     borderRadius: '4px', // Optional: Add border radius if desired
-                //   },
-                // }}
                 value={paymentMethod}
                 onChange={e => setPaymentMethod(e.target.value)}
               >
                 <FormControlLabel
                   style={{
                     marginTop: '15px',
-                    width: '500px',
                     border: '1px solid #000',
                     borderRadius: '4px',
                     padding: '8px',
                   }}
+                  className="form-control-label-box"
                   value="درگاه پرداخت اینترنتی"
                   control={<Radio />}
-                  // label="درگاه پرداخت اینترنتی"
                   label={
                     <div className="online-payment">
-                      <IoWalletOutline fontSize={20}/>
+                      <IoWalletOutline fontSize={20} />
                       <p className="online-payment__text">درگاه پرداخت اینترنتی</p>
-                      {/* <p>مبلغ قابل پرداخت: {formatPrice(convertNumberToPersian(newCost || data.cost))} ریال</p> */}
-                      {/* <p>موجودی کافی</p> */}
                     </div>
                   }
                 />
                 <FormControlLabel
                   style={{
                     marginBottom: '15px',
-                    width: '500px',
                     border: '1px solid #000',
                     borderRadius: '4px',
                     padding: '8px',
                     marginTop: '5px',
                   }}
+                  className="form-control-label-box"
                   value="کیف پول ایران‌گرد"
                   control={<Radio />}
-                  label="کیف پول ایران‌گرد"
+                  label={
+                    <div className="user-wallet-payment">
+                      <div className="user-wallet-payment__icon">
+                        <BsCreditCard2Back fontSize={20} />
+                      </div>
+                      <div className="user-wallet-payment__text">
+                        <p className="user-wallet-payment__text__title">کیف پول ایران‌گرد</p>
+                        <p className="user-wallet-payment__text__description">
+                          {auth.user?.wallet_credit >= (newCost || data.cost) ? (
+                            <p className="user-wallet-payment__text__description__enough-credit">موجودی کافی</p>
+                          ) : (
+                            <p className="user-wallet-payment__text__description__no-credit">موجودی ناکافی</p>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  }
+                  disabled={userWalletButtonDisabled}
                 />
               </RadioGroup>
             </FormControl>
