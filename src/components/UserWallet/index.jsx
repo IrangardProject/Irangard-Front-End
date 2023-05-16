@@ -5,31 +5,69 @@ import Input from 'src/components/Input';
 import Button from 'src/components/Button';
 import { formatPrice, convertNumberToPersian } from 'src/utils/formatters.js';
 import './styles.scss';
+import useAuth from 'src/context/AuthContext';
+import apiInstance from 'src/config/axios';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { AiOutlineMinus } from 'react-icons/ai';
 
 const UserWallet = ({ open, setOpen }) => {
   const [userCredit, setUserCredit] = useState(0);
+  const [updatedCredit, setUpdatedCredit] = useState(0);
+  const auth = useAuth();
+  console.log('the user in user wallet component: ', auth.user);
+
+  useEffect(() => {
+    if (auth.user) {
+      setUserCredit(auth.user.wallet_credit);
+    }
+  }, [auth.user]);
+
   const userCreditHandler = e => {
-    setUserCredit(e.target.value);
+    setUpdatedCredit(e.target.value);
   };
   const userWalletCloseButtonHandler = () => {
     setOpen(false);
   };
   const plusButtonHandler = () => {
-    setUserCredit(userCredit + 100000);
+    setUpdatedCredit(updatedCredit + 100000);
   };
   const minusButtonHandler = () => {
-    if (userCredit >= 100000) {
-      setUserCredit(userCredit - 100000);
+    if (updatedCredit >= 100000) {
+      setUpdatedCredit(updatedCredit - 100000);
+    } else {
+        setUpdatedCredit(0);
     }
   };
+
+  const userWalletPaymentHandler = e => {
+    e.preventDefault();
+    if (updatedCredit > 0) {
+      //   auth.updateUserWallet(updatedCredit);
+      apiInstance
+        .post(`/accounts/wallet/increase/`, {
+          amount: updatedCredit,
+        })
+        .then(res => res.data)
+        .then(data => {
+          console.log('the response of the server for the wallet update: ', data);
+          window.location.href = data.link;
+          toast.success('موجودی کیف پول شما با موفقیت افزایش یافت.', { className: 'centered-toast-message' });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    //   setOpen(false);
+    } else {
+      toast.error('مبلغ وارد شده باید بیشتر از صفر باشد.', { className: 'centered-toast-message' });
+    }
+  };
+
   return (
     <Modal className="wallet-wrapper" open={open} onClose={userWalletCloseButtonHandler}>
       <div className="wallet-wrapper__container">
         <div className="wallet-wrapper__container__header">
-        <span className="user-wallet-title">کیف پول ایران‌گرد</span>
+          <span className="user-wallet-title">کیف پول ایران‌گرد</span>
           <button className="user-wallet-close" onClick={() => setOpen(false)}>
             <AiOutlineCloseCircle />
           </button>
@@ -38,7 +76,7 @@ const UserWallet = ({ open, setOpen }) => {
           <span className="current-credit__title">موجودی شما</span>
           <span className="current-credit__amount">{formatPrice(convertNumberToPersian(userCredit))} تومان</span>
         </div>
-        <hr className="user-wallet-hr"/>
+        <hr className="user-wallet-hr" />
         <div className="increase-credit">
           <span className="increase-credit__title">افزایش موجودی</span>
           <div className="increase-credit__amount">
@@ -46,7 +84,7 @@ const UserWallet = ({ open, setOpen }) => {
               <button
                 className="increase-credit__amount__suggestions__button"
                 onClick={() => {
-                  setUserCredit(userCredit + 100000);
+                  setUpdatedCredit(100000);
                 }}
               >
                 {formatPrice(convertNumberToPersian(100000))} تومان
@@ -54,7 +92,7 @@ const UserWallet = ({ open, setOpen }) => {
               <button
                 className="increase-credit__amount__suggestions__button"
                 onClick={() => {
-                  setUserCredit(userCredit + 200000);
+                  setUpdatedCredit(200000);
                 }}
               >
                 {formatPrice(convertNumberToPersian(200000))} تومان
@@ -62,7 +100,7 @@ const UserWallet = ({ open, setOpen }) => {
               <button
                 className="increase-credit__amount__suggestions__button"
                 onClick={() => {
-                  setUserCredit(userCredit + 500000);
+                  setUpdatedCredit(500000);
                 }}
               >
                 {formatPrice(convertNumberToPersian(500000))} تومان
@@ -75,8 +113,9 @@ const UserWallet = ({ open, setOpen }) => {
               </button>
               <Input
                 type="number"
-                placeholder="مبلغ مورد نظر را وارد کنید"
-                value={userCredit}
+                placeholder="مبالغ دیگر"
+                // value={convertNumberToPersian(updatedCredit)}
+                value={updatedCredit}
                 onChange={userCreditHandler}
               />
               <button className="credit-input__minus" onClick={minusButtonHandler}>
@@ -84,7 +123,9 @@ const UserWallet = ({ open, setOpen }) => {
               </button>
             </div>
           </div>
-          <Button className="pay-button">پرداخت</Button>
+          <Button className="pay-button" onClick={userWalletPaymentHandler}>
+            پرداخت
+          </Button>
         </div>
       </div>
     </Modal>
