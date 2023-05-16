@@ -2,12 +2,13 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from 'src/components/Button';
 import { formatDate, convertNumberToPersian, formatPrice } from 'src/utils/formatters';
-import './style.scss';
+import './panelEventCard.scss';
 import defaultTourImg from 'src/assets/images/defaultTourImg.jpeg';
 import { AiOutlineCalendar } from 'react-icons/ai';
+import axios from 'axios';
+import { baseUrl } from '../../utils/constants';
 
-const TourCard = ({ tour }) => {
-  console.log('tous',tour);
+const PanelEventCard = ({ tour }) => {
   const findNumberOfDays = (endDate, startDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -15,8 +16,17 @@ const TourCard = ({ tour }) => {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   };
+
+  const acceptTour = (id) =>{
+      axios.patch(`${baseUrl}​/events​/${id}​/admin_acceptance​`)
+      .then((res) =>{
+        console.log(res);
+      }).catch((err) =>[
+        console.log(err)
+      ])
+  }
   return (
-    <Link className="tour-card" to={`/tours/${tour.id}`}>
+    <div className="tour-card" >
       <img className="tour-card__img" src={tour.image || defaultTourImg} alt={tour.title} />
       <div className="tour-card__content">
         <div className="tour-card__title">{tour.title}</div>
@@ -41,9 +51,17 @@ const TourCard = ({ tour }) => {
           <AiOutlineCalendar style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} />
           <span className="tour-card__date__text">{formatDate(tour.start_date)}</span>
         </div>
+        <div className='tour-card__buttons'>
+          <button onClick={() => acceptTour(tour.id) } className='tour-card__buttons__accept'>
+            پذیرفتن
+          </button>
+          <button className='tour-card__buttons__reject'>
+            رد کردن
+          </button>
+        </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
-export default TourCard;
+export default PanelEventCard;
