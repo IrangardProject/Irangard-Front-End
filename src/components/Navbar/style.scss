@@ -34,12 +34,12 @@
         align-items: center;
         background-color: $c-white;
         color: $c-black;
-        padding: 10px 16px;
+        // padding: 10px 10px;
         border-radius: 21px;
         border: none;
         font-size: 16px;
         font-weight: 600;
-        margin-left: 16px;
+        margin-left: 5px;
         transition: all 0.3s;
         cursor: pointer;
 
@@ -62,5 +62,23 @@
         &:hover {
             background-color: $c-black-80;
         }
+    }
+}
+
+.user-wallet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: auto;
+    margin-left: 15px;
+    border-color: transparent;
+    background-color: transparent;
+    font-size: 24px;
+    border-radius: 21px;
+    transition: all 0.3s;
+    height: 40px;
+    &:hover {
+        background-color: $c-black-20;
     }
 }
