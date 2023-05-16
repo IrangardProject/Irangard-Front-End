@@ -19,7 +19,11 @@ const UserWallet = ({ open, setOpen }) => {
 
   useEffect(() => {
     if (auth.user) {
-      setUserCredit(auth.user.wallet_credit);
+      if (auth.user?.wallet_credit !== null) {
+        setUserCredit(auth.user.wallet_credit);
+      } else {
+        setUserCredit(0);
+      }
     }
   }, [auth.user]);
 
@@ -36,14 +40,13 @@ const UserWallet = ({ open, setOpen }) => {
     if (updatedCredit >= 100000) {
       setUpdatedCredit(updatedCredit - 100000);
     } else {
-        setUpdatedCredit(0);
+      setUpdatedCredit(0);
     }
   };
 
   const userWalletPaymentHandler = e => {
     e.preventDefault();
     if (updatedCredit > 0) {
-      //   auth.updateUserWallet(updatedCredit);
       apiInstance
         .post(`/accounts/wallet/increase/`, {
           amount: updatedCredit,
@@ -57,7 +60,6 @@ const UserWallet = ({ open, setOpen }) => {
         .catch(error => {
           console.log(error);
         });
-    //   setOpen(false);
     } else {
       toast.error('مبلغ وارد شده باید بیشتر از صفر باشد.', { className: 'centered-toast-message' });
     }
