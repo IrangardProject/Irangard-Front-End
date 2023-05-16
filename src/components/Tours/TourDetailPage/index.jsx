@@ -12,6 +12,9 @@ import useAuth from 'src/context/AuthContext';
 import './style.scss';
 import defaultTourImg from 'src/assets/images/defaultTourImg.jpeg';
 import toast, { Toaster } from 'react-hot-toast';
+import { Radio, RadioGroup, FormControl, FormLabel, FormControlLabel } from '@mui/material';
+import { BsCreditCard2Back } from 'react-icons/bs';
+import { IoWalletOutline } from 'react-icons/io5';
 
 function ToursDetailPage() {
   const { id } = useParams();
@@ -22,12 +25,13 @@ function ToursDetailPage() {
   const [data, setData] = useState({});
   const [code, setCode] = useState('');
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('درگاه پرداخت اینترنتی');
   useEffect(() => {
     apiInstance
       .get(`/tours/${id}`)
       .then(res => res.data)
       .then(data => {
-        console.log("data fetched: ", data);
+        console.log('data fetched: ', data);
         setData(data);
       })
       .catch(error => {
@@ -95,7 +99,7 @@ function ToursDetailPage() {
               رفتن به داشبورد
             </p>
           )}
-          {console.log("this is the data: ", data)}
+          {console.log('this is the data: ', data)}
           <img className="tour-detail__img" src={data.image || defaultTourImg} />
           <div className="tour-detail__date">
             <div className="tour-detail__start">تاریخ رفت: {formatDate(data.start_date)}</div>
@@ -129,21 +133,88 @@ function ToursDetailPage() {
         style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
         <div className="tour-detail__register-modal">
-          <form onSubmit={handleDiscountCodeSubmit}>
-            <Input label="کد تخفیف:" placeholder="کد تخفیف..." value={code} onChange={e => setCode(e.target.value)} />
-            {newCost && (
-              <>
-                <p className="tour-detail__code-stroke">{formatPrice(convertNumberToPersian(data.cost))} ریال</p>
-                <p className="tour-detail__code-success">{formatPrice(convertNumberToPersian(newCost))} ریال</p>
-              </>
-            )}
-            <Button type="submit" className="tour-detail__submit-code">
-              اعمال کد تخفیف
+          <div className="tour-detail__register-modal__title">ثبت‌نام در تور</div>
+          <div className="tour-detail__register-modal__form-container">
+            <form className="tour-detail__register-modal__form-container__form" onSubmit={handleDiscountCodeSubmit}>
+              <Input
+                // label="کد تخفیف:"
+                className="tour-detail__register-modal__form-container__form__input"
+                placeholder="کد تخفیف..."
+                value={code}
+                onChange={e => setCode(e.target.value)}
+              />
+              <Button className="tour-detail__register-modal__form-container__form__submit" type="submit">
+                اعمال کد تخفیف
+              </Button>
+            </form>
+          </div>
+          {newCost && (
+            <>
+              <p className="tour-detail__code-stroke">
+                قیمت تور قبل از اعمال تخفیف: {formatPrice(convertNumberToPersian(data.cost))} تومان
+              </p>
+              <p className="tour-detail__code-success">
+                قیمت تور پس از اعمال تخفیف: {formatPrice(convertNumberToPersian(newCost))} تومان
+              </p>
+            </>
+          )}
+          <hr className="tour-detail__hr" />
+          <div className="tour-detail__register-modal__payment-way-container">
+            <FormControl>
+              <FormLabel>روش پرداخت</FormLabel>
+              <RadioGroup
+                // sx={{
+                //   '& .MuiFormControlLabel-root': {
+                //     borderWidth: '2px',
+                //     borderColor: '#000',
+                //     borderRadius: '4px', // Optional: Add border radius if desired
+                //   },
+                // }}
+                value={paymentMethod}
+                onChange={e => setPaymentMethod(e.target.value)}
+              >
+                <FormControlLabel
+                  style={{
+                    marginTop: '15px',
+                    width: '500px',
+                    border: '1px solid #000',
+                    borderRadius: '4px',
+                    padding: '8px',
+                  }}
+                  value="درگاه پرداخت اینترنتی"
+                  control={<Radio />}
+                  // label="درگاه پرداخت اینترنتی"
+                  label={
+                    <div className="online-payment">
+                      <IoWalletOutline fontSize={20}/>
+                      <p className="online-payment__text">درگاه پرداخت اینترنتی</p>
+                      {/* <p>مبلغ قابل پرداخت: {formatPrice(convertNumberToPersian(newCost || data.cost))} ریال</p> */}
+                      {/* <p>موجودی کافی</p> */}
+                    </div>
+                  }
+                />
+                <FormControlLabel
+                  style={{
+                    marginBottom: '15px',
+                    width: '500px',
+                    border: '1px solid #000',
+                    borderRadius: '4px',
+                    padding: '8px',
+                    marginTop: '5px',
+                  }}
+                  value="کیف پول ایران‌گرد"
+                  control={<Radio />}
+                  label="کیف پول ایران‌گرد"
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
+
+          <div className="tour-detail__submit-button-container">
+            <Button type="button" className="tour-detail__book-modal" onClick={handleSubmitBookTour}>
+              پرداخت{' '}
             </Button>
-          </form>
-          <Button type="button" className="tour-detail__book-modal" onClick={handleSubmitBookTour}>
-            ثبت‌نام در تور
-          </Button>
+          </div>
         </div>
       </Modal>
     </Layout>

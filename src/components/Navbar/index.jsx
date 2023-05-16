@@ -7,6 +7,7 @@ import ProfileMenu from 'src/components/ProfileMenu';
 import useAuth from 'src/context/AuthContext';
 import './style.scss';
 import { BsCreditCard2Back } from 'react-icons/bs';
+import { IoWalletOutline } from 'react-icons/io5';
 import UserWallet from 'src/components/UserWallet';
 
 const Navbar = ({}) => {
@@ -36,7 +37,7 @@ const Navbar = ({}) => {
             </button>
             {auth.isLoggedIn && (
               <button className="user-wallet" onClick={userWalletOpenHandler}>
-                <BsCreditCard2Back size={24} />
+                <IoWalletOutline size={24} />
               </button>
             )}
 
