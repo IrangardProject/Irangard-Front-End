@@ -11,7 +11,7 @@ import apiInstance from '../../config/axios';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 
 
-const PanelEventCard = ({ event,onAccept }) => {
+const PanelEventCard = ({ event,onAccept,onReject }) => {
   console.log('events is :' , event);
   console.log();
   const findNumberOfDays = (endDate, startDate) => {
@@ -42,6 +42,24 @@ const PanelEventCard = ({ event,onAccept }) => {
         });
     }
   };
+  const rejectTour = (id) => {
+    const access_token = localStorage.getItem('access-token');
+    if (access_token) {
+      const headers = {
+        Authorization: `JWT ${access_token}`,
+      };
+      apiInstance
+        .put(`/events/${id}/admin_denial/`, {}, { headers })
+        .then((res) => {
+          console.log(res);
+          onReject(id); 
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  
 
  
   
@@ -87,7 +105,7 @@ const PanelEventCard = ({ event,onAccept }) => {
           <button onClick={() => acceptTour(event.id) } className='tour-card__buttons__accept'>
             پذیرفتن
           </button>
-          <button className='tour-card__buttons__reject'>
+          <button onClick={() => rejectTour(event.id)} className='tour-card__buttons__reject'>
             رد کردن
           </button>
         </div>

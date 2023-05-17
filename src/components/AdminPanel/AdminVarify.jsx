@@ -11,6 +11,7 @@ const AdminVerify = () => {
     
     const [data,setData] = useState([])
     const [acceptedEvents, setAcceptedEvents] = useState([]);
+    const [rejectedEvents, setRejectedEvents] = useState([]);
 
     const getAllPendingTours = async() =>{
         await apiInstance.get(`${baseUrl}/events/pending_events/`)
@@ -22,8 +23,12 @@ const AdminVerify = () => {
             console.log(err);
         })
     }
-    const removeAcceptedEvent = (eventId) => {
-        setAcceptedEvents(prevState => [...prevState, eventId]);
+    const acceptTour = (eventId) => {
+        setAcceptedEvents((prevState) => [...prevState, eventId]);
+    };
+
+    const rejectTour = (eventId) => {
+        setRejectedEvents((prevState) => [...prevState, eventId]);
     };
 
     useEffect(() =>{
@@ -35,7 +40,15 @@ const AdminVerify = () => {
             prevData.filter((event) => !acceptedEvents.includes(event.id))
           );
         }
-      }, [acceptedEvents]);
+    }, [acceptedEvents]);
+      
+    useEffect(() => {
+        if (rejectedEvents.length > 0) {
+          setData((prevData) =>
+            prevData.filter((event) => !rejectedEvents.includes(event.id))
+          );
+        }
+    }, [rejectedEvents]);
     
     return (
         <div className='bg' style={{backgroundColor:'white'}}>
@@ -50,7 +63,8 @@ const AdminVerify = () => {
                             <PanelEventCard 
                             key={index}
                             event={event}
-                            onAccept={removeAcceptedEvent} 
+                            onAccept={acceptTour} 
+                            onReject={rejectTour}
                         />)
                     ) : (
                     <div className="no-tour-wrapper">
