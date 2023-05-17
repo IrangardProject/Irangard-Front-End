@@ -85,7 +85,7 @@ function Chat(props) {
     chatSocket.current = newChatSocket;
 
     axios.get(`${baseUrl}/chat/room/messages/${props.username}`).then(response => {
-      setMessages(response.data);
+      // setMessages(response.data);
       console.log('messages', messages);
     });
   }, []);
