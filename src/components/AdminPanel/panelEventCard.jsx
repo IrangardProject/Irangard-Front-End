@@ -8,9 +8,11 @@ import { AiOutlineCalendar } from 'react-icons/ai';
 import axios from 'axios';
 import { baseUrl } from '../../utils/constants';
 import apiInstance from '../../config/axios';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 
-const PanelEventCard = ({ tour }) => {
-  console.log('events is :' , tour);
+
+const PanelEventCard = ({ event,onAccept }) => {
+  console.log('events is :' , event);
   console.log();
   const findNumberOfDays = (endDate, startDate) => {
     const start = new Date(startDate);
@@ -32,7 +34,8 @@ const PanelEventCard = ({ tour }) => {
         .put(`/events/${id}/admin_acceptance/`, {}, { headers })
         .then((res) => {
           console.log(res);
-          reloadPage();
+          // reloadPage();
+          onAccept(id)
         })
         .catch((err) => {
           console.log(err);
@@ -40,15 +43,25 @@ const PanelEventCard = ({ tour }) => {
     }
   };
 
-  const reloadPage = () => {
-    window.location.reload(); // بازنشانی صفحه
-  };
+ 
   
   return (
     <div className="tour-card" >
-      <img className="tour-card__img" src={tour.image || defaultTourImg} alt={tour.title} />
+      <img className="tour-card__img" src={event.images[0].image || defaultTourImg} alt={event.title} />
       <div className="tour-card__content">
-        <div className="tour-card__title">{tour.title}</div>
+        {/* <div className='experience-card__location'>
+            <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
+            <section 
+            className='experience-card__section' 
+            >
+              <span  >   محل برگزاری  : &nbsp; </span> {city}
+            </section>
+          </div> */}
+        <div className="tour-card__title">نام رویداد :{event.title}</div>
+        <div className="tour-card__organizer">برگزارکننده :{event.organizer}</div>
+        <div className="tour-card__phone">شماره تلفن: {event.phone}</div>
+        <div className="tour-card__website">وبسایت رویداد: <a className='tour-card__website__a' target='_blank' title='برای دیدن سایت رویداد کلیک کن' href={event.website}>{event.website}</a></div>
+        <div className="tour-card__location">محل برگزاری :{event.city}</div>
         <div className="tour-card__cost-capacity">
           <div className="tour-card__cost">
             <p style={{ display: 'flex', flexDirection: 'row', marginRight: '12px' }}>
@@ -57,7 +70,7 @@ const PanelEventCard = ({ tour }) => {
                 {/* ({findNumberOfDays(tour.end_date, tour.start_date)} روزه) */}
               </p>{' '}
               {/* <p style={{ fontWeight: 'bold' }}>{formatPrice(convertNumberToPersian(tour.cost))}</p> */}
-              <p style={{ fontSize: '12px', marginRight: '5px', paddingTop: '4px' }}>تومان</p>
+              {/* <p style={{ fontSize: '12px', marginRight: '5px', paddingTop: '4px' }}>تومان</p> */}
             </p>
           </div>
           <div className="tour-card__capacity">
@@ -67,11 +80,11 @@ const PanelEventCard = ({ tour }) => {
           </div>
         </div>
         <div className="tour-card__date">
-          <AiOutlineCalendar style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} />
+          {/* <AiOutlineCalendar style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} /> */}
           {/* <span className="tour-card__date__text">{formatDate(tour.start_date)}</span> */}
         </div>
         <div className='tour-card__buttons'>
-          <button onClick={() => acceptTour(tour.id) } className='tour-card__buttons__accept'>
+          <button onClick={() => acceptTour(event.id) } className='tour-card__buttons__accept'>
             پذیرفتن
           </button>
           <button className='tour-card__buttons__reject'>

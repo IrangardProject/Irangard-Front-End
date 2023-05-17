@@ -10,6 +10,7 @@ import { TbZoomCancel } from "react-icons/tb";
 const AdminVerify = () => {
     
     const [data,setData] = useState([])
+    const [acceptedEvents, setAcceptedEvents] = useState([]);
 
     const getAllPendingTours = async() =>{
         await apiInstance.get(`${baseUrl}/events/pending_events/`)
@@ -21,35 +22,46 @@ const AdminVerify = () => {
             console.log(err);
         })
     }
+    const removeAcceptedEvent = (eventId) => {
+        setAcceptedEvents(prevState => [...prevState, eventId]);
+    };
 
     useEffect(() =>{
         getAllPendingTours();
     },[])
+    useEffect(() => {
+        if (acceptedEvents.length > 0) {
+          setData((prevData) =>
+            prevData.filter((event) => !acceptedEvents.includes(event.id))
+          );
+        }
+      }, [acceptedEvents]);
     
     return (
         <div className='bg' style={{backgroundColor:'white'}}>
             <div className='sidebar'>
               <Sidebar/>
             </div>
-            <div className="search-tours__tours-list__tours" >
-                {data.length > 0 ? (
-                  data.map((event, index) => <PanelEventCard key={index} tour={event} />)
-                ) : (
-                  <div className="no-tour-wrapper">
-                    <div className="no-tours">
-                      <TbZoomCancel style={{ fontSize: '48px', color: '#feb714' }} />
-                      <h3 className="no-tours__title">توری یافت نشد.</h3>
+            <section className="events-AdminVerify">
+                {data.length === 0 ? <h2>توری نیست که بخوای قبول کنی</h2> : <h2>تور هایی که منتظر پذیرش شما هستند</h2>}
+                <div className="search-tours__tours-list__tours" >
+                    {data.length > 0 ? (
+                        data.map((event, index) => 
+                            <PanelEventCard 
+                            key={index}
+                            event={event}
+                            onAccept={removeAcceptedEvent} 
+                        />)
+                    ) : (
+                    <div className="no-tour-wrapper">
+                        {/* <div className="no-tours">
+                        <TbZoomCancel style={{ fontSize: '48px', color: '#feb714' }} />
+                        <h3 className="no-tours__title">توری نیست که بخوای قبول کنی.</h3>
+                        </div> */}
                     </div>
-                  </div>
-                )}
-                {/* {
-                    tours.map((tour) =>{
-                        return(
-                            <PanelEventCard tour={tour} key={tour.id}/>
-                        )
-                    })
-                } */}
-            </div>
+                    )}
+                </div>
+            </section>
         </div>
     );
 }

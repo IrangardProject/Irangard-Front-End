@@ -56,14 +56,75 @@
     }
     }
 &__title {
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: 500;
     line-height: 1.5;
     padding: 0 16px;
     margin: 10px 0 5px;
     @media (max-width: 768px) {
-      width: 80px;
-      font-size: 10.5px;
+      // width: 80px;
+      font-size: 12px;
+      margin: 8px 10px 4px 4px;
+    }
+  }
+  &__organizer{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 0 16px;
+    margin: 10px 0 5px;
+    @media (max-width: 768px) {
+      // width: 80px;
+      font-size: 12px;
+      margin: 8px 10px 4px 4px;
+    }
+  }
+  &__phone{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 0 16px;
+    margin: 10px 0 5px;
+    @media (max-width: 768px) {
+      // width: 80px;
+      font-size: 12px;
+      margin: 8px 10px 4px 4px;
+    }
+  }
+  &__website{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 0 16px;
+    margin: 10px 0 5px;
+    @media (max-width: 768px) {
+      // width: 80px;
+      font-size: 12px;
+      margin: 8px 10px 4px 4px;
+    }
+    
+  }
+  &__phone{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 0 16px;
+    margin: 10px 0 5px;
+    @media (max-width: 768px) {
+      // width: 80px;
+      font-size: 12px;
+      margin: 8px 10px 4px 4px;
+    }
+  }
+  &__location{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 0 16px;
+    margin: 10px 0 5px;
+    @media (max-width: 768px) {
+      // width: 80px;
+      font-size: 12px;
       margin: 8px 10px 4px 4px;
     }
   }
