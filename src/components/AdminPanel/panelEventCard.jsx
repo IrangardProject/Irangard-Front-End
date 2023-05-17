@@ -20,22 +20,30 @@ const PanelEventCard = ({ tour }) => {
     return diffDays;
   };
   
-  const acceptTour = (id) =>{
+  const acceptTour = (id) => {
     const access_token = localStorage.getItem('access-token');
     if (access_token) {
-        console.log(id);
-        const headers = {
-          Authorization: `JWT ${access_token}`,
-        }
-        console.log(headers);
-      }
-      apiInstance.put(`${baseUrl}/events/${id}/admin_acceptance/​`)
-      .then((res) =>{
-        console.log(res);
-      }).catch((err) =>[
-        console.log(err)
-      ])
-  }
+      console.log(id);
+      const headers = {
+        Authorization: `JWT ${access_token}`,
+      };
+      console.log('headers: ', headers);
+      apiInstance
+        .put(`/events/${id}/admin_acceptance/`, {}, { headers })
+        .then((res) => {
+          console.log(res);
+          reloadPage();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const reloadPage = () => {
+    window.location.reload(); // بازنشانی صفحه
+  };
+  
   return (
     <div className="tour-card" >
       <img className="tour-card__img" src={tour.image || defaultTourImg} alt={tour.title} />
