@@ -50,7 +50,7 @@ export default function Messages(props) {
               alt="profile"
             />
           )}
-          <Message message={message} showTimeStamp={false} is_server={isClient(props.userid)}/>
+          <Message message={message} showTimeStamp={false} is_server={(props.userid)}/>
         </div>)
 })}
       <Loader typing={props.messages.length === 0} />

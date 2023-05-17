@@ -20,7 +20,9 @@ export default function Conversation(props) {
     setMessages(prevMessages => [...prevMessages, sendMessage(message)]);
     console.log('updated messages:',messages);
   };
-  
+  useEffect(() =>{
+    console.log('calling useEffect');
+  },[messages])
   
   const chatSocket = useRef(null);
   const auth = useAuth()
@@ -43,23 +45,27 @@ export default function Conversation(props) {
             };
             const response = await apiInstance.get(`${baseUrl}/message/room/chats/${room_ID}`);
             setMessages(response.data);
-            console.log('messages after fetching:', messages);
+            // console.log('messages after fetching:', messages);
             chatSocket.current = newChatSocket;
             chatSocket.current.onmessage = function (e) {
               const data = JSON.parse(e.data);
-              console.log('received message:', data);
-              updateMessages(
-                message => ({
-                  room: room_ID ,
-                  message: message,
-                  userid : auth.user.id,
-                  // sender:auth.user.id
-                }),
-                // console.log('data.message',data.message),
-                // // log the result of updated messages
-                // console.log('messages after updating:', data),
-                data.message.filter((message) => message.userid !== auth.user.id)
-              );
+              console.log('received data message:', data);
+              console.log("----------",data.userid !== auth.user.id , data.userid , auth.user.id);
+              if ( data.userid !== auth.user.id ) {
+                console.log('messgae updated ' );
+                updateMessages(
+                  message => ({
+                    room: room_ID ,
+                    message: message,
+                    userid : auth.user.id,
+                    // sender:auth.user.id
+                  }),
+                  // console.log('data.message',data.message),
+                  // // log the result of updated messages
+                  // console.log('messages after updating:', data),
+                  data.message
+                );
+              }
             };
           }
       } catch (error) {
