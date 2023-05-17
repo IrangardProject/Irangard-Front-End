@@ -38,9 +38,13 @@
 .rcw-message-server{
   direction: ltr;
   justify-content: left !important;
+  background-color: aquamarine;
 }
 
 #rcw-message-server-id{
-  direction: ltr;
+  direction: rtl;
   justify-content: left !important;
+  // background-color: aqua;
+  // display: flex !important;
+  // flex-direction: row-reverse !important;
 }
