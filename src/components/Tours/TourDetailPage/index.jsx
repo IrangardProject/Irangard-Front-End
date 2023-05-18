@@ -28,9 +28,7 @@ function ToursDetailPage() {
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('درگاه پرداخت اینترنتی');
   const [showDiscountBox, setShowDiscountBox] = useState(true);
-  const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(
-    !(auth.user?.wallet_credit < data.cost)
-  );
+  const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(!(auth.user?.wallet_credit < data.cost));
   console.log(userWalletButtonDisabled, data.cost, auth.user?.wallet_credit);
   useEffect(() => {
     apiInstance
@@ -72,8 +70,7 @@ function ToursDetailPage() {
     e.preventDefault();
     if (paymentMethod === 'درگاه پرداخت اینترنتی') {
       apiInstance
-        .post(`/tours/${id}/book/`, {
-        })
+        .post(`/tours/${id}/book/`, {})
         .then(res => res.data)
         .then(data => {
           console.log(data);
@@ -92,11 +89,11 @@ function ToursDetailPage() {
         })
         .then(res => res.data)
         .then(data => {
-          console.log(data);
+          console.log('the data after decreasing the wallet', data);
         });
       console.log('now booking the tour using wallet');
       apiInstance
-        .post(`/tours/${id}/book_with_wallet/`)
+        .post(`/tours/${id}/book_with_wallet/`, {})
         .then(res => res.data)
         .then(data => {
           console.log('the result of booking the tour', data);
