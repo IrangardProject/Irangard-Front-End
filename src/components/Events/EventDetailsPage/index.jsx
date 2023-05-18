@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { Rating } from '@mui/material';
 import Layout from '../../Layout';
@@ -12,15 +12,21 @@ import { convertNumberToPersian, convertGeorgianDateToJalali } from '../../../ut
 import { BsCalendarDate } from 'react-icons/bs';
 import { MdOutlineDescription } from 'react-icons/md';
 import './styles.scss';
+import ShareIcon from '@mui/icons-material/Share';
+import ShareModal from '../../ShareModal/shareModal';
 
 const EventDetailsPage = () => {
+  const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const params = useParams();
   const eventId = params.id;
   const { error, isLoading, data } = useGetEvent(eventId);
   if (error) {
     return <Navigate to={'/notFound'} />;
   }
-  console.log('this is the data: ', data);
+  // console.log('this is the data: ', data);
+  const handleOpen = () => {
+    setEditProfileModalOpen(true);
+  };
   return (
     <Layout>
       {isLoading && <Loader />}
@@ -28,6 +34,19 @@ const EventDetailsPage = () => {
         <div className="event-detail">
           <header className="event-detail__header">
             <h2>{data.title}</h2>
+              <div className='share-icon-container'>
+              <ShareIcon
+                onClick={handleOpen}
+              sx={{
+                marginRight: '20px',
+                color: 'green',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                bgcolor: 'rgba(0, 0, 0, 0.04)',
+                padding: '2px 1px',
+              }}/>
+            <span className="tooltip-text">به اشتراک گذاشتن رویداد</span>
+            </div>
           </header>
           <div className="event-detail__gallery-info-wrapper">
             <EventGallery className="event-detail__gallery" images={data.images} />
@@ -73,6 +92,11 @@ const EventDetailsPage = () => {
               </div>
             )}
           </div>
+          <ShareModal 
+            open={editProfileModalOpen}
+            handleClose={() => setEditProfileModalOpen(false)}
+           
+          />
         </div>
       )}
     </Layout>
