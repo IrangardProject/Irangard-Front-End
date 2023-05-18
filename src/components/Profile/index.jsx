@@ -153,7 +153,7 @@ const Profile = () => {
       setToursLoading(true);
       console.log('looking for special user tours');
       await axios
-        .get(`${baseUrl}/tours/?user__username=${usernameQuery}&size=50`)
+        .get(`${baseUrl}/tours/?owner__user__username=${usernameQuery}&size=50`)
         .then(res => res.data)
         .then(data => {
           console.log('the tours fetched: ', data.results);
@@ -168,7 +168,7 @@ const Profile = () => {
     if (auth.isSpecial) {
       setEventsLoading(true);
       await axios
-        .get(`${baseUrl}/events/?user__username=${usernameQuery}&size=50`)
+        .get(`${baseUrl}/events/?added_by__username=${usernameQuery}&size=50`)
         .then(res => res.data)
         .then(data => {
           console.log('the events fetched: ', data.results);
