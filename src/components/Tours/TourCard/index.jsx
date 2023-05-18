@@ -7,6 +7,7 @@ import defaultTourImg from 'src/assets/images/defaultTourImg.jpeg';
 import { AiOutlineCalendar } from 'react-icons/ai';
 
 const TourCard = ({ tour }) => {
+  console.log('tous',tour);
   const findNumberOfDays = (endDate, startDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);

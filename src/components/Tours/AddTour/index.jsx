@@ -129,7 +129,7 @@ function AddTour() {
       })
       .then(res => res.data)
       .then(data => {
-        toast.success('تور با موفقیت اضافه شد.');
+        toast.success('تور به پشتیبانی ارسال شد و در صورت تایید پشتیبانی تور شما اضافه میشود.');
         navigate(`/tours/${data.id}`);
       })
       .catch(error => {
