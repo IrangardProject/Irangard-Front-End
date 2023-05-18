@@ -6,12 +6,15 @@ import apiInstance from "../../config/axios";
 import { baseUrl } from "../../utils/constants";
 import PanelEventCard from "./panelEventCard";
 import { TbZoomCancel } from "react-icons/tb";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const AdminVerify = () => {
     
     const [data,setData] = useState([])
     const [acceptedEvents, setAcceptedEvents] = useState([]);
     const [rejectedEvents, setRejectedEvents] = useState([]);
+    // const [acceptTour,setAcceptTour] = useState([]);
 
     const getAllPendingTours = async() =>{
         await apiInstance.get(`${baseUrl}/events/pending_events/`)
@@ -55,6 +58,7 @@ const AdminVerify = () => {
             <div className='sidebar'>
               <Sidebar/>
             </div>
+            <Toaster />
             <section className="events-AdminVerify">
                 {data.length === 0 ? <h2>توری نیست که بخوای قبول کنی</h2> : <h2>تور هایی که منتظر پذیرش شما هستند</h2>}
                 <div className="search-tours__tours-list__tours" >

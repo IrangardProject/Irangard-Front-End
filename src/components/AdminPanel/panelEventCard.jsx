@@ -9,7 +9,7 @@ import axios from 'axios';
 import { baseUrl } from '../../utils/constants';
 import apiInstance from '../../config/axios';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
-
+import toast, { Toaster } from 'react-hot-toast';
 
 const PanelEventCard = ({ event,onAccept,onReject }) => {
   console.log('events is :' , event);
@@ -33,8 +33,7 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
       apiInstance
         .put(`/events/${id}/admin_acceptance/`, {}, { headers })
         .then((res) => {
-          console.log(res);
-          // reloadPage();
+          toast.success('رویداد به لیست رویدادهای تایید شده اضافه شد',{duration: 3000   })
           onAccept(id)
         })
         .catch((err) => {
@@ -51,7 +50,7 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
       apiInstance
         .put(`/events/${id}/admin_denial/`, {}, { headers })
         .then((res) => {
-          console.log(res);
+          toast.error('رویداد از لیست رویدادهای تایید شده حذف شد', {duration: 3000 })
           onReject(id); 
         })
         .catch((err) => {
@@ -65,6 +64,7 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
   
   return (
     <div className="tour-card" >
+      <Toaster />
       <img className="tour-card__img" src={event.images[0].image || defaultTourImg} alt={event.title} />
       <div className="tour-card__content">
         {/* <div className='experience-card__location'>
