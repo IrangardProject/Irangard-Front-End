@@ -28,7 +28,10 @@ function ToursDetailPage() {
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('درگاه پرداخت اینترنتی');
   const [showDiscountBox, setShowDiscountBox] = useState(true);
-  const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(auth.user?.wallet_credit > data.cost ? false : true);
+  const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(
+    !(auth.user?.wallet_credit < data.cost)
+  );
+  console.log(userWalletButtonDisabled, data.cost, auth.user?.wallet_credit);
   useEffect(() => {
     apiInstance
       .get(`/tours/${id}`)
@@ -43,6 +46,14 @@ function ToursDetailPage() {
       })
       .finally(() => setPageLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (newCost === null) {
+      setShowDiscountBox(true);
+    } else {
+      setShowDiscountBox(false);
+    }
+  }, [newCost]);
 
   const onClose = () => {
     setRegisterModalOpen(false);
@@ -62,7 +73,6 @@ function ToursDetailPage() {
     if (paymentMethod === 'درگاه پرداخت اینترنتی') {
       apiInstance
         .post(`/tours/${id}/book/`, {
-          // discount_code_code: code,
         })
         .then(res => res.data)
         .then(data => {
@@ -73,18 +83,6 @@ function ToursDetailPage() {
           console.log(error);
         });
     } else {
-      // apiInstance
-      //   .post(`/tours/${id}/book/`, {
-      //     // discount_code_code: code,
-      //   })
-      //   .then(res => res.data)
-      //   .then(data => {
-      //     console.log(data);
-      //     window.location.href = data.link;
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
       console.log('the data sending to backend: ', {
         amount: newCost || data.cost,
       });
@@ -95,11 +93,10 @@ function ToursDetailPage() {
         .then(res => res.data)
         .then(data => {
           console.log(data);
-          // toast.success('تور با موفقیت رزرو شد.');
-          // navigate('/tours');
         });
+      console.log('now booking the tour using wallet');
       apiInstance
-        .post(`/tours/${id}/book/`)
+        .post(`/tours/${id}/book_with_wallet/`)
         .then(res => res.data)
         .then(data => {
           console.log('the result of booking the tour', data);
@@ -120,18 +117,12 @@ function ToursDetailPage() {
       .then(data => {
         toast.success('کد تخفیف با موفقیت اعمال شد.');
         setNewCost(data.new_cost);
+        setUserWalletButtonDisabled(false);
       })
       .catch(err => {
         toast.error('کد تخفیف اشتباه است.');
         setNewCost(null);
       });
-
-    if (newCost <= auth.user?.wallet_credit) {
-      setUserWalletButtonDisabled(false);
-    } else {
-      setUserWalletButtonDisabled(true);
-    }
-    setShowDiscountBox(false);
   };
 
   return (
@@ -210,10 +201,7 @@ function ToursDetailPage() {
           <div className="tour-detail__register-modal__payment-way-container">
             <FormControl>
               <FormLabel className="form-label-title">روش پرداخت</FormLabel>
-              <RadioGroup
-                value={paymentMethod}
-                onChange={e => setPaymentMethod(e.target.value)}
-              >
+              <RadioGroup value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
                 <FormControlLabel
                   style={{
                     marginTop: '15px',
