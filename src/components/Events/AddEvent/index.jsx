@@ -116,7 +116,7 @@ const AddEvent = () => {
         .promise(mutateAsync(apiAdaptor(eventData)), {
           loading: 'در حال بررسی...',
           success: res => {
-            return 'رویداد با موفقیت اضافه شد.';
+            return 'رویداد به پشتیبانی ارسال شد و در صورت تایید ادمین به لیست رویداد ها اضافه میشود';
           },
           error: err => {
             if (!err.response) return 'خطا در ارتباط با سرور! اینترنت خود را بررسی کنید';
