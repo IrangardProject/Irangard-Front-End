@@ -12,7 +12,7 @@ import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import toast, { Toaster } from 'react-hot-toast';
 
 const PanelEventCard = ({ event,onAccept,onReject }) => {
-  console.log('events is :' , event);
+  // console.log('events is :' , event);
   console.log();
   const findNumberOfDays = (endDate, startDate) => {
     const start = new Date(startDate);
@@ -22,7 +22,7 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
     return diffDays;
   };
   
-  const acceptTour = (id) => {
+  const acceptEvent = (id) => {
     const access_token = localStorage.getItem('access-token');
     if (access_token) {
       console.log(id);
@@ -41,7 +41,7 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
         });
     }
   };
-  const rejectTour = (id) => {
+  const rejectEvent = (id) => {
     const access_token = localStorage.getItem('access-token');
     if (access_token) {
       const headers = {
@@ -50,7 +50,7 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
       apiInstance
         .put(`/events/${id}/admin_denial/`, {}, { headers })
         .then((res) => {
-          toast.error('رویداد از لیست رویدادهای تایید شده حذف شد', {duration: 3000 })
+          toast.error('رویداد حذف شد', {duration: 3000 })
           onReject(id); 
         })
         .catch((err) => {
@@ -102,10 +102,10 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
           {/* <span className="tour-card__date__text">{formatDate(tour.start_date)}</span> */}
         </div>
         <div className='tour-card__buttons'>
-          <button onClick={() => acceptTour(event.id) } className='tour-card__buttons__accept'>
+          <button onClick={() => acceptEvent(event.id) } className='tour-card__buttons__accept'>
             پذیرفتن
           </button>
-          <button onClick={() => rejectTour(event.id)} className='tour-card__buttons__reject'>
+          <button onClick={() => rejectEvent(event.id)} className='tour-card__buttons__reject'>
             رد کردن
           </button>
         </div>
