@@ -14,6 +14,19 @@
   margin-right: 2%;
   margin-top: 2%;
 }
+.tours-AdminVerify{
+  display: flex;
+  flex-direction: column;
+  margin-right: 3%;
+  margin-top: 3%;
+  border: 1px solid $c-green8;
+  border-radius: 10px;
+  margin-left: 3%;
+}
+.tours-AdminVerify h2{
+  margin-right: 2%;
+  margin-top: 2%;
+}
 
 .search-tours {
   background-color: whitesmoke;
