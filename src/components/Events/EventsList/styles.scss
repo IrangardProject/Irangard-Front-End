@@ -52,7 +52,8 @@
     gap: 30px;
     border-radius: 8px;
     margin: 0 0;
-    padding: 32px;
+    padding-top: 32px;
+    padding-right: 15px;
 
     &__title {
       font-size: 24px;
@@ -74,15 +75,25 @@
     }
 
     &__events {
-      display: flex;
-      flex-direction: column;
-      width: 60%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 8px;
+      margin: 0 0px;
+      margin-bottom: 10px;
+      width: 72%;
       min-width: 300px;
       @media (max-width: 800px) {
         margin: auto;
       }
       @media (max-width: 1000px) {
         width: 100%;
+      }
+    }
+    @media (max-width: 617px) {
+      &__events {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
     }
     @media (max-width: 1000px) {
