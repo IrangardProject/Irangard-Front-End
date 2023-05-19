@@ -28,8 +28,15 @@ function ToursDetailPage() {
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('درگاه پرداخت اینترنتی');
   const [showDiscountBox, setShowDiscountBox] = useState(true);
-  const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(!(auth.user?.wallet_credit < data.cost));
-  console.log(userWalletButtonDisabled, data.cost, auth.user?.wallet_credit);
+  // const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState((auth.user?.wallet_credit < data.cost) ? false : true);
+  // console.log(userWalletButtonDisabled, data.cost, auth.user?.wallet_credit);
+  // if (auth.user?.wallet_credit < data.cost) {
+  //   const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(true);
+  //   console.log('the user wallet credit is less than the tour cost', auth.user?.wallet_credit, data.cost);
+  // } else {
+  //   const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(false);
+  //   console.log('the user wallet credit is more than the tour cost', auth.user?.wallet_credit, data.cost);
+  // }
   useEffect(() => {
     apiInstance
       .get(`/tours/${id}`)
@@ -80,18 +87,18 @@ function ToursDetailPage() {
           console.log(error);
         });
     } else {
-      console.log('the data sending to backend: ', {
-        amount: newCost || data.cost,
-      });
-      apiInstance
-        .post(`/accounts/wallet/decrease/`, {
-          amount: newCost || data.cost,
-        })
-        .then(res => res.data)
-        .then(data => {
-          console.log('the data after decreasing the wallet', data);
-        });
-      console.log('now booking the tour using wallet');
+      // console.log('the data sending to backend: ', {
+      //   amount: newCost || data.cost,
+      // });
+      // apiInstance
+      //   .post(`/accounts/wallet/decrease/`, {
+      //     amount: newCost || data.cost,
+      //   })
+      //   .then(res => res.data)
+      //   .then(data => {
+      //     console.log('the data after decreasing the wallet', data);
+      //   });
+      // console.log('now booking the tour using wallet');
       apiInstance
         .post(`/tours/${id}/book_with_wallet/`, {})
         .then(res => res.data)
@@ -244,7 +251,8 @@ function ToursDetailPage() {
                       </div>
                     </div>
                   }
-                  disabled={userWalletButtonDisabled}
+                  // disabled={userWalletButtonDisabled}
+                  disabled={auth.user?.wallet_credit < (newCost || data.cost)}
                 />
               </RadioGroup>
             </FormControl>
