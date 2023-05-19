@@ -14,7 +14,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const ShareModal = ({open,handleClose}) => {
     const auth = useAuth();
-    const [users, setUsers] = useState();
+    const [users, setUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedUser, setSelectedUser] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
@@ -40,7 +40,7 @@ const ShareModal = ({open,handleClose}) => {
     useEffect(() =>{
         getAllUsers()
     },[])
-    console.log(eventId);
+    // console.log(eventId);
     const suggestEvent = () =>{
         apiInstance.post('/suggestion/event/',{
             receiver : selectedUser.id,
@@ -61,6 +61,10 @@ const ShareModal = ({open,handleClose}) => {
     const  handleSearchInputChange = (event) => {
         setSearchTerm(event.target.value);
     };
+
+    const filteredUsers = users.filter((user) =>{
+        return user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    })
     const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
     return (
        <>
@@ -82,14 +86,23 @@ const ShareModal = ({open,handleClose}) => {
                         className="search-input"
                     />
                     {/*  */}
-                    {users && users.map((user,index) =>{
-                        return(
+                    {filteredUsers.length === 0 ?(
+                        <p>کاربری یافت نشد</p>
+                    ):(
+                        filteredUsers.map((user,index) =>{
+                            return(
+
                             <div onClick={() => handleUserClick(user)} className="user" key={index}>
                                 <img className="user_img" src={user.image !== '' ? user.image : defaultImg} alt="user image" />
                                 <span className="user_username">{user.username}</span>
                             </div>
+                            )
+                        })
+                    )}
+                    {/* {users && users.map((user,index) =>{
+                        return(
                         )
-                    })}
+                    })} */}
                 </div>
             </div>
        </Dialog>
