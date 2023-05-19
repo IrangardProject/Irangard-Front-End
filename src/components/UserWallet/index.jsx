@@ -3,19 +3,19 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Modal } from '@mui/material';
 import Input from 'src/components/Input';
 import Button from 'src/components/Button';
-import { formatPrice, convertNumberToPersian } from 'src/utils/formatters.js';
+import { formatPrice, convertNumberToPersian, convertNumberToEnglish } from 'src/utils/formatters.js';
 import './styles.scss';
 import useAuth from 'src/context/AuthContext';
 import apiInstance from 'src/config/axios';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { AiOutlineMinus } from 'react-icons/ai';
+import { TextField } from '@mui/material';
 
 const UserWallet = ({ open, setOpen }) => {
   const [userCredit, setUserCredit] = useState(0);
-  const [updatedCredit, setUpdatedCredit] = useState(0);
+  const [updatedCredit, setUpdatedCredit] = useState('');
   const auth = useAuth();
-  console.log('the user in user wallet component: ', auth.user);
 
   useEffect(() => {
     if (auth.user) {
@@ -49,7 +49,7 @@ const UserWallet = ({ open, setOpen }) => {
     if (updatedCredit > 0) {
       apiInstance
         .post(`/accounts/wallet/increase/`, {
-          amount: updatedCredit,
+          amount: Number(updatedCredit),
         })
         .then(res => res.data)
         .then(data => {
@@ -108,20 +108,29 @@ const UserWallet = ({ open, setOpen }) => {
                 {formatPrice(convertNumberToPersian(500000))} تومان
               </button>
             </div>
-            {/* <input type="number" placeholder="مبلغ مورد نظر را وارد کنید" /> */}
             <div className="credit-input">
               <button className="credit-input__plus" onClick={plusButtonHandler}>
                 <AiOutlinePlus />
               </button>
               <div className="credit-input__input">
+                {/* <div className="credit-input__input__currency">تومان</div> */}
                 <Input
-                  type="text"
+                  // type="text"
+                  type="number"
                   placeholder="مبالغ دیگر"
+                  // value={formatPrice(convertNumberToPersian(updatedCredit))}
                   // value={convertNumberToPersian(updatedCredit)}
                   value={updatedCredit}
                   onChange={userCreditHandler}
+                  className="credit-input__input__field"
                 />
-                <div className="credit-input__input__currency">تومان</div>
+                {/* <TextField
+                    dir="rtl"
+                      type="number"
+                    // value={formatPrice(convertNumberToPersian(tourCostRange[1]))}
+                    value={updatedCredit}
+                    onChange={userCreditHandler}
+                  /> */}
               </div>
               <button className="credit-input__minus" onClick={minusButtonHandler}>
                 <AiOutlineMinus />

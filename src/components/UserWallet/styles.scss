@@ -146,26 +146,31 @@
     flex-direction: row;
     gap: 15px;
     &__input {
+        display: relative;
         width: 600px;
         height: 35px;
         border-radius: 8px;
         border-width: 0.5px;
         border-color: #B2B2B2;
-        // padding-left: 10px;
-        // padding-right: 10px;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 400;
         color: #000000;
         &:focus {
             outline: none;
         }
-        &__currency {
-            // margin-left: auto;
-            // margin-right: 10px;
-            // font-size: 16px;
-            // font-weight: 400;
-            // color: #000000;
-        }   
+        &__field {
+            padding-left: 20px;
+        }
+        &__field::before {
+            content: 'تومان'; /* Replace with your desired currency symbol */
+            position: absolute;
+            left: 5px; /* Adjust the position of the currency symbol */
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        // &__currency {
+        //     margin-right: 5px;
+        // }   
         @media (max-width: 768px) {
             width: 300px;   
         }
