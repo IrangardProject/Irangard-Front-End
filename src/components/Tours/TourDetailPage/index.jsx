@@ -28,15 +28,7 @@ function ToursDetailPage() {
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('درگاه پرداخت اینترنتی');
   const [showDiscountBox, setShowDiscountBox] = useState(true);
-  // const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState((auth.user?.wallet_credit < data.cost) ? false : true);
-  // console.log(userWalletButtonDisabled, data.cost, auth.user?.wallet_credit);
-  // if (auth.user?.wallet_credit < data.cost) {
-  //   const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(true);
-  //   console.log('the user wallet credit is less than the tour cost', auth.user?.wallet_credit, data.cost);
-  // } else {
-  //   const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(false);
-  //   console.log('the user wallet credit is more than the tour cost', auth.user?.wallet_credit, data.cost);
-  // }
+
   useEffect(() => {
     apiInstance
       .get(`/tours/${id}`)
@@ -87,18 +79,6 @@ function ToursDetailPage() {
           console.log(error);
         });
     } else {
-      // console.log('the data sending to backend: ', {
-      //   amount: newCost || data.cost,
-      // });
-      // apiInstance
-      //   .post(`/accounts/wallet/decrease/`, {
-      //     amount: newCost || data.cost,
-      //   })
-      //   .then(res => res.data)
-      //   .then(data => {
-      //     console.log('the data after decreasing the wallet', data);
-      //   });
-      // console.log('now booking the tour using wallet');
       apiInstance
         .post(`/tours/${id}/book_with_wallet/`, {})
         .then(res => res.data)
@@ -114,14 +94,13 @@ function ToursDetailPage() {
   const handleDiscountCodeSubmit = e => {
     e.preventDefault();
     apiInstance
-      .post(`tours/${id}/apply_discount_code/`, {
+      .post(`tours/${id}/apply_discounts/`, {
         discount_code_code: code,
       })
       .then(res => res.data)
       .then(data => {
         toast.success('کد تخفیف با موفقیت اعمال شد.');
         setNewCost(data.new_cost);
-        setUserWalletButtonDisabled(false);
       })
       .catch(err => {
         toast.error('کد تخفیف اشتباه است.');
