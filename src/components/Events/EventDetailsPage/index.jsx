@@ -95,7 +95,7 @@ const EventDetailsPage = () => {
           <ShareModal 
             open={editProfileModalOpen}
             handleClose={() => setEditProfileModalOpen(false)}
-           
+            shareType={"رویداد"}
           />
         </div>
       )}

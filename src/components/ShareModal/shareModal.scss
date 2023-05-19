@@ -12,7 +12,23 @@
   border-radius: 50%;
   margin-right: 8px;
 }
+.no-user-found{
+  color: #0a464f;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
 
+}
+.showAllResults{
+  color: #0a464f ;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-top: 3%;
+  cursor: pointer;
+}
 .userList{
   // background-color: #95b1b6;
   // border: 2px solid #97ecf9;
@@ -82,10 +98,24 @@
 }
 
 
+.suggestion-dialog-close{
+  border: none;
+  position: absolute;
+  color: crimson;
+  left: 10px;
+  top: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.suggestion-dialog-title{
+  position: absolute;
+  top: 5px;
+}
 .share-event-title{
-  // display: flex;
-  // justify-content: center;
-  margin-top: 10px;
+  position: absolute;
+  right: 30%;
+  top: 2%;
 }
 
 .suggestion-dialog__body{
@@ -200,4 +230,20 @@
         border-radius: 50%;
         margin-right: 8px;
       }
+}
+
+@media (max-width:450px){
+  .share-eventTour__container {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+  }
+  .share-eventTour__container__header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 8px;
+  }
+  .share-eventTour__container__header .share-event-title {
+    margin-top: 8px;
+  }
 }

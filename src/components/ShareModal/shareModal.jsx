@@ -12,13 +12,14 @@ import { MdClose } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 
-const ShareModal = ({open,handleClose}) => {
+const ShareModal = ({open,handleClose,shareType}) => {
     const auth = useAuth();
     const [users, setUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedUser, setSelectedUser] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [inputText, setInputText] = useState("");
+    const [showAllResults, setShowAllResults] = useState(false); 
     const params = useParams();
     const eventId = params.id;
     // console.log(params);
@@ -40,8 +41,17 @@ const ShareModal = ({open,handleClose}) => {
     useEffect(() =>{
         getAllUsers()
     },[])
-    // console.log(eventId);
+    
+
+    const handleBackfropClick = () =>{
+        handleClose(false);
+    }
+
     const suggestEvent = () =>{
+        if (inputText.trim() === "") {
+            toast.error('متن پیشنهادی نمیتواند خالی باشد')
+            return;
+        }
         apiInstance.post('/suggestion/event/',{
             receiver : selectedUser.id,
             event:eventId,
@@ -59,19 +69,26 @@ const ShareModal = ({open,handleClose}) => {
 
 
     const  handleSearchInputChange = (event) => {
-        setSearchTerm(event.target.value);
+        setSearchTerm(event.target.value.trim());
     };
 
     const filteredUsers = users.filter((user) =>{
         return user.username.toLowerCase().includes(searchTerm.toLowerCase())
     })
+
+    const limitedUsers = filteredUsers.slice(0,5);
+    const remainingUsers = filteredUsers.slice(5);
+    const handleShowAllResults = () =>{
+        setShowAllResults(true);
+        setSearchTerm('');
+    }
     const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
     return (
        <>
-        <Dialog className="share-eventTour" open={open} >
+        <Dialog onClose={handleBackfropClick} className="share-eventTour" open={open} >
             <div className="share-eventTour__container">
                 <div className="share-event__container__header">
-                    <span className="share-event-title">اشتراک گذاری</span>
+                    <span className="share-event-title">اشتراک گذاری با کاربر ...</span>
                     <button className="share-event-close" onClick={() => handleClose(false)}>
                       {/* <MdClose /> */}
                     </button>
@@ -86,38 +103,54 @@ const ShareModal = ({open,handleClose}) => {
                         className="search-input"
                     />
                     {/*  */}
-                    {filteredUsers.length === 0 ?(
-                        <p>کاربری یافت نشد</p>
+                    {limitedUsers.length === 0 ?(
+                        <p className="no-user-found">کاربری یافت نشد</p>
                     ):(
-                        filteredUsers.map((user,index) =>{
-                            return(
-
-                            <div onClick={() => handleUserClick(user)} className="user" key={index}>
-                                <img className="user_img" src={user.image !== '' ? user.image : defaultImg} alt="user image" />
-                                <span className="user_username">{user.username}</span>
-                            </div>
-                            )
+                        limitedUsers.map((user,index) =>{
+                            if (user.username !== auth.user.username) {
+                                return(
+                                <div onClick={() => handleUserClick(user)} className="user" key={index}>
+                                    <img className="user_img" src={user.image !== '' ? user.image : defaultImg} alt="user image" />
+                                    <span className="user_username">{user.username}</span>
+                                </div>
+                                )
+                            }
                         })
                     )}
-                    {/* {users && users.map((user,index) =>{
-                        return(
-                        )
-                    })} */}
+                    {remainingUsers.length> 0 && !showAllResults &&(
+                        <p className="showAllResults" onClick={handleShowAllResults}>نتایج بیشتر: {remainingUsers.length} کاربر</p>
+                    )}
+                    {showAllResults && 
+                         remainingUsers.map((user, index) => {
+                            if (user.username !== auth.user.username) {
+                              return (
+                                <div
+                                  onClick={() => handleUserClick(user)}
+                                  className="user"
+                                  key={index}
+                                >
+                                    <img className="user_img" src={user.image !== '' ? user.image : defaultImg} alt="user image" />
+                                    <span className="user_username">{user.username}</span>
+                                </div>
+                              );
+                            }
+                          })
+                    }
                 </div>
             </div>
        </Dialog>
        <Dialog className="suggestion-dialog" open={openDialog}>
        <div className="suggestion-dialog__container">
            <div className="suggestion-dialog__header">
-               <span className="suggestion-dialog-title">پیشنهاد رویداد</span>
+               <span className="suggestion-dialog-title">پیشنهاد {shareType}</span>
                <button className="suggestion-dialog-close" onClick={() => setOpenDialog(false)}>
-                   <MdClose />
+                   <MdClose  />
                </button>
            </div>
            <div className="suggestion-dialog__body">
                <input
                    type="text"
-                   placeholder="متن پیشنهاد"
+                   placeholder="متن پیشنهادی..."
                    value={inputText}
                    onChange={(e) => setInputText(e.target.value)}
                    className="suggestion-input"
