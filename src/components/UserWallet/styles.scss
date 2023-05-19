@@ -121,6 +121,9 @@
                     background-color: #000000;
                     color: #FFFFFF;
                 }
+                @media (max-width: 768px) {
+                    font-size: 12px;
+                }
             }
         }
     }
@@ -142,6 +145,31 @@
     display: flex;
     flex-direction: row;
     gap: 15px;
+    &__input {
+        width: 600px;
+        height: 35px;
+        border-radius: 8px;
+        border-width: 0.5px;
+        border-color: #B2B2B2;
+        // padding-left: 10px;
+        // padding-right: 10px;
+        font-size: 16px;
+        font-weight: 400;
+        color: #000000;
+        &:focus {
+            outline: none;
+        }
+        &__currency {
+            // margin-left: auto;
+            // margin-right: 10px;
+            // font-size: 16px;
+            // font-weight: 400;
+            // color: #000000;
+        }   
+        @media (max-width: 768px) {
+            width: 300px;   
+        }
+    }
     &__plus {
         border-radius: 8px;
         border-width: 1px;
@@ -154,6 +182,9 @@
         &:hover {
             background-color: #000000;
             color: #FFFFFF;
+        }
+        @media (max-width: 768px) {
+
         }
     }
     &__minus {

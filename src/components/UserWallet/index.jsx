@@ -113,13 +113,16 @@ const UserWallet = ({ open, setOpen }) => {
               <button className="credit-input__plus" onClick={plusButtonHandler}>
                 <AiOutlinePlus />
               </button>
-              <Input
-                type="number"
-                placeholder="مبالغ دیگر"
-                // value={convertNumberToPersian(updatedCredit)}
-                value={updatedCredit}
-                onChange={userCreditHandler}
-              />
+              <div className="credit-input__input">
+                <Input
+                  type="text"
+                  placeholder="مبالغ دیگر"
+                  // value={convertNumberToPersian(updatedCredit)}
+                  value={updatedCredit}
+                  onChange={userCreditHandler}
+                />
+                <div className="credit-input__input__currency">تومان</div>
+              </div>
               <button className="credit-input__minus" onClick={minusButtonHandler}>
                 <AiOutlineMinus />
               </button>
