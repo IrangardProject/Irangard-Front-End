@@ -63,10 +63,10 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
  
   
   return (
-    <div className="tour-card" >
+    <div className="admin-panel-card" >
       <Toaster />
-      <img className="tour-card__img" src={event.images[0].image || defaultTourImg} alt={event.title} />
-      <div className="tour-card__content">
+      <img className="admin-panel-card__img" src={event.images[0].image || defaultTourImg} alt={event.title} />
+      <div className="admin-panel-card__content">
         {/* <div className='experience-card__location'>
             <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
             <section 
@@ -75,13 +75,13 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
               <span  >   محل برگزاری  : &nbsp; </span> {city}
             </section>
           </div> */}
-        <div className="tour-card__title">نام رویداد :{event.title}</div>
-        <div className="tour-card__organizer">برگزارکننده :{event.organizer}</div>
-        <div className="tour-card__phone">شماره تلفن: {event.phone}</div>
-        <div className="tour-card__website">وبسایت رویداد: <a className='tour-card__website__a' target='_blank' title='برای دیدن سایت رویداد کلیک کن' href={event.website}>{event.website}</a></div>
-        <div className="tour-card__location">محل برگزاری :{event.city}</div>
-        <div className="tour-card__cost-capacity">
-          <div className="tour-card__cost">
+        <div className="admin-panel-card__title">نام رویداد :{event.title}</div>
+        <div className="admin-panel-card__organizer">برگزارکننده :{event.organizer}</div>
+        <div className="admin-panel-card__phone">شماره تلفن: {event.phone}</div>
+        <div className="admin-panel-card__website">وبسایت رویداد: <a className='admin-panel-card__website__a' target='_blank' title='برای دیدن سایت رویداد کلیک کن' href={event.website}>{event.website}</a></div>
+        <div className="admin-panel-card__location">محل برگزاری :{event.city}</div>
+        <div className="admin-panel-card__cost-capacity">
+          <div className="admin-panel-card__cost">
             <p style={{ display: 'flex', flexDirection: 'row', marginRight: '12px' }}>
               <p style={{ fontSize: '12px', marginLeft: '12px' }}>
                 {' '}
@@ -91,21 +91,21 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
               {/* <p style={{ fontSize: '12px', marginRight: '5px', paddingTop: '4px' }}>تومان</p> */}
             </p>
           </div>
-          <div className="tour-card__capacity">
+          <div className="admin-panel-card__capacity">
             <p style={{ fontSize: '14px', marginRight: '12px' }}>
               {/* ظرفیت تور: {convertNumberToPersian(tour.capacity - tour.bookers.length)} نفر */}
             </p>
           </div>
         </div>
-        <div className="tour-card__date">
+        <div className="admin-panel-card__date">
           {/* <AiOutlineCalendar style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} /> */}
-          {/* <span className="tour-card__date__text">{formatDate(tour.start_date)}</span> */}
+          {/* <span className="admin-panel-card__date__text">{formatDate(tour.start_date)}</span> */}
         </div>
-        <div className='tour-card__buttons'>
-          <button onClick={() => acceptEvent(event.id) } className='tour-card__buttons__accept'>
+        <div className='admin-panel-card__buttons'>
+          <button onClick={() => acceptEvent(event.id) } className='admin-panel-card__buttons__accept'>
             پذیرفتن
           </button>
-          <button onClick={() => rejectEvent(event.id)} className='tour-card__buttons__reject'>
+          <button onClick={() => rejectEvent(event.id)} className='admin-panel-card__buttons__reject'>
             رد کردن
           </button>
         </div>

@@ -63,13 +63,13 @@ const PanelTourCard = ({ tour,onAccept,onReject}) => {
    
     
     return (
-      <div className="tour-card" >
+      <div className="admin-panel-card" >
         <Toaster />
-        <img className="tour-card__img" src={tour.image || defaultTourImg} alt={tour.title} />
-      <div className="tour-card__content">
-        <div className="tour-card__title">{tour.title}</div>
-        <div className="tour-card__cost-capacity">
-          <div className="tour-card__cost">
+        <img className="admin-panel-card__img" src={tour.image || defaultTourImg} alt={tour.title} />
+      <div className="admin-panel-card__content">
+        <div className="admin-panel-card__title">{tour.title}</div>
+        <div className="admin-panel-card__cost-capacity">
+          <div className="admin-panel-card__cost">
             <p style={{ display: 'flex', flexDirection: 'row', marginRight: '12px' }}>
               <p style={{ fontSize: '12px', marginLeft: '12px' }}>
                 {' '}
@@ -79,21 +79,21 @@ const PanelTourCard = ({ tour,onAccept,onReject}) => {
               <p style={{ fontSize: '12px', marginRight: '5px', paddingTop: '4px' }}>تومان</p>
             </p>
           </div>
-          <div className="tour-card__capacity">
+          <div className="admin-panel-card__capacity">
             <p style={{ fontSize: '14px', marginRight: '12px' }}>
               ظرفیت تور: {convertNumberToPersian(tour.capacity - tour.bookers.length)} نفر
             </p>
           </div>
         </div>
-        <div className="tour-card__date">
+        <div className="admin-panel-card__date">
           <AiOutlineCalendar style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} />
-          <span className="tour-card__date__text">{formatDate(tour.start_date)}</span>
+          <span className="admin-panel-card__date__text">{formatDate(tour.start_date)}</span>
         </div>
-        <div className='tour-card__buttons'>
-          <button onClick={() => acceptTour(tour.id) } className='tour-card__buttons__accept'>
+        <div className='admin-panel-card__buttons'>
+          <button onClick={() => acceptTour(tour.id) } className='admin-panel-card__buttons__accept'>
             پذیرفتن
           </button>
-          <button onClick={() => rejectTour(tour.id)} className='tour-card__buttons__reject'>
+          <button onClick={() => rejectTour(tour.id)} className='admin-panel-card__buttons__reject'>
             رد کردن
           </button>
         </div>
