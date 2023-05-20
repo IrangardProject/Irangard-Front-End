@@ -13,14 +13,16 @@ import { TbBellRinging2 } from 'react-icons/tb';
 import { Dialog } from '@mui/material';
 import apiInstance from 'src/config/axios';
 import { MdPlace, MdTour } from 'react-icons/md';
+import RecieveSuggestionModal from '../RecieveSuggestionModal';
 
 const Navbar = ({}) => {
   const [open, setOpen] = useState(false);
   const [userWalletOpen, setUserWalletOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [events, setEvents] = useState([]);
-  const [place, setPlace] = useState([]);
-  const [tours, setTours] = useState([]);
+  const [recieve,setRecieve] = useState(false)
+
+
+  
   const auth = useAuth();
   console.log('auth:', auth);
   const navigate = useNavigate();
@@ -37,68 +39,7 @@ const Navbar = ({}) => {
     setOpenDialog(true);
   };
 
-  const handleDialogClose = () => {
-    setOpenDialog(false);
-  };
 
-  const getEvents = async () => {
-    const access_token = localStorage.getItem('access-token');
-    console.log('access_token is', access_token);
-    if (access_token) {
-      const headers = {
-        Authorization: `JWT ${access_token}`,
-      };
-      await apiInstance
-        .get('/suggestion/event/receiver_suggestions/', { headers })
-        .then((res) => {
-          setEvents(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
-  const getPlace = async () => {
-    const access_token = localStorage.getItem('access-token');
-    console.log('access_token is', access_token);
-    if (access_token) {
-      const headers = {
-        Authorization: `JWT ${access_token}`,
-      };
-      await apiInstance
-        .get('/suggestion/place/receiver_suggestions/', { headers })
-        .then((res) => {
-          setPlace(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }; 
-  const getTours = async () => {
-    const access_token = localStorage.getItem('access-token');
-    console.log('access_token is', access_token);
-    if (access_token) {
-      const headers = {
-        Authorization: `JWT ${access_token}`,
-      };
-      await apiInstance
-        .get('/suggestion/tour/receiver_suggestions/', { headers })
-        .then((res) => {
-          setPlace(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }; 
-
-  useEffect(() => {
-    getEvents();
-    getPlace();
-    getTours();
-  }, []);
 
   return (
     <>
@@ -112,25 +53,7 @@ const Navbar = ({}) => {
             {auth.isLoggedIn && (
               <TbBellRinging2 onClick={handelRingClick} className="ringIcom" />
             )}
-            <Dialog className="recieve-suggestion" onClose={handleDialogClose} open={openDialog}>
-              <section className="recieve-suggestion__container">
-                <h2>لیست پیشنهاد شده به شما</h2>
-                <section className='list-of-shared'>
-                  <article>
-                    <MdPlace />
-                    <p>مکان های پیشنهاد شده به شما</p>
-                  </article>
-                  <article>
-                    <MdTour />
-                    <p>تور های پیشنهاد شده به شما</p>
-                  </article>
-                  <article>
-                    <BsFillCalendarEventFill />
-                    <p>رویداد های پیشنهاد شده به شما</p>
-                  </article>
-                </section>
-              </section>
-            </Dialog>
+            <RecieveSuggestionModal open={openDialog} setOpen={setOpenDialog}  />
           </section>
           <div className="header__navbar-left">
             <button className="compose-experience" onClick={() => navigate('/experiences/new')}>

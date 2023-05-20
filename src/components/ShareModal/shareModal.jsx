@@ -21,8 +21,8 @@ const ShareModal = ({open,handleClose,shareType}) => {
     const [inputText, setInputText] = useState("");
     const [showAllResults, setShowAllResults] = useState(false); 
     const params = useParams();
-    const eventId = params.id;
-    // console.log(params);
+    // const eventId = params.id;
+    console.log(params);
     const handleUserClick = (user) => {
         setSelectedUser(user);
         handleClose(false);
@@ -47,24 +47,44 @@ const ShareModal = ({open,handleClose,shareType}) => {
         handleClose(false);
     }
 
-    const suggestEvent = () =>{
+    const suggestEvent = (shareType) =>{
         if (inputText.trim() === "") {
             toast.error('متن پیشنهادی نمیتواند خالی باشد')
             return;
         }
-        apiInstance.post('/suggestion/event/',{
-            receiver : selectedUser.id,
-            event:eventId,
-            text: inputText
-        })
-        .then(() => {
-            setInputText(""); 
-            setOpenDialog(false); 
-            toast.success('رویداد با موفقیت  ارسال شد.')
-        })
-        .catch((err) =>{
-            toast.error('این رویداد قبلا به این کاربر ارسال شده است.')
-        })
+        console.log(shareType);
+        let suggestionType;
+        let suggestionUrl;
+        let Id;
+
+        if (shareType === "مکان") {
+            suggestionType = "place";
+            suggestionUrl = "/suggestion/place/";
+            Id = params.placeId;
+        } else if (shareType === "تور") {
+            suggestionType = "tour";
+            suggestionUrl = "/suggestion/tour/";
+            Id = params.id;
+        } else if (shareType === "رویداد") {
+            suggestionType = "event";
+            suggestionUrl = "/suggestion/event/";
+            Id = params.id
+        }
+
+        apiInstance
+          .post(suggestionUrl, {
+            receiver: selectedUser.id,
+            [suggestionType]: Id,
+            text: inputText,
+          })
+          .then(() => {
+            setInputText("");
+            setOpenDialog(false);
+            toast.success("رویداد با موفقیت ارسال شد.");
+          })
+          .catch((err) => {
+            toast.error("این رویداد قبلا به این کاربر ارسال شده است.");
+          });
     }
 
 
@@ -155,7 +175,7 @@ const ShareModal = ({open,handleClose,shareType}) => {
                    onChange={(e) => setInputText(e.target.value)}
                    className="suggestion-input"
                />
-               <button className="suggestion-button" onClick={suggestEvent}>ارسال</button>
+               <button className="suggestion-button" onClick={() =>suggestEvent(shareType)}>ارسال</button>
            </div>
        </div>
    </Dialog>
