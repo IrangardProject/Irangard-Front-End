@@ -78,7 +78,11 @@ function EventCard({ event }) {
         {event.website && (
           <div className="event-card__website">
             <RiLink style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} />
-            <span className="event-card__website__address">{event.website}</span>
+            <span className="event-card__website__address">
+              <a href={`https://${event.website}`} target="_blank">
+                {event.website}
+              </a>
+            </span>
           </div>
         )}
       </div>
