@@ -78,15 +78,16 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
       gap: 8px;
+      padding-bottom: 20px;
       margin: 0 0px;
       margin-bottom: 10px;
       width: 72%;
       min-width: 300px;
+      @media (max-width: 1286px) {
+        width: 100%;
+      }
       @media (max-width: 800px) {
         margin: auto;
-      }
-      @media (max-width: 1000px) {
-        width: 100%;
       }
     }
     @media (max-width: 617px) {
@@ -115,7 +116,6 @@
     }
     .from-to-price {
       .MuiInputBase-input {
-        // padding: 0;
         font-size: 13px;
         @media (max-width: 1000px) {
           font-size: 17px;
