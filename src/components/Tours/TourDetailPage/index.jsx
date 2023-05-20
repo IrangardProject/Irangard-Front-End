@@ -15,6 +15,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Radio, RadioGroup, FormControl, FormLabel, FormControlLabel } from '@mui/material';
 import { BsCreditCard2Back } from 'react-icons/bs';
 import { IoWalletOutline } from 'react-icons/io5';
+import ShareIcon from '@mui/icons-material/Share';
+import ShareModal from '../../ShareModal/shareModal';
+
 
 function ToursDetailPage() {
   const { id } = useParams();
@@ -28,6 +31,9 @@ function ToursDetailPage() {
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('درگاه پرداخت اینترنتی');
   const [showDiscountBox, setShowDiscountBox] = useState(true);
+  const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(!(auth.user?.wallet_credit < data.cost));
+  console.log(userWalletButtonDisabled, data.cost, auth.user?.wallet_credit);
+  const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
 
   useEffect(() => {
     apiInstance
@@ -90,6 +96,9 @@ function ToursDetailPage() {
         });
     }
   };
+  const handleOpen = () => {
+    setEditProfileModalOpen(true);
+  };
 
   const handleDiscountCodeSubmit = e => {
     e.preventDefault();
@@ -114,7 +123,23 @@ function ToursDetailPage() {
       {pageLoading && <Loader />}
       {!pageLoading && (
         <div className="tour-detail">
+          <section className='titleandicon'>
           <h1 className="tour-detail__title">{data.title}</h1>
+          <div className='share-icon-container'>
+              <ShareIcon
+                onClick = {handleOpen}
+                sx={{
+                  marginRight: '20px',
+                  color: 'green',
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  bgcolor: 'rgba(0, 0, 0, 0.04)',
+                  padding: '2px 1px',
+                }}
+              />
+              <span className="tooltip-text">به اشتراک گذاشتن تور</span>
+            </div>
+          </section>
           {data.owner.user === auth.user?.id && (
             <p onClick={() => navigate(`/tours/${id}/dashboard`)} className="tour-detail__goto-dashboard">
               رفتن به داشبورد
@@ -244,6 +269,11 @@ function ToursDetailPage() {
           </div>
         </div>
       </Modal>
+      <ShareModal 
+        open={editProfileModalOpen}
+        handleClose={() => setEditProfileModalOpen(false)}
+        shareType = {"تور"}
+      />
     </Layout>
   );
 }
