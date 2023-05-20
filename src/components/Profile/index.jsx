@@ -12,6 +12,7 @@ import { baseUrl } from 'src/utils/constants';
 import apiInstance from '../../config/axios';
 import useAuth from '../../context/AuthContext';
 import EditProfileModal from '../EditProfileModal';
+import UserPreferencesModal from '../UserPreferencesModal';
 import './style.scss';
 import defaultProfileImg from '../../assets/images/avatar.png';
 import { styled } from '@mui/material/styles';
@@ -20,6 +21,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { TbZoomCancel } from 'react-icons/tb';
+import { GrFavorite } from 'react-icons/gr';
 import TourCard from 'src/components/Tours/TourCard';
 import EventCard from 'src/components/Events/EventCard';
 
@@ -101,6 +103,7 @@ const Profile = () => {
 
   const [followLoading, setFollowLoading] = useState(false);
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
+  const [userPreferencesModalOpen, setUserPreferencesModalOpen] = useState(false);
   const auth = useAuth();
   const [followerCount, setFollowerCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -183,6 +186,14 @@ const Profile = () => {
 
   const handleOpen = () => {
     setEditProfileModalOpen(true);
+  };
+
+  const openUserPreferencesHandler = () => {
+    setUserPreferencesModalOpen(true);
+  };
+
+  const closeUserPreferencesHandler = () => {
+    setUserPreferencesModalOpen(false);
   };
 
   const showFollow = data.following !== null && usernameQuery !== auth?.user?.username;
@@ -306,14 +317,24 @@ const Profile = () => {
                   <span>{convertNumberToPersian(followingCount)}</span>
                 </div>
               </div>
-              {data.is_owner && (
-                <button className="profile-summary__edit" onClick={handleOpen}>
-                  <span>ویرایش پروفایل</span>
-                  <span>
-                    <RiSettings5Line size={20} />
-                  </span>
-                </button>
-              )}
+              <div classname="profile-summary__options">
+                {data.is_owner && (
+                  <button className="profile-summary__options__edit" onClick={handleOpen}>
+                    <span>ویرایش پروفایل</span>
+                    <span>
+                      <RiSettings5Line size={20} />
+                    </span>
+                  </button>
+                )}
+                {data.is_owner && (
+                  <button className="profile-summary__options__user-preferences" onClick={openUserPreferencesHandler}>
+                    <span>علاقه‌مندی‌ها</span>
+                    <span>
+                      <GrFavorite size={20} />
+                    </span>
+                  </button>
+                )}
+              </div>
             </div>
             {data.about_me && (
               <div className="profile-summary__about">
@@ -321,6 +342,13 @@ const Profile = () => {
                 <p>{data.about_me}</p>
               </div>
             )}
+
+            <UserPreferencesModal
+              open={userPreferencesModalOpen}
+              setOpen={setUserPreferencesModalOpen}
+              onClose={closeUserPreferencesHandler}
+              usernameQuery={usernameQuery}
+            />
 
             <EditProfileModal
               open={editProfileModalOpen}
