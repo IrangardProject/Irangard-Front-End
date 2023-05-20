@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Modal } from '@mui/material';
-import Input from 'src/components/Input';
+// import Input from 'src/components/Input';
 import Button from 'src/components/Button';
 import { formatPrice, convertNumberToPersian, convertNumberToEnglish } from 'src/utils/formatters.js';
 import './styles.scss';
@@ -11,6 +11,44 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { tourCategories, eventTypes } from 'src/utils/constants';
 import { FormGroup, FormControl, FormControlLabel, Checkbox } from '@mui/material';
 import { usePutProfile } from 'src/api/profile';
+// import clsx from 'clsx';
+// import { makeStyles, useTheme } from '@mui/core/styles';
+// import Input from '@material-ui/core/Input';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import ListItemText from '@material-ui/core/ListItemText';
+// import Select from '@material-ui/core/Select';
+// import Chip from '@material-ui/core/Chip';
+
+// const useStyles = makeStyles((theme) => ({
+//   formControl: {
+//     margin: theme.spacing(1),
+//     minWidth: 120,
+//     maxWidth: 300,
+//   },
+//   chips: {
+//     display: 'flex',
+//     flexWrap: 'wrap',
+//   },
+//   chip: {
+//     margin: 2,
+//   },
+//   noLabel: {
+//     marginTop: theme.spacing(3),
+//   },
+// }));
+
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       width: 250,
+//     },
+//   },
+// };
+
 
 const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
   // console.log('the events: ', eventTypes);
@@ -100,6 +138,30 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
                     label={event.label}
                   />
                 ))}
+                {/* <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="demo-mutiple-chip-label"
+                    id="demo-mutiple-chip"
+                    multiple
+                    value={selectedEventTypes}
+                    onChange={handleEventTypesChange}
+                    input={<Input id="select-multiple-chip" />}
+                    renderValue={selected => (
+                      <div className={classes.chips}>
+                        {selected.map(event => (
+                          <Chip key={event} label={event.label} className={classes.chip} />
+                        ))}
+                      </div>
+                    )}
+                    MenuProps={MenuProps}
+                  >
+                    {selectedEventTypes.map(type => (
+                      <MenuItem key={type} value={type} style={getStyles(type, selectedEventTypes, theme)}>
+                        {type}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl> */}
               </div>
             </div>
             <div className="preference-form__tours">
@@ -122,7 +184,9 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
               </div>
             </div>
             {/* </div> */}
-            <button type="submit">Submit</button>
+            <Button varient="green" className="preference-form__btn" type="submit">
+              ثبت
+            </Button>
           </form>
         </div>
       </div>
