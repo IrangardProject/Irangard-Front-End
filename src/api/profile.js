@@ -35,13 +35,14 @@ export const useGetProfile = username => {
 export const usePutProfile = async (username, body, onError, onSuccess) => {
   try {
     // console.log("the data sendind to back: ", body.values());
-    for (const value of body.values()) {
-      console.log(value);
-    }
+    // for (const value of body.values()) {
+    //   console.log(value);
+    // }
     const res = await apiInstance.put(`/accounts/profile/${username}`, body);
     const data = await res.data;
     onSuccess(data);
   } catch (error) {
+    console.log("the error is: ", error);
     onError(error);
   }
 };
