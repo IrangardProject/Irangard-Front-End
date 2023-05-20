@@ -1,54 +1,6 @@
 @import 'src/theme/main.scss';
 
-.list-of-shared{
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-}
-.list-of-shared article{
-    display: flex;
-    flex-direction: row;
-    border: 1px solid #18513d;
-    border-radius: 10px;
-    margin-top: 10px;
-    padding: 10px ;
-}
 
-.list-of-shared article:hover{
-    background-color: #18513d;
-    color: white;
-    box-shadow: 0 0 10px #18513d;
-    border: 1.5px solid #054751;
-    cursor: pointer;
-}
-.recieve-suggestion{
-    display: 'flex'; 
-    justify-content: 'center'; 
-    align-items: 'center'; 
-    overflow-y: 'auto';
-    margin-top: 150px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    &__container {
-        padding-left: 24px;
-        padding-right: 24px;
-        margin: auto;
-        width: 400px;
-        height: 255px;
-        background-color: #F0F0F0;
-        border-radius: 8px;
-    }
-    &__container h2{
-        margin-top: 10px;
-    }
-}
-
-.recieve-suggestion__container h2{
-    display: flex;
-    text-align: center;
-    justify-content: center;
-}
 .logo-ring{
     display: flex;
     justify-content: center;
