@@ -5,6 +5,8 @@ import { formatDate, convertNumberToPersian, formatPrice, convertGeorgianDateToJ
 import './styles.scss';
 import defaultEventImg2 from 'src/assets/images/defaultEventImg2.jpeg';
 import { AiOutlineCalendar } from 'react-icons/ai';
+import { BiTime } from 'react-icons/bi';
+import { RiLink } from 'react-icons/ri';
 
 function EventCard({ event }) {
   const navigate = useNavigate();
@@ -67,6 +69,18 @@ function EventCard({ event }) {
           <AiOutlineCalendar style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} />
           <span className="event-card__date__text">{formatDate(event.start_date)}</span>
         </div>
+        <div className="event-card__time">
+          <BiTime style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} />
+          <span className="event-card__time__text">
+            از ساعت {convertNumberToPersian(event.start_time.slice(0, -3))}
+          </span>
+        </div>
+        {event.website && (
+          <div className="event-card__website">
+            <RiLink style={{ fontSize: '20px', marginRight: '12px', paddingTop: '4px', marginLeft: '4px' }} />
+            <span className="event-card__website__address">{event.website}</span>
+          </div>
+        )}
       </div>
     </Link>
   );
