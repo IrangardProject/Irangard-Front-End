@@ -168,7 +168,7 @@ const ShareModal = ({open,handleClose,shareType}) => {
                </button>
            </div>
            <div className="suggestion-dialog__body">
-               <input
+               <textarea
                    type="text"
                    placeholder="متن پیشنهادی..."
                    value={inputText}
