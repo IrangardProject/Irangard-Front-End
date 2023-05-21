@@ -34,11 +34,11 @@ const UserWallet = ({ open, setOpen }) => {
     setOpen(false);
   };
   const plusButtonHandler = () => {
-    setUpdatedCredit(updatedCredit + 100000);
+    setUpdatedCredit(Number(updatedCredit) + 100000);
   };
   const minusButtonHandler = () => {
     if (updatedCredit >= 100000) {
-      setUpdatedCredit(updatedCredit - 100000);
+      setUpdatedCredit(Number(updatedCredit) - 100000);
     } else {
       setUpdatedCredit(0);
     }
