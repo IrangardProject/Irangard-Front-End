@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Modal } from '@mui/material';
-// import Input from 'src/components/Input';
 import Button from 'src/components/Button';
 import { formatPrice, convertNumberToPersian, convertNumberToEnglish } from 'src/utils/formatters.js';
 import './styles.scss';
@@ -9,59 +8,10 @@ import useAuth from 'src/context/AuthContext';
 import apiInstance from 'src/config/axios';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { tourCategories, eventTypes } from 'src/utils/constants';
-import {
-  FormGroup,
-  FormControl,
-  FormControlLabel,
-  Checkbox,
-  Input,
-  InputLabel,
-  MenuItem,
-  ListItemText,
-  Select,
-  Chip,
-} from '@mui/material';
+import { FormControl, Checkbox, MenuItem, ListItemText, Select } from '@mui/material';
 import { usePutProfile } from 'src/api/profile';
-import clsx from 'clsx';
-import { makeStyles, useTheme } from '@mui/styles';
 import { RiShipLine } from 'react-icons/ri';
 import { BsCalendarEvent } from 'react-icons/bs';
-
-// const useStyles = makeStyles(theme => ({
-//   formControl: {
-//     margin: theme.spacing(1),
-//     minWidth: 120,
-//     maxWidth: 300,
-//   },
-//   chips: {
-//     display: 'flex',
-//     flexWrap: 'wrap',
-//   },
-//   chip: {
-//     margin: 2,
-//   },
-//   noLabel: {
-//     marginTop: theme.spacing(3),
-//   },
-// }));
-
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//   PaperProps: {
-//     style: {
-//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//       width: 250,
-//     },
-//   },
-// };
-
-// function getStyles(type, selectedEventTypes, theme) {
-//   return {
-//     fontWeight:
-//       selectedEventTypes.indexOf(type) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
-//   };
-// }
 
 const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
   const [eventListOpener, setEventListOpener] = useState(false);
@@ -79,7 +29,6 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
       setSelectedTourCategories(auth.user.favorite_tour_types.map(type => tourCategories[Number(type)].label));
     }
   }, [auth.user]);
-
 
   const handleEventSelectOpen = () => {
     setEventListOpener(true);
@@ -116,26 +65,54 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
   const handleSubmit = e => {
     e.preventDefault();
     console.log(selectedEventTypes, selectedTourCategories); // Example: [0, 2, 5]
-    setUpdateLoading(true);
-    usePutProfile(
-      usernameQuery,
-      // body,
-      {
-        username: auth.user.username,
-        favorite_event_types: selectedEventTypes,
-        favorite_tour_types: selectedTourCategories,
-      },
-      error => {
-        toast.error('مشکلی در سامانه رخ داده‌است.');
-        setUpdateLoading(false);
-      },
-      data => {
-        console.log(data);
-        setUpdateLoading(false);
-        toast.success('اطلاعات با موفقیت تغییر یافت');
-        setOpen(false);
-      }
-    );
+    const sendingEventTypes = [];
+    selectedEventTypes.map(selectedEventType => {
+      eventTypes.map(eventType => {
+        if (eventType.label === selectedEventType) {
+          sendingEventTypes.push(String(eventTypes.indexOf(eventType)));
+        }
+      });
+    });
+    // console.log('this is the sendingEventTypes: ', sendingEventTypes, typeof sendingEventTypes);
+
+    const sendingTourCategories = [];
+    selectedTourCategories.map(selectedTourCategory => {
+      tourCategories.map(tourCategory => {
+        if (tourCategory.label === selectedTourCategory) {
+          sendingTourCategories.push(String(tourCategories.indexOf(tourCategory)));
+        }
+      });
+    });
+    // console.log('this is the sendingTourCategories: ', sendingTourCategories, typeof sendingTourCategories);
+    const body = {
+      username: auth.user.username,
+      favorite_event_types: sendingEventTypes,
+      favorite_tour_types: sendingTourCategories,
+    };
+    console.log('the body is: ', body);
+    apiInstance.put(`/accounts/profile/${auth.user.username}`, body).then(res => {
+      console.log('the result of updating the profile: ', res);
+    });
+    // setUpdateLoading(true);
+    // usePutProfile(
+    //   usernameQuery,
+    //   // body,
+    //   {
+    //     username: auth.user.username,
+    //     favorite_event_types: sendingEventTypes,
+    //     favorite_tour_types: sendingTourCategories,
+    //   },
+    //   error => {
+    //     toast.error('مشکلی در سامانه رخ داده‌است.');
+    //     setUpdateLoading(false);
+    //   },
+    //   data => {
+    //     console.log(data);
+    //     setUpdateLoading(false);
+    //     toast.success('اطلاعات با موفقیت تغییر یافت');
+    //     setOpen(false);
+    //   }
+    // );
   };
 
   const userPreferencesCloseButtonHandler = () => {
@@ -218,7 +195,6 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
                 </FormControl>
               </div>
             </div>
-            {/* </div> */}
             <Button varient="green" className="preference-form__btn" type="submit">
               ثبت تغییرات
             </Button>
