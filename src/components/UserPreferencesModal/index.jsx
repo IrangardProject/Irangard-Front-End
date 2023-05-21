@@ -9,18 +9,25 @@ import useAuth from 'src/context/AuthContext';
 import apiInstance from 'src/config/axios';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { tourCategories, eventTypes } from 'src/utils/constants';
-import { FormGroup, FormControl, FormControlLabel, Checkbox } from '@mui/material';
+import {
+  FormGroup,
+  FormControl,
+  FormControlLabel,
+  Checkbox,
+  Input,
+  InputLabel,
+  MenuItem,
+  ListItemText,
+  Select,
+  Chip,
+} from '@mui/material';
 import { usePutProfile } from 'src/api/profile';
-// import clsx from 'clsx';
-// import { makeStyles, useTheme } from '@mui/core/styles';
-// import Input from '@material-ui/core/Input';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import Select from '@material-ui/core/Select';
-// import Chip from '@material-ui/core/Chip';
+import clsx from 'clsx';
+import { makeStyles, useTheme } from '@mui/styles';
+import { RiShipLine } from 'react-icons/ri';
+import { BsCalendarEvent } from 'react-icons/bs';
 
-// const useStyles = makeStyles((theme) => ({
+// const useStyles = makeStyles(theme => ({
 //   formControl: {
 //     margin: theme.spacing(1),
 //     minWidth: 120,
@@ -49,34 +56,60 @@ import { usePutProfile } from 'src/api/profile';
 //   },
 // };
 
+// function getStyles(type, selectedEventTypes, theme) {
+//   return {
+//     fontWeight:
+//       selectedEventTypes.indexOf(type) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
+//   };
+// }
 
 const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
-  // console.log('the events: ', eventTypes);
+  const [eventListOpener, setEventListOpener] = useState(false);
+  const [tourListOpener, setTourListOpener] = useState(false);
+
   const [selectedEventTypes, setSelectedEventTypes] = useState([]);
   const [selectedTourCategories, setSelectedTourCategories] = useState([]);
   const [updateLoading, setUpdateLoading] = useState(false);
   const auth = useAuth();
   console.log('the user info: ', auth.user);
 
-  const handleEventTypesChange = event => {
-    const { value, checked } = event.target;
-    const index = String(value);
+  useEffect(() => {
+    if (auth.user) {
+      setSelectedEventTypes(auth.user.favorite_event_types.map(type => eventTypes[Number(type)].label));
+      setSelectedTourCategories(auth.user.favorite_tour_types.map(type => tourCategories[Number(type)].label));
+    }
+  }, [auth.user]);
 
-    if (checked) {
-      setSelectedEventTypes([...selectedEventTypes, index]);
+
+  const handleEventSelectOpen = () => {
+    setEventListOpener(true);
+  };
+
+  const handleEventSelectClose = () => {
+    setEventListOpener(false);
+  };
+
+  const handleTourSelectOpen = () => {
+    setTourListOpener(true);
+  };
+
+  const handleTourSelectClose = () => {
+    setTourListOpener(false);
+  };
+
+  const handleEventItemToggle = item => {
+    if (selectedEventTypes.includes(item)) {
+      setSelectedEventTypes(selectedEventTypes.filter(selectedEventType => selectedEventType !== item));
     } else {
-      setSelectedEventTypes(selectedEventTypes.filter(type => type !== index));
+      setSelectedEventTypes([...selectedEventTypes, item]);
     }
   };
 
-  const handleTourCategoriesChange = event => {
-    const { value, checked } = event.target;
-    const index = String(value);
-
-    if (checked) {
-      setSelectedTourCategories([...selectedTourCategories, index]);
+  const handleTourItemToggle = item => {
+    if (selectedTourCategories.includes(item)) {
+      setSelectedTourCategories(selectedTourCategories.filter(selectedTourCategory => selectedTourCategory !== item));
     } else {
-      setSelectedTourCategories(selectedTourCategories.filter(type => type !== index));
+      setSelectedTourCategories([...selectedTourCategories, item]);
     }
   };
 
@@ -122,70 +155,72 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
         <div className="preference-selections">
           <form onSubmit={handleSubmit} className="preference-form">
             <div className="preference-form__events">
-              <div className="preference-form__events__title">دسته‌بندی رویداد‌ها</div>
+              <div className="preference-form__events__title">
+                <BsCalendarEvent size={16} />
+                <span className="preference-form__events__title__text">دسته‌بندی رویداد‌ها</span>
+              </div>
               <div className="preference-form__events__checkboxes">
-                {eventTypes.map(event => (
-                  <FormControlLabel
-                    sx={{ width: 'auto' }}
-                    key={event.value}
-                    control={
-                      <Checkbox
-                        checked={selectedEventTypes.includes(String(eventTypes.indexOf(event)))}
-                        onChange={handleEventTypesChange}
-                        value={eventTypes.indexOf(event)}
-                      />
-                    }
-                    label={event.label}
-                  />
-                ))}
-                {/* <FormControl className={classes.formControl}>
+                <FormControl sx={{ width: '100%', display: 'flex', alignItems: 'center', marginTop: '20px' }}>
                   <Select
-                    labelId="demo-mutiple-chip-label"
-                    id="demo-mutiple-chip"
+                    labelId="demo-mutiple-checkbox-label"
+                    id="demo-mutiple-checkbox"
                     multiple
+                    open={eventListOpener}
+                    onOpen={handleEventSelectOpen}
+                    onClose={handleEventSelectClose}
+                    renderValue={selected => selected.join(', ')}
                     value={selectedEventTypes}
-                    onChange={handleEventTypesChange}
-                    input={<Input id="select-multiple-chip" />}
-                    renderValue={selected => (
-                      <div className={classes.chips}>
-                        {selected.map(event => (
-                          <Chip key={event} label={event.label} className={classes.chip} />
-                        ))}
-                      </div>
-                    )}
-                    MenuProps={MenuProps}
+                    onChange={event => setSelectedEventTypes(event.target.value)}
+                    sx={{ width: '75%' }}
                   >
-                    {selectedEventTypes.map(type => (
-                      <MenuItem key={type} value={type} style={getStyles(type, selectedEventTypes, theme)}>
-                        {type}
+                    {eventTypes.map(event => (
+                      <MenuItem key={event.value} value={event.label}>
+                        <Checkbox
+                          checked={selectedEventTypes.includes(event.label)}
+                          onChange={() => handleEventItemToggle(event.label)}
+                        />
+                        <ListItemText primary={event.label} />
                       </MenuItem>
                     ))}
                   </Select>
-                </FormControl> */}
+                </FormControl>
               </div>
             </div>
             <div className="preference-form__tours">
-              <div className="preference-form__tours__title">دسته‌بندی تور‌ها</div>
+              <div className="preference-form__tours__title">
+                <RiShipLine size={16} />
+                <span className="preference-form__tours__title__text">دسته‌بندی تور‌ها</span>
+              </div>
               <div className="preference-form__tours__checkboxes">
-                {tourCategories.map(tour => (
-                  <FormControlLabel
-                    sx={{ width: 'auto' }}
-                    key={tour.value}
-                    control={
-                      <Checkbox
-                        checked={selectedTourCategories.includes(String(tourCategories.indexOf(tour)))}
-                        onChange={handleTourCategoriesChange}
-                        value={tourCategories.indexOf(tour)}
-                      />
-                    }
-                    label={tour.label}
-                  />
-                ))}
+                <FormControl sx={{ width: '100%', display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+                  <Select
+                    labelId="demo-mutiple-checkbox-label"
+                    id="demo-mutiple-checkbox"
+                    multiple
+                    open={tourListOpener}
+                    onOpen={handleTourSelectOpen}
+                    onClose={handleTourSelectClose}
+                    renderValue={selected => selected.join(', ')}
+                    value={selectedTourCategories}
+                    onChange={tour => setSelectedTourCategories(tour.target.value)}
+                    sx={{ width: '75%' }}
+                  >
+                    {tourCategories.map(tour => (
+                      <MenuItem key={tour.value} value={tour.label}>
+                        <Checkbox
+                          checked={selectedTourCategories.includes(tour.label)}
+                          onChange={() => handleTourItemToggle(tour.label)}
+                        />
+                        <ListItemText primary={tour.label} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </div>
             </div>
             {/* </div> */}
             <Button varient="green" className="preference-form__btn" type="submit">
-              ثبت
+              ثبت تغییرات
             </Button>
           </form>
         </div>
