@@ -1,3 +1,7 @@
+@import 'src/theme/main.scss';
+// @import '../../../theme/colors.scss';
+@import '../../theme/colors.scss';
+
 #modal-modal-title {
   text-align: center;
 }
@@ -15,3 +19,32 @@
     align-items: center;
     padding: 4px;
 }
+
+// .dimonds-description {
+//   display: flex;
+//   align-items: center;
+//   visibility: hidden;
+//   width: 120px;
+//   height: 250px;
+//   background-color:white;
+//   color: $c-green1;
+//   text-align: center;
+//   border-radius: 6px;
+//   padding: 5px;
+//   position: absolute;
+//   z-index: 1;
+//   bottom: 125%;
+//   right: 0%;
+//   transform: translateX(-50%);
+//   opacity: 0;
+//   transition: opacity 0.3s;
+//   border: 1px solid $c-green1;
+// }
+// .drop-down__menu:hover .dimonds-description {
+//   visibility: visible;
+//   opacity: 1;
+//   top: 0%;
+//   bottom: 0%;
+//   right: -90%;
+//   padding: 2px;
+// }

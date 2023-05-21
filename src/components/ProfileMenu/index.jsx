@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import { Box } from '@mui/material';
+import { Box, List } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -24,6 +24,8 @@ import { baseUrl } from '../../utils/constants';
 import toast from 'react-hot-toast';
 import { BsCalendarEvent } from 'react-icons/bs';
 import { RiShipLine } from 'react-icons/ri';
+import { FaGem } from 'react-icons/fa';
+import { convertNumberToPersian } from 'src/utils/formatters';
 
 const style = {
   position: 'absolute',
@@ -120,13 +122,31 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem>
-          <Link to={`/profile/${auth.user.username}`} className="drop-down__menu">
-            <ListItemIcon>
-              <AccountBoxIcon fontSize="small" />
+          <div className="drop-down__menu">
+            <ListItemIcon
+              sx={{
+                color: '#3EC70B',
+              }}
+            >
+              <FaGem size={20} />
             </ListItemIcon>
-            پروفایل من
-          </Link>
+            {convertNumberToPersian(auth.user.dimonds)} الماس
+            {/* <div className="dimonds-description">
+              <span>شما می‌توانید از الماس های خود در فرآیند خرید تور استفاده کنید.</span>
+            </div> */}
+          </div>
         </MenuItem>
+        <>
+          <Divider />
+          <MenuItem>
+            <Link to={`/profile/${auth.user.username}`} className="drop-down__menu">
+              <ListItemIcon>
+                <AccountBoxIcon fontSize="small" />
+              </ListItemIcon>
+              پروفایل من
+            </Link>
+          </MenuItem>
+        </>
         <>
           <Divider />
           <MenuItem>
