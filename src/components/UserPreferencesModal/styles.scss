@@ -1,4 +1,6 @@
 @import 'src/theme/main.scss';
+@import '../../theme/colors.scss';
+
 .user-preferences-wrapper {
     display: 'flex'; 
     justify-content: 'center'; 
@@ -12,8 +14,8 @@
         padding-left: 24px;
         padding-right: 24px;
         margin: auto;
-        width: 750px;
-        height: 590px;
+        width: 500px;
+        height: 470px;
         background-color: #F0F0F0;
         border-radius: 8px;
         &__close-btn {
@@ -54,15 +56,46 @@
     }
 }
 
-.preferences-selections {
-    .preference-form {
-        display: flex;
-        flex-direction: column;    
+.preference-form {
+    display: flex;
+    flex-direction: column;   
+    &__events {
+        margin-top: 20px;
+        &__title {
+            font-size: 18px;
+            margin-right: 20px;
+            &__text {
+                margin-right: 15px;
+            }
+        }
+    } 
+    &__tours {
+        margin-top: 20px;
+        &__title {
+            font-size: 18px;
+            margin-right: 20px;
+            &__text {
+                margin-right: 15px;
+            }
+        }
     }
-    &__checkbox-container {
-        // display: grid;
-        // grid-template-columns: repeat(200px, 1fr); /* Two columns */
-        // gap: 20px; /* Gap between checkboxes */
-        // max-width: 500px; /* Adjust the width as needed */
+    &__btn {
+        margin-top: 45px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        height: 40px;
+        border-radius: 8px;
+        // background-color: #000000;
+        // color: #FFFFFF;
+        background-color: $c-green3;
+        font-size: 16px;
+        font-weight: 700;
+        border-color: transparent;
+        &:hover {
+            background-color: $c-green1;
+            color: #fff;
+            border-color: #000000;
+        }
     }
 }
