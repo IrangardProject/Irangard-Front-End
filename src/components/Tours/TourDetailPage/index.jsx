@@ -25,6 +25,7 @@ import ByUser from './ByUser';
 import TourTags from './TourTags';
 import TourGallery from './TourGallery';
 import TourContactInfo from './TourContactInfo';
+import { BsTags } from 'react-icons/bs';
 
 function ToursDetailPage() {
   const { id } = useParams();
@@ -177,11 +178,22 @@ function ToursDetailPage() {
           <ByUser />
 
           <div className="tour-detail__body">
+            <div className="tour-detail__price">
+              <div className="tour-detail__price__icon">
+                <BsTags size={24} />
+              </div>
+              <div className="tour-detail__price__text">
+                <h3>قیمت تور</h3>
+                <p>
+                  {formatPrice(convertNumberToPersian(data.cost))} تومان <br />
+                </p>
+              </div>
+            </div>
             <div className="tour-detail__date">
-              <div className="tour-detail__date-and-time__icon">
+              <div className="tour-detail__date__icon">
                 <BsCalendarDate size={24} />
               </div>
-              <div className="tour-detail__date_text">
+              <div className="tour-detail__date__text">
                 <h3>تاریخ برگزاری تور</h3>
                 <p>
                   تاریخ رفت:‌ {formatDate(data.start_date)} <br />
@@ -200,7 +212,7 @@ function ToursDetailPage() {
               </div>
               <div className="tour-detail__capacity__text">
                 <h3>ظرفیت تور</h3>
-                <p>ظرفیت تور: {convertNumberToPersian(data.capacity - data.bookers.length)} نفر</p>
+                <p>{convertNumberToPersian(data.capacity - data.bookers.length)} نفر</p>
               </div>
             </div>
             <div className="tour-detail__description">
@@ -211,15 +223,15 @@ function ToursDetailPage() {
                 <h3>درباره تور</h3>
                 <p>{data.description}</p>
               </div> */}
-              <>
-                <div className="tour-detail__description">توضیحات تور:</div>
+              <div className="tour-detail__description__text">
+                <h3 className="tour-detail__description__text__header">توضیحات تور</h3>
                 <RichText
                   readOnly
-                  editorClassName="tour-detail__description-editor"
+                  editorClassName="tour-detail__description__text__rich-text"
                   hideToolbar
                   defaultContent={data.description}
                 />
-              </>
+              </div>
             </div>
             {data.tags && (
               <div className="tour-detail__available-tags">
