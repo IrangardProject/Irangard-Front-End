@@ -7,7 +7,8 @@ import defaultTourImg from 'src/assets/images/defaultTourImg.jpeg';
 import { AiOutlineCalendar } from 'react-icons/ai';
 
 const TourCard = ({ tour }) => {
-  console.log('tous',tour);
+  console.log('tour', tour);
+  // console.log("the tour's image: ", tour.images[0].image)
   const findNumberOfDays = (endDate, startDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -17,7 +18,11 @@ const TourCard = ({ tour }) => {
   };
   return (
     <Link className="tour-card" to={`/tours/${tour.id}`}>
-      <img className="tour-card__img" src={tour.image || defaultTourImg} alt={tour.title} />
+      <img
+        className="tour-card__img"
+        src={(tour.images[0] && tour.images[0].image) || defaultTourImg}
+        alt={tour.title}
+      />
       <div className="tour-card__content">
         <div className="tour-card__title">{tour.title}</div>
         <div className="tour-card__cost-capacity">

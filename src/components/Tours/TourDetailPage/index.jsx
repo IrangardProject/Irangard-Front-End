@@ -42,6 +42,7 @@ function ToursDetailPage() {
   const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(!(auth.user?.wallet_credit < data.cost));
   console.log(userWalletButtonDisabled, data.cost, auth.user?.wallet_credit);
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
+  console.log("the tour's tags: ", data.tags);
 
   useEffect(() => {
     apiInstance
@@ -219,10 +220,6 @@ function ToursDetailPage() {
               <div className="tour-detail__description__icon">
                 <MdOutlineDescription size={24} />
               </div>
-              {/* <div className="tour-detail__description__text">
-                <h3>درباره تور</h3>
-                <p>{data.description}</p>
-              </div> */}
               <div className="tour-detail__description__text">
                 <h3 className="tour-detail__description__text__header">توضیحات تور</h3>
                 <RichText
@@ -233,34 +230,12 @@ function ToursDetailPage() {
                 />
               </div>
             </div>
-            {data.tags && (
+            {data.tags.length != 0 && (
               <div className="tour-detail__available-tags">
                 <TourTags tags={data.tags} />
               </div>
             )}
           </div>
-          {/* {console.log('this is the data: ', data)}
-          <img className="tour-detail__img" src={data.image || defaultTourImg} />
-          <div className="tour-detail__capacity">
-            ظرفیت تور: {convertNumberToPersian(data.capacity - data.bookers.length)} نفر
-          </div>
-          <div className="tour-detail__cost">قیمت تور: {formatPrice(convertNumberToPersian(data.cost))} تومان</div>
-          {!data.is_booked && data.owner.user !== auth.user?.id && (
-            <Button className="tour-detail__book" onClick={handleBookTour}>
-              ثبت‌نام در تور
-            </Button>
-          )}
-          {data.description && data.description !== '<p></p>' && (
-            <>
-              <div className="tour-detail__description">توضیحات تور:</div>
-              <RichText
-                readOnly
-                editorClassName="tour-detail__description-editor"
-                hideToolbar
-                defaultContent={data.description}
-              />
-            </>
-          )} */}
         </div>
       )}
       <Modal
