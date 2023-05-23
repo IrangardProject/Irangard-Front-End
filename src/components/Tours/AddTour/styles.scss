@@ -1,6 +1,6 @@
-@import '/src/theme/main.scss';
+@import 'src/theme/main.scss';
 
-.add-event {
+.add-tour {
   margin: 30px 0;
   border: 2px solid black;
   border-radius: 8px;
@@ -50,9 +50,31 @@
       margin-top: 40px;
       color: rgb(27, 27, 27);
     }
-    .event-tags-input {
+    .tour-price-and-capacity {
       display: flex;
       flex-direction: row;
+      gap: 42px;
+      &__price {
+        width: 35%;
+      }
+      &__capacity {
+        width: 35%;
+      }
+      
+      @media (max-width: 1010px) {
+        display: block;
+        &__price {
+          width: 100%;
+        }
+        &__capacity {
+          width: 100%;
+        }
+      }
+    }
+    .tour-tags-input {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
       .tags-input {
         max-width: 600px;
         width: 100%;
@@ -72,7 +94,7 @@
         }
       }
     }
-    .event-tags-entered {
+    .tour-tags-entered {
       display: flex;
       flex-direction: row;
       .tag-chips {
@@ -170,6 +192,7 @@
       margin-top: 30px;
     }
   }
+
   .field-label {
     padding-bottom: 3px;
   }
@@ -236,7 +259,7 @@
   }
 }
 
-.time-and-date-section {
+.date-section {
   .title {
     font-size: 15px;
   }
@@ -262,67 +285,11 @@
       }
     }
   }
-  .time-inputs {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    .start-time-input {
-      min-width: 100px;
-      width: 27%;
-      display: flex;
-      flex-direction: column;
-      .field-input {
-        margin-top: 6px;
-        outline: 0;
-        padding: 14px;
-        border-radius: 4px;
-        transition: border-color 0.2s;
-        width: 100%;
-        border: 1px solid rgb(173, 173, 173);
-  
-        &:focus {
-          border-color: #04aa6c;
-          border-width: 2px;
-        }
-        &.invalid {
-          border-color: $c-golbehi2;
-        }
-      }
-    }
-    .end-time-input {
-      min-width: 100px;
-      width: 27%;
-      display: flex;
-      flex-direction: column;
-      .field-input {
-        margin-top: 6px;
-        outline: 0;
-        padding: 14px;
-        border-radius: 4px;
-        transition: border-color 0.2s;
-        width: 100%;
-        border: 1px solid rgb(173, 173, 173);
-  
-        &:focus {
-          border-color: #04aa6c;
-          border-width: 2px;
-        }
-        &.invalid {
-          border-color: $c-golbehi2;
-        }
-      }
-    }
-  }
 }
 
 .additional-info-section {
   .title {
     font-size: 15px;
-  }
-  .is-free {
-    margin-top: 20px;
   }
   .contact-section {
     margin-top: 20px;
@@ -330,7 +297,7 @@
       font-size: 18px;
     }
   }
-  .event-summary {
+  .tour-summary {
     margin-top: 20px;
     .summary-description-label {
       margin-top: 10px;

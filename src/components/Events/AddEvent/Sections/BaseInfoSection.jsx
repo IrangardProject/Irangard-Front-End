@@ -87,7 +87,7 @@ const BaseInfoSection = () => {
           placeholder="نام رویداد را وارد کنید"
           // validation={{ required: true, maxLength: 50 }}
         />
-        <BasicInput 
+        <BasicInput
           id="organizer"
           // name="organizer"
           placeholder="نام فرد/سازمان برگزار کننده را وارد کنید"
