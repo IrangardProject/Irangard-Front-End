@@ -122,7 +122,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                             () => handleArticle("event")
                         }>
                             <BsFillCalendarEventFill/>
-                            <p>لیست پیشنهاد شده به شما خالی است</p>
+                            <p>رویداد های پیشنهاد شده به شما</p>
                         </article>
                     </section>
                 </section>
@@ -133,9 +133,10 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                 }
                 open={recieve}>
                 <section className="recieve-suggestion-shared__container">
-                    <h3>{
+                    
+                    {/* <h3>{
                         categoryTexts[selectedCategory]
-                    }</h3>
+                    }</h3> */}
                     {
                     selectedCategory === "place" && (
                         <div> {
