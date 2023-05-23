@@ -13,7 +13,7 @@ import { MdPlace } from 'react-icons/md';
 import Navbar from '../Navbar';
 import './style.scss';
 import PlaceThingsToDoSearch from '../PlaceThingsToDoSearch';
-import Button from 'src/components/Button'
+import Button from 'src/components/Button';
 
 const Header = () => {
   const [thingsToDoSearchOpen, setThingsToDoSearchOpen] = useState(false);
@@ -24,14 +24,6 @@ const Header = () => {
   return (
     <>
       <div className="header__nav-items-wrapper">
-        {/* <Link to="/Search?place_type=0" className="header__nav-item">
-          <div className="txt">رستوران‌ها</div>
-          <RiRestaurantLine size={20} />
-        </Link>
-        <Link to="/Search?place_type=1" className="header__nav-item">
-          <div className="txt">اقامتگاه‌ها</div>
-          <RiHome3Line size={20} />
-        </Link> */}
         <Link to="/Search" className="header__nav-item">
           <div className="txt">مکان‌ها</div>
           <MdPlace size={20} />
@@ -59,10 +51,6 @@ const Header = () => {
         <Link to="experiences" className="header__nav-item">
           <div className="txt">تجربه‌ها</div>
           <RiChatQuoteLine size={20} />
-        </Link>
-        <Link to="/places/new" className="header__nav-item">
-          <div className="txt">مکان جدید</div>
-          <RiAncientPavilionFill size={20} />
         </Link>
       </div>
     </>

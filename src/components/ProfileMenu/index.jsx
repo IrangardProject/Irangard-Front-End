@@ -24,6 +24,7 @@ import { baseUrl } from '../../utils/constants';
 import toast from 'react-hot-toast';
 import { BsCalendarEvent } from 'react-icons/bs';
 import { RiShipLine } from 'react-icons/ri';
+import { RiAncientPavilionFill } from 'react-icons/ri';
 
 const style = {
   position: 'absolute',
@@ -149,6 +150,17 @@ export default function AccountMenu() {
             </MenuItem>
           </>
         )}
+        <>
+          <Divider />
+          <MenuItem>
+            <Link to={'/places/new'} className="drop-down__menu">
+              <ListItemIcon>
+                <RiAncientPavilionFill size={20} />
+              </ListItemIcon>
+              ثبت مکان جدید
+            </Link>
+          </MenuItem>
+        </>
         {auth.isSpecial && (
           <>
             <Divider />
