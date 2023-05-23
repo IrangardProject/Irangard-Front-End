@@ -12,6 +12,14 @@
     padding: 10px ;
 }
 
+@media screen and (max-width:445px) {
+    .list-of-shared article{
+        display: flex;
+        flex-direction: row;
+        width: 80%;
+    }
+}
+
 .list-of-shared article:hover{
     background-color: #18513d;
     color: white;
@@ -39,6 +47,13 @@
     }
     &__container h2{
         margin-top: 10px;
+        @media screen and(max-width:445px) {
+            // font-size: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 15px;
+            margin-left: 20%;
+        }
     }
 }
 
@@ -120,6 +135,6 @@
 
 .noDataFount{
     margin: 0 auto;
-    margin-right: 20%;
-    margin-top: 20%;
+    margin-right: 25%;
+    margin-top: 30%;
 }
