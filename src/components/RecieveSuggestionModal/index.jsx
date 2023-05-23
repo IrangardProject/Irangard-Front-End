@@ -7,6 +7,7 @@ import {BsCreditCard2Back, BsFillCalendarEventFill} from 'react-icons/bs';
 import './index.scss'
 import {Link} from "react-router-dom";
 import toast from "react-hot-toast";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 // import { TfiFaceSad } from "react-icons/tfi";
 const RecieveSuggestionModal = ({open, setOpen}) => {
     const [openDialog, setOpenDialog] = useState(false);
@@ -98,6 +99,12 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
 
     }
 
+    const BackiconHandler = () => {
+        setRecieve(false)
+        setOpen(true);
+        
+    }
+
     return (
         <div>
             <Dialog className="recieve-suggestion"
@@ -134,9 +141,11 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                 open={recieve}>
                 <section className="recieve-suggestion-shared__container">
                     
-                    {/* <h3>{
-                        categoryTexts[selectedCategory]
-                    }</h3> */}
+                    <section className="backtopreviespage">
+                        <IoArrowBackCircleOutline onClick={() =>BackiconHandler()}
+                        className="backIcontplistPage"  />
+                        <h3>بازگشت به صفحه قبل</h3>
+                    </section>
                     {
                     selectedCategory === "place" && (
                         <div> {
