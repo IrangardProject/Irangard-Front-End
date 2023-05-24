@@ -161,7 +161,7 @@ const AddEvent = () => {
               },
             })
             .then(res => {
-              navigate(`/events/${res.data['id']}`);
+              navigate(`/events`);
             })
             .catch(err => {
               console.log(err);
