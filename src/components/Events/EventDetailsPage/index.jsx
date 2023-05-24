@@ -70,7 +70,7 @@ const EventDetailsPage = () => {
             <EventGallery className="event-detail__gallery" images={data.images} />
             <EventContactInfo className="event-detail__contact-info" info={data} />
           </div>
-          <ByUser />
+          <ByUser eventProvider={data.added_by} />
 
           <div className="event-detail__body">
             <div className="event-detail__date-and-time">
