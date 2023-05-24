@@ -176,7 +176,7 @@ function ToursDetailPage() {
             <TourGallery className="tour-detail__gallery" images={data.images} />
             <TourContactInfo className="tour-detail__contact-info" info={data} />
           </div>
-          <ByUser />
+          <ByUser tourLeader={data.owner.user} />
 
           <div className="tour-detail__body">
             <div className="tour-detail__price">
