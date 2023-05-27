@@ -34,7 +34,7 @@ const Header = () => {
           <BsList size={20} />
         </Button> */}
         <div className="header__nav-item" onClick={openThingsToDoSearchHandler}>
-          <div className="txt">انجام‌دادنی‌ها</div>
+          <div className="txt">ایران‌گردی</div>
           <BsList size={20} />
         </div>
 
