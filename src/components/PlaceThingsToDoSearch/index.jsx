@@ -132,7 +132,7 @@ const PlaceThingsToDoSearch = ({ open, setOpen }) => {
             <div
               className="things-to-do-wrapper__container__search-suggestions__suggestion"
               onClick={() => {
-                suggestionsSearchHandler('شیراز');
+                suggestionsSearchHandler('یزد');
               }}
             >
               <IoLocationOutline className="things-to-do-wrapper__container__search-suggestions__suggestion__icon" />
