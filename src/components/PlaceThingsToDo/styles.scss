@@ -1,1 +1,122 @@
 @import 'src/theme/main.scss';
+@import 'src/theme/colors.scss';
+
+.things-to-do {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0 20px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  &__hr {
+    margin: auto;
+    width: 90%;
+    border: 0.15px solid $c-gray-70;
+    border-width: 0.15px 0 0 0;
+  }
+
+  &__content {
+    &__tours {
+      h5 {
+        direction: ltr;
+        margin-top: 20px;
+        cursor: pointer;
+        margin-left: 40px;
+      }
+      h3 {
+        margin-bottom: 20px;
+        padding: 0 20px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      margin-top: 10px;
+      margin-bottom: 30px;
+      padding: 0 20px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    &__places {
+      h5 {
+        direction: ltr;
+        margin-top: 20px;
+        cursor: pointer;
+        margin-left: 40px;
+      }
+      h3 {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+        padding: 0 20px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      &__cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 8px;
+      }
+      margin-top: 10px;
+      margin-bottom: 30px;
+      padding: 0 20px;
+      font-size: 16px;
+      font-weight: 600;
+      @media (max-width: 640px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    &__events {
+      h5 {
+        direction: ltr;
+        margin-top: 20px;
+        cursor: pointer;
+        margin-left: 40px;
+      }
+      h3 {
+        margin-bottom: 20px;
+        padding: 0 20px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      margin-top: 10px;
+      margin-bottom: 10px;
+      padding: 0 20px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+}
+
+.no-available-things-to-do-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // margin:auto;
+  margin-top: 30px;
+}
+.no-available-things-to-do {
+  width: 350px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: larger;
+  align-items: center;
+  color: grey;
+  border-radius: 50%;
+  // padding: 100px 75px;
+  border: 1px solid black;
+  &__title {
+    // margin-top: 50px;
+    text-align: center;
+  }
+}
