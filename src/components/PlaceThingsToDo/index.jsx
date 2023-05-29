@@ -75,7 +75,10 @@ const PlaceThingsToDo = () => {
           </div>
         </>
       )}
-      {!loading && availableEvents.length !== 0 && availablePlaces.length !== 0 && availableTours.length !== 0 && (
+      {/* availableEvents.length !== 0 && 
+      availablePlaces.length !== 0 && 
+      availableTours.length !== 0 &&  */}
+      {!loading && (
         <div className="things-to-do">
           <div className="things-to-do__header">
             <div className="things-to-do__header__title">

@@ -22,10 +22,10 @@ const TourSlider = ({ tours }) => {
   return (
     <div className="tour-slider">
       <div className="tour-slider__container">
-        <div className="navigation-wrapper">
-          <div ref={sliderRef} className="keen-slider">
+        <div className="tours-navigation-wrapper">
+          <div ref={sliderRef} className="available-tours-keen-slider">
             {tours.map(tour => (
-              <div key={tour.id} className="keen-slider__slide">
+              <div key={tour.id} className="available-tours-keen-slider__slide">
                 <TourCard tour={tour} />
               </div>
             ))}
