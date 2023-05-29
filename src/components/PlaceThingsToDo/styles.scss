@@ -2,6 +2,13 @@
 @import 'src/theme/colors.scss';
 
 .things-to-do {
+  &__not-logged-in {
+    background-color: $c-white;
+    border-radius: 8px;
+    margin: 32px 0;
+    padding: 32px;
+  }
+  
   &__header {
     display: flex;
     justify-content: space-between;
@@ -34,6 +41,11 @@
         padding: 0 20px;
         font-size: 20px;
         font-weight: 600;
+      }
+      &__cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 8px;
       }
       margin-top: 10px;
       margin-bottom: 30px;
@@ -87,8 +99,13 @@
         font-size: 20px;
         font-weight: 600;
       }
+      &__cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 8px;
+      }
       margin-top: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 30px;
       padding: 0 20px;
       font-size: 16px;
       font-weight: 600;
