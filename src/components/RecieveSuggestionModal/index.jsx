@@ -1,4 +1,5 @@
-import {Dialog} from "@mui/material";
+import { Dialog} from "@mui/material";
+import Button from '../Button/index'
 import {useState, useEffect} from "react";
 import {TbBellRinging2, TbMoodSad} from 'react-icons/tb';
 import apiInstance from 'src/config/axios';
@@ -171,12 +172,12 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                                         }>
                                             <button className="event-btn visit">مشاهده مکان</button>
                                         </Link>
-                                        <button onClick={
+                                        <Button onClick={
                                                 () => removeSuggestionEventHandler(item.place)
                                             }
                                             className="event-btn delete">
                                             حذف مکان از لیست
-                                        </button>
+                                        </Button>
                                     </section>
                                 </div>
                             ))) : (
