@@ -1,4 +1,5 @@
-import {Dialog} from "@mui/material";
+import { Dialog} from "@mui/material";
+import Button from '../Button/index'
 import {useState, useEffect} from "react";
 import {TbBellRinging2, TbMoodSad} from 'react-icons/tb';
 import apiInstance from 'src/config/axios';
@@ -7,6 +8,7 @@ import {BsCreditCard2Back, BsFillCalendarEventFill} from 'react-icons/bs';
 import './index.scss'
 import {Link} from "react-router-dom";
 import toast from "react-hot-toast";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 // import { TfiFaceSad } from "react-icons/tfi";
 const RecieveSuggestionModal = ({open, setOpen}) => {
     const [openDialog, setOpenDialog] = useState(false);
@@ -98,6 +100,12 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
 
     }
 
+    const BackiconHandler = () => {
+        setRecieve(false)
+        setOpen(true);
+        
+    }
+
     return (
         <div>
             <Dialog className="recieve-suggestion"
@@ -122,7 +130,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                             () => handleArticle("event")
                         }>
                             <BsFillCalendarEventFill/>
-                            <p>لیست پیشنهاد شده به شما خالی است</p>
+                            <p>رویداد های پیشنهاد شده به شما</p>
                         </article>
                     </section>
                 </section>
@@ -133,9 +141,12 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                 }
                 open={recieve}>
                 <section className="recieve-suggestion-shared__container">
-                    <h3>{
-                        categoryTexts[selectedCategory]
-                    }</h3>
+                    
+                    <section className="backtopreviespage">
+                        <IoArrowBackCircleOutline onClick={() =>BackiconHandler()}
+                        className="backIcontplistPage"  />
+                        <h3>بازگشت به صفحه قبل</h3>
+                    </section>
                     {
                     selectedCategory === "place" && (
                         <div> {
@@ -161,12 +172,12 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                                         }>
                                             <button className="event-btn visit">مشاهده مکان</button>
                                         </Link>
-                                        <button onClick={
+                                        <Button onClick={
                                                 () => removeSuggestionEventHandler(item.place)
                                             }
                                             className="event-btn delete">
                                             حذف مکان از لیست
-                                        </button>
+                                        </Button>
                                     </section>
                                 </div>
                             ))) : (
