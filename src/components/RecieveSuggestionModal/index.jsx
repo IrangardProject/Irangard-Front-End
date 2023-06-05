@@ -97,7 +97,32 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                 setEvents(prevEvents => prevEvents.filter(event => event.id !== id));
             })
         }
-
+    }
+    const removeSuggestionPlaceHandler = (id) => {
+        console.log('place function clicked', id);
+        const access_token = localStorage.getItem('access-token');
+        if (access_token) {
+            const headers = {
+                Authorization: `JWT ${access_token}`
+            };
+            apiInstance.delete(`/suggestion/place/${id}/`, {headers}).then(() => {
+                toast.success('مکان از لیست شما حذف شد')
+                setPlace(prevPlace => prevPlace.filter(place => place.id !== id));
+            })
+        }
+    }
+    const removeSuggestionTourHandler = (id) => {
+        console.log('tour function clicked', id);
+        const access_token = localStorage.getItem('access-token');
+        if (access_token) {
+            const headers = {
+                Authorization: `JWT ${access_token}`
+            };
+            apiInstance.delete(`/suggestion/tour/${id}/`, {headers}).then(() => {
+                toast.success('تور از لیست شما حذف شد')
+                setTours(prevPlace => prevPlace.filter(place => place.id !== id));
+            })
+        }
     }
 
     const BackiconHandler = () => {
@@ -173,7 +198,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                                             <button className="event-btn visit">مشاهده مکان</button>
                                         </Link>
                                         <Button onClick={
-                                                () => removeSuggestionEventHandler(item.place)
+                                                () => removeSuggestionPlaceHandler(item.place)
                                             }
                                             className="event-btn delete">
                                             حذف مکان از لیست
@@ -215,7 +240,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                                             <button className="event-btn visit">مشاهده تور</button>
                                         </Link>
                                         <button onClick={
-                                                () => removeSuggestionEventHandler(item.tour)
+                                                () => removeSuggestionTourHandler(item.tour)
                                             }
                                             className="event-btn delete">
                                             حذف تور از لیست
