@@ -123,6 +123,7 @@ export const LoginModalForm = ({ fields, onSubmit, isLoading, onDirty, isLogin =
               {field.id === 'password' && (
                 <button
                   type="button"
+                  placeholder='ToggleShowPassword'
                   style={{
                     position: 'absolute',
                     top: '50%',
@@ -154,9 +155,9 @@ export const LoginModalForm = ({ fields, onSubmit, isLoading, onDirty, isLogin =
         );
       })}
       {isLogin && (
-        <div className="forget-password-link">
+        <div className="forget-password-link" data-testid="forget-password-link">
           رمز عبور خود را فراموش کرده اید؟
-          <span onClick={onForgetPassClick}>کلیک کنید</span>
+          <span onClick={onForgetPassClick} >کلیک کنید</span>
         </div>
       )}
       <button className="submit-btn" type="submit" disabled={isLoading}>
