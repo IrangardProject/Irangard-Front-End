@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renderActiveShape should render correctly 1`] = `ShallowWrapper {}`;
+
+exports[`renderActiveShape should render correctly 2`] = `ShallowWrapper {}`;

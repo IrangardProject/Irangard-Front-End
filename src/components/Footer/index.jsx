@@ -5,7 +5,7 @@ import './style.scss';
 const Footer = () => {
   return (
     <div className="footer" data-testid="footer">
-      <RiCopyrightLine /> ایرانگرد ۱۴۰۱، ساخته‌شده با <RiHeart3Line /> و <RiCupLine />
+      <RiCopyrightLine /> ایرانگرد ۱۴۰۲، ساخته‌شده با <RiHeart3Line /> و <RiCupLine />
     </div>
   );
 };
