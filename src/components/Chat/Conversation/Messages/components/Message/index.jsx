@@ -12,6 +12,7 @@ import './styles.scss';
 
 
 function Message(props) {
+  console.log('props.is_server',props.is_server);
   const sanitizedHTML = markdownIt({ break: true })
     .use(markdownItClass, {
       img: ['rcw-message-img']

@@ -96,6 +96,7 @@
     margin: 4px 4px;
     max-width: calc(50% - 16px);
     transition: all 0.3s;
+    cursor: pointer;
     &:hover {
       background-color: $c-black;
       color: $c-white;

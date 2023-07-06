@@ -10,6 +10,7 @@ import './style.scss';
 import apiInstance from '../../../config/axios';
 import toast from 'react-hot-toast';
 
+
 export default function Conversation(props) {
   const [messageNumber, setMessageNumber] = useState(0);
   const [messages, setMessages] = useState([]);
@@ -18,8 +19,11 @@ export default function Conversation(props) {
   const updateMessages = (sendMessage, message) => {
     setMessageNumber(messageNumber + 1);
     setMessages(prevMessages => [...prevMessages, sendMessage(message)]);
-    // console.log('updated messages:', messages);
+    console.log('updated messages:',messages);
   };
+  useEffect(() =>{
+    console.log('calling useEffect');
+  },[messages])
   
   const chatSocket = useRef(null);
   const auth = useAuth()
@@ -46,15 +50,23 @@ export default function Conversation(props) {
             chatSocket.current = newChatSocket;
             chatSocket.current.onmessage = function (e) {
               const data = JSON.parse(e.data);
-              // console.log('received message:', data.message);
-              updateMessages(
-                message => ({
-                  room: room_ID ,
-                  message: message,
-                  userid : auth.user.id,
-                }),
-                data.message.filter((message) => message.userid !== auth.user.id)
-              );
+              console.log('received data message:', data);
+              console.log("----------",data.userid !== auth.user.id , data.userid , auth.user.id);
+              if ( data.userid !== auth.user.id ) {
+                console.log('messgae updated ' );
+                updateMessages(
+                  message => ({
+                    room: room_ID ,
+                    message: message,
+                    userid : auth.user.id,
+                    // sender:auth.user.id
+                  }),
+                  // console.log('data.message',data.message),
+                  // // log the result of updated messages
+                  // console.log('messages after updating:', data),
+                  data.message
+                );
+              }
             };
           }
       } catch (error) {
@@ -79,9 +91,9 @@ export default function Conversation(props) {
   
   
   const handleNewUserMessage = message => {
-    // console.log('sending message:', message);
+    console.log('sending message:', message);
     let sendId = 0;
-    if (props.roomId ===0) {
+    if (props.roomId === 0) {
       sendId = props.hasRoomId
     }
     else{
@@ -93,15 +105,17 @@ export default function Conversation(props) {
     //   room : sendId, 
     //   // sender_type: 'CLIENT',
     // })
+    const data = JSON.stringify({
+      message: message,
+      userid : auth.user.id,
+      room : sendId, 
+      // sender_type: 'CLIENT',
+    })
+    console.log('data:', data);
     chatSocket.current.send(
-      JSON.stringify({
-        message: message,
-        userid : auth.user.id,
-        room : sendId, 
-        // sender_type: 'CLIENT',
-      })
+      data
     );
-    // console.log('sent message:', message);
+    console.log('sent message:', message);
   };
 
 

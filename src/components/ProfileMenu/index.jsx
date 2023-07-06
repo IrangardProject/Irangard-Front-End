@@ -24,36 +24,12 @@ import { baseUrl } from '../../utils/constants';
 import toast from 'react-hot-toast';
 import { BsCalendarEvent } from 'react-icons/bs';
 import { RiShipLine } from 'react-icons/ri';
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  maxWidth: '100%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  borderRadius: '8px',
-  boxShadow: 24,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '48px',
-};
+import { RiAncientPavilionFill } from 'react-icons/ri';
+import UpdateUserAccountModal from 'src/components/UpdateUserAccountModal';
+import PaymentMethodsModal from 'src/components/UpdateUserAccountModal/PaymentMethodsModal';
 
 export default function AccountMenu() {
   const auth = useAuth();
-  const Pay = () => {
-    apiInstance.get(`/accounts/pay/pay/`).then(res => {
-      console.log(res.data);
-      const myLink = res.data.link;
-      console.log(myLink);
-      window.location.replace(myLink);
-    });
-    return 'حساب با موفقیت ارتقا یافت.';
-  };
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = event => {
@@ -64,8 +40,9 @@ export default function AccountMenu() {
   };
 
   const [open2, setOpen2] = React.useState(false);
+  const [accountUpgradePaymentOpen, setAccountUpgradePaymentOpen] = React.useState(false);
   const handleOpen2 = () => setOpen2(true);
-  const handleClose2 = () => setOpen2(false);
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -149,6 +126,17 @@ export default function AccountMenu() {
             </MenuItem>
           </>
         )}
+        <>
+          <Divider />
+          <MenuItem>
+            <Link to={'/places/new'} className="drop-down__menu">
+              <ListItemIcon>
+                <RiAncientPavilionFill size={20} />
+              </ListItemIcon>
+              ثبت مکان جدید
+            </Link>
+          </MenuItem>
+        </>
         {auth.isSpecial && (
           <>
             <Divider />
@@ -202,33 +190,8 @@ export default function AccountMenu() {
           خروج
         </MenuItem>
       </Menu>
-      <Modal
-        open={open2}
-        onClose={handleClose2}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        classes={'become-premium-modal'}
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            ارتقای حساب کاربری
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            شما با پرداخت هزینه تعیین‌شده، می‌توانید حساب کاربری خود را به حالت ویژه ارتقا دهید. اگر از انتخاب خود
-            اطمینان دارید، دکمه پرداخت و ارتقا را بزنید تا به درگاه بانک هدایت شوید.
-          </Typography>
-          <br />
-          <Button
-            style={{ padding: '12px 16px' }}
-            onClick={() => {
-              useQuery(Pay());
-            }}
-            variant="outlined"
-          >
-            پرداخت و ارتقای حساب
-          </Button>
-        </Box>
-      </Modal>
+      <UpdateUserAccountModal open={open2} setOpen={setOpen2} setPaymentMethodsModal={setAccountUpgradePaymentOpen} />
+      <PaymentMethodsModal open={accountUpgradePaymentOpen} setOpen={setAccountUpgradePaymentOpen} />
     </React.Fragment>
   );
 }

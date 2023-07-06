@@ -48,7 +48,9 @@
     gap: 30px;
     border-radius: 8px;
     margin: 0 0;
-    padding: 32px;
+    padding-top: 32px;
+    padding-right: 15px;
+
 
     &__title {
       font-size: 24px;
@@ -73,15 +75,26 @@
     }
 
     &__tours {
-      display: flex;
-      flex-direction: column;
-      width: 60%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 8px;
+      padding-bottom: 20px;
+      margin: 0 0px;
+      margin-bottom: 10px;
+      width: 72%;
       min-width: 300px;
+      @media (max-width: 1286px) {
+        width: 100%;
+      }
       @media (max-width: 800px) {
         margin: auto;
       }
-      @media (max-width: 1000px) {
-        width: 100%;
+    }
+    @media (max-width: 617px) {
+      &__tours {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
     }
     @media (max-width: 1000px) {
@@ -90,6 +103,7 @@
       gap: 10px;
     }
   }
+
   &__tour-filters {
     .date-picker-filter {
       margin-top: 10px;
@@ -102,7 +116,6 @@
     }
     .from-to-price {
       .MuiInputBase-input {
-        // padding: 0;
         font-size: 13px;
         @media (max-width: 1000px) {
           font-size: 17px;
@@ -111,9 +124,7 @@
       display: flex;
       flex-direction: row;
       justify-content: center;
-      // align-items: center;
       margin: auto;
-      // margin-top: 500px;
       gap: 20px;
       @media (max-width: 800px) {
         flex-direction: column;
@@ -155,7 +166,7 @@
       width: 100%;
       margin-bottom: 30px;
     }
-    border-radius: 10px;
+    border-radius: 15px;
     background-color: $c-white;
     padding: 20px;
     width: 25%;

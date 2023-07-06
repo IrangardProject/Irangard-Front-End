@@ -39,7 +39,8 @@ const TourFilters = ({ showTourFilters, setTourData, primaryTourType }) => {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState(
-    primaryTourType ? { ...defaultFilters, type: primaryTourType } : defaultFilters
+    // primaryTourType ? { ...defaultFilters, type: primaryTourType } : defaultFilters
+    defaultFilters
   );
   const [q, setQ] = useState(searchParams.get('title__contains') || '');
   const [isStartDateSelected, setIsStartDateSelected] = useState(false);
@@ -50,6 +51,8 @@ const TourFilters = ({ showTourFilters, setTourData, primaryTourType }) => {
 
   const startDatePickerRef = useRef(null);
   const endDatePickerRef = useRef(null);
+  const prevLocation = useRef(null);
+  console.log("the previousPage is: " + prevLocation)
 
   useEffect(() => {
     let d = searchParams;

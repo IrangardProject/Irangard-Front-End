@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import useAuth from 'src/context/AuthContext';
 import { baseUrl } from 'src/utils/constants';
 
-const ByUser = () => {
+const ByUser = ({ eventProvider }) => {
   const auth = useAuth();
   const user = auth.user;
   console.log('this is the user: ', auth);
+  console.log('the eventProvider is: ', eventProvider);
   if (!user) {
     return null;
   }
@@ -15,10 +16,10 @@ const ByUser = () => {
   return (
     <div className="by-user">
       {user && (
-        <Link to={`/profile/${user.username}`}>
+        <Link to={`/profile/${eventProvider.username}`}>
           <div className="by-user-info">
-            <img className="by-user-info__img" src={`${baseUrl}` + user.image} alt={user.username} />
-            <p className="by-user-info__username">ثبت شده توسط {user.username}</p>
+            <img className="by-user-info__img" src={eventProvider.image} alt={eventProvider.username} />
+            <p className="by-user-info__username">ثبت شده توسط {eventProvider.username}</p>
           </div>
         </Link>
       )}

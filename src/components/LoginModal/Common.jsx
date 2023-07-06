@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import HeaderImg from '../../assets/images/loginHead.jpg';
 import HeaderImg2 from '../../assets/images/loginHead2.jpg';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import './style.scss';
 const commonErrors = {
   required: 'این فیلد باید پر شود.',
 };
 
 export const ErrorMessage = ({ error }) => {
-
   let errorMsg = 'ارور';
   if (error.type in commonErrors) errorMsg = commonErrors[error.type];
   else errorMsg = error.message;
@@ -94,6 +94,11 @@ export const getFields = (watch, field_list) => {
 };
 
 export const LoginModalForm = ({ fields, onSubmit, isLoading, onDirty, isLogin = false, onForgetPassClick }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const toggleShowPassword = () => {
+    setShowPassword(prevState => !prevState);
+  };
   const {
     register,
     handleSubmit,
@@ -109,18 +114,38 @@ export const LoginModalForm = ({ fields, onSubmit, isLoading, onDirty, isLogin =
     if (onDirty) onDirty(isDirty);
   }, [isDirty]);
   return (
-    <form className="login-modal-form" onSubmit={handleSubmit(onSubmit)}  role="form">
+    <form className="login-modal-form" onSubmit={handleSubmit(onSubmit)} role="form">
       {getFields(watch, fields).map(field => {
+        console.log('the field is: ', field);
         return (
           <div key={field.id} className="form__group field">
-            <input
-              type="input"
-              className="form__field"
-              placeholder={field.id}
-              id={field.id}
-              name={field.id}
-              {...register(field.id, field.validation)}
-            />
+            <div style={{ position: 'relative' }}>
+              {field.id === 'password' && (
+                <button
+                  type="button"
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: 0,
+                    transform: 'translateY(-50%)',
+                    border: 'none',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer',
+                  }}
+                  onClick={toggleShowPassword}
+                >
+                  {showPassword ? <BsFillEyeSlashFill size={20} /> : <BsFillEyeFill size={20} />}
+                </button>
+              )}
+              <input
+                type={field.id === 'password' ? (showPassword ? 'text' : 'password') : 'input'}
+                className="form__field"
+                placeholder={field.id}
+                id={field.id}
+                name={field.id}
+                {...register(field.id, field.validation)}
+              />
+            </div>
             <label htmlFor={field.id} className="form__label">
               {field.label}
             </label>

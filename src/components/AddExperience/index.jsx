@@ -31,15 +31,15 @@ function AddExperience() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const auth = useAuth();
-  // if (!auth.isLoggedIn) {
-  //   return (
-  //     <Layout title="نوشتن تجربه جدید">
-  //       <div className="add-experience">
-  //         <p>برای نوشتن تجربه ابتدا باید وارد شوید.</p>
-  //       </div>
-  //     </Layout>
-  //   );
-  // }
+  if (!auth.isLoggedIn) {
+    return (
+      <Layout title="نوشتن تجربه جدید">
+        <div className="add-experience">
+          <p>برای نوشتن تجربه ابتدا باید وارد شوید.</p>
+        </div>
+      </Layout>
+    );
+  }
 
   useEffect(() => {
     apiInstance.get(`${baseUrl}/places/`).then(res => {

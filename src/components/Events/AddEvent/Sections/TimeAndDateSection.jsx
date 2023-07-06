@@ -77,7 +77,7 @@ const TimeAndDateSection = () => {
               className="rmdp-mobile"
               onChange={date => {
                 setInputStartDate(date);
-                setValue('startDate', convertJalaliDateToGeorgian(date.toString()))
+                setValue('startDate', convertJalaliDateToGeorgian(date.toString()));
                 setIsStartDateSelected(true);
               }}
               calendar={persian}
@@ -87,21 +87,21 @@ const TimeAndDateSection = () => {
           </div>
         </div>
         <div className="end-date-input">
-            <Input
-              label="تاریخ پایان:"
-              autoComplete="off"
-              onBlur={() => setEndDateBlured(true)}
-              onFocus={() => endDatePickerRef.current.openCalendar()}
-              onClick={() => {
-                setShowDatePicker(true);
-                endDatePickerRef.current.openCalendar();
-              }}
-              placeholder="انتخاب تاریخ پایان"
-              type="text"
-              id="end-date"
-              value={inputEndDate ? convertNumberToPersian(inputEndDate.toString()) : ''}
-              error={endDateBlured && !inputEndDate && 'تاریخ پایان نمی‌تواند خالی باشد.'}
-            />
+          <Input
+            label="تاریخ پایان:"
+            autoComplete="off"
+            onBlur={() => setEndDateBlured(true)}
+            onFocus={() => endDatePickerRef.current.openCalendar()}
+            onClick={() => {
+              setShowDatePicker(true);
+              endDatePickerRef.current.openCalendar();
+            }}
+            placeholder="انتخاب تاریخ پایان"
+            type="text"
+            id="end-date"
+            value={inputEndDate ? convertNumberToPersian(inputEndDate.toString()) : ''}
+            error={endDateBlured && !inputEndDate && 'تاریخ پایان نمی‌تواند خالی باشد.'}
+          />
           <div className="date-picker">
             <DatePicker
               ref={endDatePickerRef}
