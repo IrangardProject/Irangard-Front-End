@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Modal } from '@mui/material';
-import Input from 'src/components/Input';
-import Button from 'src/components/Button';
-import { formatPrice, convertNumberToPersian, convertNumberToEnglish } from 'src/utils/formatters.js';
+import Input from '../Input';
+import Button from '../Button';
+import { formatPrice, convertNumberToPersian, convertNumberToEnglish } from '../../utils/formatters.js';
 import './styles.scss';
-import useAuth from 'src/context/AuthContext';
-import apiInstance from 'src/config/axios';
+import useAuth from '../../context/AuthContext';
+import apiInstance from '../../config/axios';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { AiOutlineMinus } from 'react-icons/ai';

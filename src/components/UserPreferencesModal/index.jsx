@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Modal } from '@mui/material';
-import Button from 'src/components/Button';
+import Button from '../Button';
 import './styles.scss';
-import useAuth from 'src/context/AuthContext';
-import apiInstance from 'src/config/axios';
+import useAuth from '../../context/AuthContext';
+import apiInstance from '../../config/axios';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { tourCategories, eventTypes } from 'src/utils/constants';
+import { tourCategories, eventTypes } from '../../utils/constants';
 import { FormControl, Checkbox, MenuItem, ListItemText, Select } from '@mui/material';
 import { RiShipLine } from 'react-icons/ri';
 import { BsCalendarEvent } from 'react-icons/bs';
@@ -19,7 +19,7 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
   const [selectedTourCategories, setSelectedTourCategories] = useState([]);
   const [updateLoading, setUpdateLoading] = useState(false);
   const auth = useAuth();
-  console.log('the user info: ', auth.user);
+  // console.log('the user info: ', auth.user);
 
   useEffect(() => {
     if (auth.user) {
@@ -94,7 +94,7 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
       })
       .catch(err => {
         console.log('the error is: ', err);
-        toast.error('مشکلی در سامانه رخ داده‌است.');
+        toast.error('مشکلی در سامانه رخ داده‌است.', { dataTestId: 'error-toast' });
       });
   };
 
@@ -102,10 +102,15 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
     setOpen(false);
   };
   return (
-    <Modal className="user-preferences-wrapper" open={open} onClose={userPreferencesCloseButtonHandler}>
+    <Modal
+      className="user-preferences-wrapper"
+      data-testid="user-preferences-modal"
+      open={open}
+      onClose={userPreferencesCloseButtonHandler}
+    >
       <div className="user-preferences-wrapper__container">
         <div className="user-preferences-wrapper__container__close-btn">
-          <button className="user-preferences-close" onClick={() => setOpen(false)}>
+          <button className="user-preferences-close" data-testid="close-btn-id" onClick={() => setOpen(false)}>
             <AiOutlineCloseCircle />
           </button>
         </div>
@@ -123,6 +128,7 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
                 <FormControl sx={{ width: '100%', display: 'flex', alignItems: 'center', marginTop: '20px' }}>
                   <Select
                     labelId="demo-mutiple-checkbox-label"
+                    data-testid="multiple-checkbox-events"
                     id="demo-mutiple-checkbox"
                     multiple
                     open={eventListOpener}
@@ -155,6 +161,7 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
                 <FormControl sx={{ width: '100%', display: 'flex', alignItems: 'center', marginTop: '20px' }}>
                   <Select
                     labelId="demo-mutiple-checkbox-label"
+                    data-testid="multiple-checkbox-tours"
                     id="demo-mutiple-checkbox"
                     multiple
                     open={tourListOpener}

@@ -33,7 +33,7 @@ const PlaceGallery = ({ className, images = [] }) => {
       <h3 className="place-gallery__title">تصاویر</h3>
       <div className="place-gallery__images">
         {images.slice(0, 3).map(image => (
-          <img key={image} className="place-gallery__img" src={image.image} />
+          <img key={image} className="place-gallery__img" src={image} />
         ))}
       </div>
       {images.length > 3 && (

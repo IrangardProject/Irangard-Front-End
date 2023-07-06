@@ -47,6 +47,7 @@ const UpdateUserAccountModal = ({ open, setOpen, setPaymentMethodsModal }) => {
             setPaymentMethodsModal(true);
           }}
           variant="outlined"
+          aria-label="Close"
         >
           پرداخت و ارتقای حساب
         </Button>

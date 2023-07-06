@@ -56,7 +56,7 @@ const EventDetailsPage = () => {
               <span className="tooltip-text">به اشتراک گذاشتن رویداد</span>
             </div>
             <div className="event-title-and-icon__dashboard">
-              {data.added_by === auth.user?.id && (
+              {data.added_by.id === auth.user?.id && (
                 <button onClick={() => navigate(`/events/${eventId}/dashboard`)} className="event-detail__goto-dashboard">
                   <span>رفتن به داشبورد</span>
                   <span>

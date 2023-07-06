@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from 'src/components/Button';
-import { formatDate, convertNumberToPersian, formatPrice } from 'src/utils/formatters';
+import Button from '../../Button';
+import { formatDate, convertNumberToPersian, formatPrice } from '../../../utils/formatters';
 import './style.scss';
-import defaultTourImg from 'src/assets/images/defaultTourImg.jpeg';
+import defaultTourImg from '../../../assets/images/defaultTourImg.jpeg';
 import { AiOutlineCalendar } from 'react-icons/ai';
 
 const TourCard = ({ tour }) => {
@@ -20,7 +20,8 @@ const TourCard = ({ tour }) => {
     <Link className="tour-card" to={`/tours/${tour.id}`}>
       <img
         className="tour-card__img"
-        src={(tour.images[0] && tour.images[0].image) || defaultTourImg}
+        // src={(tour.images[0] && tour.images[0].image) || defaultTourImg}
+        src={tour.images[0] ? tour.images[0] : defaultTourImg}
         alt={tour.title}
       />
       <div className="tour-card__content">

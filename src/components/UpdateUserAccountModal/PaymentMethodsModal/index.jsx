@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import './styles.scss';
-import useAuth from 'src/context/AuthContext';
+import useAuth from '../../../context/AuthContext';
 import Modal from '@mui/material/Modal';
 import { Radio, RadioGroup, FormControl, FormLabel, FormControlLabel } from '@mui/material';
-import Button from 'src/components/Button';
-import apiInstance from 'src/config/axios';
+import Button from '../../Button';
+import apiInstance from '../../../config/axios';
 import { IoWalletOutline } from 'react-icons/io5';
 import { BsCreditCard2Back } from 'react-icons/bs';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { formatPrice, convertNumberToPersian } from 'src/utils/formatters';
+import { formatPrice, convertNumberToPersian } from '../../../utils/formatters';
 
 const PaymentMethodsModal = ({ open, setOpen }) => {
   const auth = useAuth();

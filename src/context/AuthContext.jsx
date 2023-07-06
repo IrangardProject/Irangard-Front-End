@@ -1,5 +1,6 @@
+import React from 'react';
 import { useState, useEffect, createContext, useContext, useMemo, useCallback } from 'react';
-import apiInstance from 'src/config/axios';
+import apiInstance from '../config/axios';
 
 const authContext = createContext();
 

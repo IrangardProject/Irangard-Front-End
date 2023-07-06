@@ -10,7 +10,7 @@ import { RiLink } from 'react-icons/ri';
 
 function EventCard({ event }) {
   const navigate = useNavigate();
-  const eventImg = event.images[0]['image'] ? event.images[0]['image'] : defaultEventImg2;
+  const eventImg = event.images[0] ? event.images[0] : defaultEventImg2;
 
   const findNumberOfDays = (endDate, startDate) => {
     const start = new Date(startDate);
