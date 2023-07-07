@@ -1,8 +1,13 @@
 @import 'src/theme/main.scss';
-.tourRecomended{
+.tourContainer{
   // margin-right: 50px;
   background-color: #0000000d;
-  padding: 16px;
+  
+}
+.tourRecomended{
+  max-width: 1200px;
+  margin: 16px auto 64px ;
+  padding: 16;
 }
 .tourCost{
   display: flex;
