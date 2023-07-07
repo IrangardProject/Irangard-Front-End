@@ -16,7 +16,7 @@ const AdminVerify = () => {
   const [allTours, setAllTours] = useState([]);
   const [acceptedTours, setAcceptedTours] = useState([]);
   const [rejectedTours, setRejectedTours] = useState([]);
-  console.log('allTours', allTours);
+  console.log('allTours', data);
   const getAllPendingEvents = async () => {
     await apiInstance
       .get(`${baseUrl}/events/pending_events/`)
@@ -88,7 +88,7 @@ const AdminVerify = () => {
       </div>
       <Toaster />
       <section className="events-AdminVerify">
-        {data.length === 0 ? <h2>رویدادی نیست که بخوای قبول کنی!</h2> : <h2> رویداد‌هایی که منتظر تایید شما هستند:</h2>}
+        {data.length === 0 ? <h2 >رویدادی نیست که بخوای قبول کنی!</h2> : <h2> رویداد‌هایی که منتظر تایید شما هستند:</h2>}
         <div className="admin-cards__admin-cards-list__cards">
           {
             data.map((event, index) => (

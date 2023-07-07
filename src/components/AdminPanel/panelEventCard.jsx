@@ -65,7 +65,7 @@ const PanelEventCard = ({ event,onAccept,onReject }) => {
   return (
     <div className="admin-panel-card" >
       <Toaster />
-      <img className="admin-panel-card__img" src={event.images[0].image || defaultTourImg} alt={event.title} />
+      <img className="admin-panel-card__img" src={event.images[0] || defaultTourImg} alt={event.title} />
       <div className="admin-panel-card__content">
         {/* <div className='experience-card__location'>
             <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
