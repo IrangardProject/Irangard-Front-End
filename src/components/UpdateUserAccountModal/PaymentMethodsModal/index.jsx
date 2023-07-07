@@ -33,11 +33,9 @@ const PaymentMethodsModal = ({ open, setOpen }) => {
       apiInstance.post(`/accounts/wallet/user/upgrade/`).then(res => {
         console.log(res.data);
         if (res.data.status === 'ok') {
-          // alert('حساب با موفقیت ارتقا یافت.');
-          toast.success('حساب با موفقیت ارتقا یافت.');
           setOpen(false);
+          toast.success('حساب با موفقیت ارتقا یافت.');
         } else {
-          // alert('موجودی کیف پول شما کافی نیست.');
           toast.error('موجودی کیف پول شما کافی نیست.');
         }
       });
