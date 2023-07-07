@@ -44,62 +44,36 @@ export default function SwipeableTemporaryDrawer() {
               <ListItemButton className="drawer-button" dir="rtl" style={{ textAlign: 'right', height: '6vh' }}>
                 {index === 0 && (
                   <Link to="/panel/addremove" style={{ height: '4vh' }}>
-                    <>
                       <ListItemText primary={text} style={{ marginRight: '60px' }} />
-                      {/*<ListItemIcon>
-            <ListItem key={text} disablePadding style={{ textAlign: 'right', height: '6vh' }}>
-              <ListItemButton className="drawer-button" dir="rtl" style={{ textAlign: 'right', height: '6vh' }}>
-                <Link to={index % 2 === 0 ? '/panel/statics' : '/panel/addremove'} style={{ height: '4vh' }}>
-                  <>
-                    <ListItemText primary={text} style={{ marginRight: '60px' }} />
-                    {/*<ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-               </ListItemIcon>*/}
-                    </>
                   </Link>
                 )}
                 {index === 1 && (
                   <Link to="/panel/statics" style={{ height: '4vh' }}>
-                    <>
                       <ListItemText primary={text} style={{ marginRight: '60px' }} />
-                      {/*<ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-               </ListItemIcon>*/}
-                    </>
                   </Link>
                 )}
                 {index === 2 && (
                   <Link to="/panel/chat" style={{ height: '4vh' }}>
-                    <>
                       <ListItemText primary={text} style={{ marginRight: '60px' }} />
-                      {/*<ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-               </ListItemIcon>*/}
-                    </>
                   </Link>
                 )}
                 {
                   index === 3 && (
                     <Link to="/" style={{ height: '4vh' }}>
-                      <>
                         <ListItemText primary={text} style={{ marginRight: '60px' }} />
-                      </>
                     </Link>
                   )
                 } 
                 {
                   index === 4 && (
                     <Link to="/panel/verify" style={{ height: '4vh' }}>
-                      <>
                         <ListItemText primary={text} style={{ marginRight: '60px' }} />
-                      </>
                     </Link>
                   )
                 }
 
               </ListItemButton>
             </ListItem>
-            {/* {index !== 3 ? <Divider /> : ''} */}
           </>
         ))}
       </List>

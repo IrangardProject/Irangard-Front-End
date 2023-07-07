@@ -116,7 +116,7 @@ export default function RecievedList() {
   return (
     <div className='user-controller'>
       <Box sx={{ flexGrow:2, margin:'35px' }} >
-        <Typography sx={{ mt: 4, mb: 2 ,color:'#011f1f'}} variant="h6" component="div">
+        <Typography sx={{ mt: 4, mb: 2 ,color:'#011f1f'}} variant="h5" component="div">
             اضافه کردن کاربر جدید
         </Typography>
         
@@ -127,7 +127,7 @@ export default function RecievedList() {
     <Box sx={{ flexGrow: 1, margin:'35px',backgroundColor: 'white'}}>
       <FormGroup row></FormGroup>
       <Grid item xs={12} md={12}>
-        <Typography sx={{ mt: 4, mb: 2 , color:'#011f1f'}} variant="h6" component="div">
+        <Typography sx={{ mt: 4, mb: 2 , color:'#011f1f'}} variant="h5" component="div">
           لیست کاربران
         </Typography>
         <Demo sx={{padding:'5px',borderRadius:'5px',backgroundColor: 'white',height:'300px',overflowY:'scroll'}}>

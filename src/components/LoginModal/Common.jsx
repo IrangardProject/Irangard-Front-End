@@ -116,7 +116,7 @@ export const LoginModalForm = ({ fields, onSubmit, isLoading, onDirty, isLogin =
   return (
     <form className="login-modal-form" onSubmit={handleSubmit(onSubmit)} role="form">
       {getFields(watch, fields).map(field => {
-        {/* console.log('the field is: ', field); */}
+        // console.log('the field is: ', field);
         return (
           <div key={field.id} className="form__group field">
             <div style={{ position: 'relative' }}>
