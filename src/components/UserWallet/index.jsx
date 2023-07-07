@@ -55,7 +55,7 @@ const UserWallet = ({ open, setOpen }) => {
         .then(data => {
           console.log('the response of the server for the wallet update: ', data);
           window.location.href = data.link;
-          toast.success('موجودی کیف پول شما با موفقیت افزایش یافت.', { className: 'centered-toast-message' });
+          // toast.success('موجودی کیف پول شما با موفقیت افزایش یافت.', { className: 'centered-toast-message' });
         })
         .catch(error => {
           console.log(error);

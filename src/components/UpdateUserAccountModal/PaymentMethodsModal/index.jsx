@@ -9,6 +9,7 @@ import { IoWalletOutline } from 'react-icons/io5';
 import { BsCreditCard2Back } from 'react-icons/bs';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { formatPrice, convertNumberToPersian } from '../../../utils/formatters';
+import toast from 'react-hot-toast';
 
 const PaymentMethodsModal = ({ open, setOpen }) => {
   const auth = useAuth();
@@ -29,12 +30,15 @@ const PaymentMethodsModal = ({ open, setOpen }) => {
     if (paymentMethod === 'درگاه پرداخت اینترنتی') {
       Pay();
     } else if (paymentMethod === 'کیف پول ایران‌گرد') {
-      apiInstance.get(`/accounts/pay/wallet/`).then(res => {
+      apiInstance.post(`/accounts/wallet/user/upgrade/`).then(res => {
         console.log(res.data);
-        if (res.data.status === 'success') {
-          alert('حساب با موفقیت ارتقا یافت.');
+        if (res.data.status === 'ok') {
+          // alert('حساب با موفقیت ارتقا یافت.');
+          toast.success('حساب با موفقیت ارتقا یافت.');
+          setOpen(false);
         } else {
-          alert('موجودی کیف پول شما کافی نیست.');
+          // alert('موجودی کیف پول شما کافی نیست.');
+          toast.error('موجودی کیف پول شما کافی نیست.');
         }
       });
     }
