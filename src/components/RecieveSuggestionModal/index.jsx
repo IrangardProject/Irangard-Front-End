@@ -19,6 +19,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedData, setSelectedData] = useState([]);
     const [eventId, setEventId] = useState(0);
+    console.log(place);
     const categoryTexts = {
         place: "مکان های پیشنهاد شده به شما",
         tour: "تور های پیشنهاد شده به شما",
@@ -198,7 +199,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                                             <button className="event-btn visit">مشاهده مکان</button>
                                         </Link>
                                         <Button onClick={
-                                                () => removeSuggestionPlaceHandler(item.place)
+                                                () => removeSuggestionPlaceHandler(item.id)
                                             }
                                             className="event-btn delete">
                                             حذف مکان از لیست
@@ -240,7 +241,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                                             <button className="event-btn visit">مشاهده تور</button>
                                         </Link>
                                         <button onClick={
-                                                () => removeSuggestionTourHandler(item.tour)
+                                                () => removeSuggestionTourHandler(item.id)
                                             }
                                             className="event-btn delete">
                                             حذف تور از لیست
