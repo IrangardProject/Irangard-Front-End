@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { convertNumberToPersian } from 'src/utils/formatters';
 import './styles.scss';
-import defaultPlaceImg from 'src/assets/images/defaultPlaceImg.jpg';
+// import defaultPlaceImg from 'src/assets/images/defaultPlaceImg.jpg';
 import { IoLocationOutline } from 'react-icons/io5';
 import { AiOutlinePhone } from 'react-icons/ai';
 import { AiOutlineInstagram } from 'react-icons/ai';
@@ -11,7 +11,7 @@ import { baseUrl } from '../../../utils/constants';
 const PlaceCard = ({ place }) => {
   return (
     <Link className="available-place-card" to={`/places/${place.id}`}>
-      <img className="available-place-card__img" src={place.images[0] || defaultPlaceImg} alt={place.title} />
+      <img className="available-place-card__img" src={place.images[0] || null} alt={place.title} />
       <div className="available-place-card__content">
         <div className="available-place-card__title">{place.title}</div>
 

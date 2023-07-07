@@ -12,7 +12,6 @@ import { tourCategories } from 'src/utils/constants';
 import { BaseInfoSection, MapSection, DateSection, AdditionalInfoSection } from './Sections';
 import { useAddTour, updateTour } from 'src/api/Tours';
 import './styles.scss';
-import defaultTourImg from 'src/assets/images/defaultTourImg.jpg';
 import { convertJalaliDateToGeorgian } from 'src/utils/formatters';
 
 const AddTour = () => {

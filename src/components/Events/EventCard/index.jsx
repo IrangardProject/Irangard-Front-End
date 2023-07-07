@@ -3,14 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from 'src/components/Button';
 import { formatDate, convertNumberToPersian, formatPrice, convertGeorgianDateToJalali } from 'src/utils/formatters';
 import './styles.scss';
-import defaultEventImg2 from 'src/assets/images/defaultEventImg2.jpeg';
+// import defaultEventImg2 from 'src/assets/images/defaultEventImg2.jpeg';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { BiTime } from 'react-icons/bi';
 import { RiLink } from 'react-icons/ri';
 
 function EventCard({ event }) {
   const navigate = useNavigate();
-  const eventImg = event.images[0] ? event.images[0] : defaultEventImg2;
+  // const eventImg = event.images[0] ? event.images[0] : defaultEventImg2;
+  const eventImg = event.images[0] ? event.images[0] : null;
 
   const findNumberOfDays = (endDate, startDate) => {
     const start = new Date(startDate);
