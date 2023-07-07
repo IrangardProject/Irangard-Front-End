@@ -127,7 +127,7 @@ const ShareModal = ({open,handleClose,shareType}) => {
                         <p className="no-user-found">کاربری یافت نشد</p>
                     ):(
                         limitedUsers.map((user,index) =>{
-                            if (user.username !== auth.user.username) {
+                            if (user.username !== auth.user?.username) {
                                 return(
                                 <div onClick={() => handleUserClick(user)} className="user" key={index}>
                                     <img className="user_img" src={user.image !== '' ? user.image : defaultImg} alt="user image" />

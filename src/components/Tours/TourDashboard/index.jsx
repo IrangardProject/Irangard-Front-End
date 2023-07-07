@@ -20,7 +20,8 @@ function TourDashboard() {
       const userData = await apiInstance.get('/accounts/information').then(res => res.data);
       const tourData = await apiInstance.get(`/tours/${id}`).then(res => res.data);
       setData(tourData);
-      if (tourData.owner.user !== userData.id) {
+      console.log("the data in if: ", tourData, userData);
+      if (tourData?.owner.user.id !== userData.id) {
         navigate('/notFound');
       }
     } catch (error) {

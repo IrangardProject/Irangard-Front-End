@@ -1,0 +1,30 @@
+@import 'src/theme/main.scss';
+
+.event-dashboard-edit {
+  background-color: $c-white;
+  border-radius: 8px;
+
+  &__title {
+    font-size: 24px;
+  }
+
+  &__choose-img-btn {
+    margin: 16px auto;
+    display: block;
+    max-width: 240px;
+  }
+
+  &__img {
+    margin: 16px 0;
+    width: 100%;
+    max-width: 480px;
+    max-height: 480px;
+    margin: auto;
+    display: block;
+    border-radius: 8px;
+  }
+
+  .date-input {
+    display: none;
+  }
+}

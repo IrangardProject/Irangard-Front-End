@@ -157,7 +157,7 @@ function ToursDetailPage() {
               <span className="tooltip-text">به اشتراک گذاشتن تور</span>
             </div>
             <div className="title-and-icon__dashboard">
-              {data.owner.user === auth.user?.id && (
+              {data.owner.user.id === auth.user?.id && (
                 <button onClick={() => navigate(`/tours/${id}/dashboard`)} className="tour-detail__goto-dashboard">
                   <span>رفتن به داشبورد</span>
                   <span>
@@ -166,7 +166,7 @@ function ToursDetailPage() {
                 </button>
               )}
             </div>
-            {!data.is_booked && data.owner.user !== auth.user?.id && (
+            {data.owner.user.id !== auth.user?.id && !data.is_booked && (
               <Button className="tour-detail__book" onClick={handleBookTour}>
                 ثبت‌نام در تور
               </Button>
