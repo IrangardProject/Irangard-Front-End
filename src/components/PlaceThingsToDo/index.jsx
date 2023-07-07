@@ -90,11 +90,13 @@ const PlaceThingsToDo = () => {
       availableTours.length !== 0 &&  */}
           {!loading && (
             <div className="things-to-do">
-              <div className="things-to-do__header">
-                <div className="things-to-do__header__title">
-                  <h2>ایران‌گردی در {whereToParam}</h2>
+              {availableEvents.length > 0 && availablePlaces.length > 0 && availableTours.length > 0 && (
+                <div className="things-to-do__header">
+                  <div className="things-to-do__header__title">
+                    <h2>ایران‌گردی در {whereToParam}</h2>
+                  </div>
                 </div>
-              </div>
+              )}
               <hr className="things-to-do__hr" />
               <div className="things-to-do__content">
                 {availableTours.length > 0 && (

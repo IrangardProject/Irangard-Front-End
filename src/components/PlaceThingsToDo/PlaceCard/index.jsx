@@ -11,11 +11,7 @@ import { baseUrl } from '../../../utils/constants';
 const PlaceCard = ({ place }) => {
   return (
     <Link className="available-place-card" to={`/places/${place.id}`}>
-      <img
-        className="available-place-card__img"
-        src={(place.images[0] && `${baseUrl + place.images[0].image}`) || defaultPlaceImg}
-        alt={place.title}
-      />
+      <img className="available-place-card__img" src={place.images[0] || defaultPlaceImg} alt={place.title} />
       <div className="available-place-card__content">
         <div className="available-place-card__title">{place.title}</div>
 
