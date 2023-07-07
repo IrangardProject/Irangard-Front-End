@@ -102,7 +102,7 @@ const ShareModal = ({open,handleClose,shareType}) => {
         setShowAllResults(true);
         setSearchTerm('');
     }
-    const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
+    const defaultImg = 'https://img.freepik.com/free-icon/user_318-159711.jpg' 
     return (
        <>
         <Dialog onClose={handleBackfropClick} className="share-eventTour" open={open} >
