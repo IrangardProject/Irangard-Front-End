@@ -44,7 +44,7 @@ const TourCard = ({tour}) => {
                         <CardMedia 
                             component="img"
                             // className={}
-                            image={tour.image}
+                            image={tour.images[0]}
                             alt="tour image"
                             sx={{
                                 height:"200px",
