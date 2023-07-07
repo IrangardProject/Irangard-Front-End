@@ -17,7 +17,15 @@ import { BsCreditCard2Back } from 'react-icons/bs';
 import { IoWalletOutline } from 'react-icons/io5';
 import ShareIcon from '@mui/icons-material/Share';
 import ShareModal from '../../ShareModal/shareModal';
-
+import { RiSettings5Line } from 'react-icons/ri';
+import { BsCalendarDate } from 'react-icons/bs';
+import { BsFillPeopleFill } from 'react-icons/bs';
+import { MdOutlineDescription } from 'react-icons/md';
+import ByUser from './ByUser';
+import TourTags from './TourTags';
+import TourGallery from './TourGallery';
+import TourContactInfo from './TourContactInfo';
+import { BsTags } from 'react-icons/bs';
 
 function ToursDetailPage() {
   const { id } = useParams();
@@ -34,6 +42,7 @@ function ToursDetailPage() {
   const [userWalletButtonDisabled, setUserWalletButtonDisabled] = useState(!(auth.user?.wallet_credit < data.cost));
   console.log(userWalletButtonDisabled, data.cost, auth.user?.wallet_credit);
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
+  console.log("the tour's tags: ", data.tags);
 
   useEffect(() => {
     apiInstance
@@ -117,17 +126,25 @@ function ToursDetailPage() {
       });
   };
 
+  const findNumberOfDays = (endDate, startDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
   return (
     <Layout title="صفحه تور">
       <Toaster />
       {pageLoading && <Loader />}
       {!pageLoading && (
         <div className="tour-detail">
-          <section className='titleandicon'>
-          <h1 className="tour-detail__title">{data.title}</h1>
-          <div className='share-icon-container'>
+          <header className="title-and-icon">
+            <h1 className="tour-detail__title">{data.title}</h1>
+            <div className="share-icon-container">
               <ShareIcon
-                onClick = {handleOpen}
+                onClick={handleOpen}
                 sx={{
                   marginRight: '20px',
                   color: 'green',
@@ -139,38 +156,86 @@ function ToursDetailPage() {
               />
               <span className="tooltip-text">به اشتراک گذاشتن تور</span>
             </div>
-          </section>
-          {data.owner.user === auth.user?.id && (
-            <p onClick={() => navigate(`/tours/${id}/dashboard`)} className="tour-detail__goto-dashboard">
-              رفتن به داشبورد
-            </p>
-          )}
-          {console.log('this is the data: ', data)}
-          <img className="tour-detail__img" src={data.image || defaultTourImg} />
-          <div className="tour-detail__date">
-            <div className="tour-detail__start">تاریخ رفت: {formatDate(data.start_date)}</div>
-            <div className="tour-detail__end">تاریخ برگشت: {formatDate(data.end_date)}</div>
+            <div className="title-and-icon__dashboard">
+              {data.owner.user.id === auth.user?.id && (
+                <button onClick={() => navigate(`/tours/${id}/dashboard`)} className="tour-detail__goto-dashboard">
+                  <span>رفتن به داشبورد</span>
+                  <span>
+                    <RiSettings5Line size={20} />
+                  </span>
+                </button>
+              )}
+            </div>
+            {data.owner.user.id !== auth.user?.id && !data.is_booked && (
+              <Button className="tour-detail__book" onClick={handleBookTour}>
+                ثبت‌نام در تور
+              </Button>
+            )}
+          </header>
+          <div className="tour-detail__gallery-info-wrapper">
+            <TourGallery className="tour-detail__gallery" images={data.images} />
+            <TourContactInfo className="tour-detail__contact-info" info={data} />
           </div>
-          <div className="tour-detail__capacity">
-            ظرفیت تور: {convertNumberToPersian(data.capacity - data.bookers.length)} نفر
+          <ByUser tourLeader={data.owner.user} />
+
+          <div className="tour-detail__body">
+            <div className="tour-detail__price">
+              <div className="tour-detail__price__icon">
+                <BsTags size={24} />
+              </div>
+              <div className="tour-detail__price__text">
+                <h3>قیمت تور</h3>
+                <p>
+                  {formatPrice(convertNumberToPersian(data.cost))} تومان <br />
+                </p>
+              </div>
+            </div>
+            <div className="tour-detail__date">
+              <div className="tour-detail__date__icon">
+                <BsCalendarDate size={24} />
+              </div>
+              <div className="tour-detail__date__text">
+                <h3>تاریخ برگزاری تور</h3>
+                <p>
+                  تاریخ رفت:‌ {formatDate(data.start_date)} <br />
+                </p>
+                <p>
+                  تاریخ برگشت:‌ {formatDate(data.end_date)} <br />
+                </p>
+                <p>
+                  مدت تور: {findNumberOfDays(data.end_date, data.start_date)} روز <br />
+                </p>
+              </div>
+            </div>
+            <div className="tour-detail__capacity">
+              <div className="tour-detail__capacity__icon">
+                <BsFillPeopleFill size={24} />
+              </div>
+              <div className="tour-detail__capacity__text">
+                <h3>ظرفیت تور</h3>
+                <p>{convertNumberToPersian(data.capacity - data.bookers.length)} نفر</p>
+              </div>
+            </div>
+            <div className="tour-detail__description">
+              <div className="tour-detail__description__icon">
+                <MdOutlineDescription size={24} />
+              </div>
+              <div className="tour-detail__description__text">
+                <h3 className="tour-detail__description__text__header">توضیحات تور</h3>
+                <RichText
+                  readOnly
+                  editorClassName="tour-detail__description__text__rich-text"
+                  hideToolbar
+                  defaultContent={data.description}
+                />
+              </div>
+            </div>
+            {data.tags.length != 0 && (
+              <div className="tour-detail__available-tags">
+                <TourTags tags={data.tags} />
+              </div>
+            )}
           </div>
-          <div className="tour-detail__cost">قیمت تور: {formatPrice(convertNumberToPersian(data.cost))} تومان</div>
-          {!data.is_booked && data.owner.user !== auth.user?.id && (
-            <Button className="tour-detail__book" onClick={handleBookTour}>
-              ثبت‌نام در تور
-            </Button>
-          )}
-          {data.description && data.description !== '<p></p>' && (
-            <>
-              <div className="tour-detail__description">توضیحات تور:</div>
-              <RichText
-                readOnly
-                editorClassName="tour-detail__description-editor"
-                hideToolbar
-                defaultContent={data.description}
-              />
-            </>
-          )}
         </div>
       )}
       <Modal
@@ -269,11 +334,7 @@ function ToursDetailPage() {
           </div>
         </div>
       </Modal>
-      <ShareModal 
-        open={editProfileModalOpen}
-        handleClose={() => setEditProfileModalOpen(false)}
-        shareType = {"تور"}
-      />
+      <ShareModal open={editProfileModalOpen} handleClose={() => setEditProfileModalOpen(false)} shareType={'تور'} />
     </Layout>
   );
 }

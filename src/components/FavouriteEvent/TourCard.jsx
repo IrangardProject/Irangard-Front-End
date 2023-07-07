@@ -14,6 +14,7 @@ import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlin
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { Link } from "react-router-dom";
 import './index.scss';
+import {convertNumberToPersian} from '../../utils/formatters';
 
 
 const TourCard = ({tour}) => {
@@ -43,8 +44,12 @@ const TourCard = ({tour}) => {
                         <CardMedia 
                             component="img"
                             // className={}
-                            image={tour.image}
+                            image={tour.images[0]}
                             alt="tour image"
+                            sx={{
+                                height:"200px",
+                                objectFit:"cover"
+                            }}
                         />
                     </Link>
                 </Grid>
@@ -87,7 +92,7 @@ const TourCard = ({tour}) => {
                                     <AirportShuttleOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
                                     <div className="tourCost_span">
                                         <span> ظرفیت  تور </span><span> </span>&nbsp;
-                                        <span className="price">{tour.capacity}</span>&nbsp;<span>نفر</span>
+                                        <span className="price">{convertNumberToPersian(tour.capacity)}</span>&nbsp;<span>نفر</span>
                                     </div>
                                 </div>
                             </Typography>
@@ -108,7 +113,7 @@ const TourCard = ({tour}) => {
                                     <AttachMoneyIcon color="primary" sx={{fontSize:"15px"}}/>
                                     <div className="tourCost_span">
                                         <span> هزینه  تور </span><span> </span>&nbsp;
-                                        <span className="price">{tour.cost}</span>&nbsp;<span>ریال</span>
+                                        <span className="price">{convertNumberToPersian(tour.cost)}</span>&nbsp;<span>ریال</span>
 
                                     </div>
                                 </div>

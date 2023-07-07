@@ -1,13 +1,13 @@
 import React from 'react';
 import './styles.scss';
-import { BsTags } from 'react-icons/bs';
+import MoreOutlinedIcon from '@mui/icons-material/MoreOutlined';
 
 const EventTags = ({ tags }) => {
   return (
     <div className="event-available-tags">
       <div className="event-available-tags__title">
         <div className="event-available-tags__title__icon">
-          <BsTags size={24} />
+          <MoreOutlinedIcon sx={{ fontSize: 24 }} />
         </div>
         <h4> برچسب ها</h4>
       </div>

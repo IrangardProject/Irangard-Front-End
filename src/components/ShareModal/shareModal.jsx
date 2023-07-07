@@ -102,7 +102,7 @@ const ShareModal = ({open,handleClose,shareType}) => {
         setShowAllResults(true);
         setSearchTerm('');
     }
-    const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
+    const defaultImg = 'https://img.freepik.com/free-icon/user_318-159711.jpg' 
     return (
        <>
         <Dialog onClose={handleBackfropClick} className="share-eventTour" open={open} >
@@ -127,7 +127,7 @@ const ShareModal = ({open,handleClose,shareType}) => {
                         <p className="no-user-found">کاربری یافت نشد</p>
                     ):(
                         limitedUsers.map((user,index) =>{
-                            if (user.username !== auth.user.username) {
+                            if (user.username !== auth.user?.username) {
                                 return(
                                 <div onClick={() => handleUserClick(user)} className="user" key={index}>
                                     <img className="user_img" src={user.image !== '' ? user.image : defaultImg} alt="user image" />
@@ -168,7 +168,7 @@ const ShareModal = ({open,handleClose,shareType}) => {
                </button>
            </div>
            <div className="suggestion-dialog__body">
-               <input
+               <textarea
                    type="text"
                    placeholder="متن پیشنهادی..."
                    value={inputText}

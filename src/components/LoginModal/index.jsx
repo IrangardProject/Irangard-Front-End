@@ -73,7 +73,7 @@ export default function LoginModal({ open, handleClose }) {
           />
           <Tabs 
           defaultValue={activeTab}
-          value={activeTab} 
+          // value={activeTab} 
           // onChange={handleActiveTab} 
           >
             <TabsList className="login-modal__TabsList">
@@ -86,7 +86,6 @@ export default function LoginModal({ open, handleClose }) {
             <TabPanel value={1}>
               <SignupForm 
               handleFormIsDirty={setFormIsDirty} 
-              // onComplete={handleActiveTab} 
               />
             </TabPanel>
             <img src={FooterImg} alt="Goodbye" className="login-modal__FooterImg" />

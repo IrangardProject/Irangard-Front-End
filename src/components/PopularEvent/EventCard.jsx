@@ -14,7 +14,7 @@ const ExperienceCard = ({start_time,organizer, city, id, imgSrc, title, descript
   console.log('imgSrc: ', imgSrc);
   return (
     <Link to={`/events/${id}`} className="experience-card">
-      <img src={imgSrc.image || defaultXpImg} alt={title} className="experience-card__img" />
+      <img src={imgSrc} alt={title} className="experience-card__img" />
       <div className="experience-card__rating-wrapper"></div>
       <h3 className="experience-card__title">{ title}</h3>
       <p className="experience-card__description">      

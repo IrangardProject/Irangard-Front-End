@@ -2,9 +2,11 @@
 
 .tour-detail {
   background-color: $c-white;
-  border-radius: 8px;
   margin: 32px 0;
   padding: 32px;
+  box-shadow: 2px 4px 8px $c-black-20;
+  border-radius: 16px;
+  border: 1px solid $c-greydd;
 
   &__title {
     font-size: 24px;
@@ -12,72 +14,172 @@
   }
 
   &__goto-dashboard {
-    color: $c-green2;
-    font-weight: 700;
+    // height: 40px;
+    // background-color: $c-white;
+    // border-width: 1px;
+    // border-radius: 8px;
+    // border: none;
+    // // color: $c-green2;
+    // font-size: 14px;
+    // font-weight: 700;
+    // cursor: pointer;
+    background-color: $c-white;
+    border: 1px solid $c-greybb;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
     cursor: pointer;
+    margin-bottom: 20px;
+
+    &:hover {
+      background-color: $c-white9;
+    }
+
+    span {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    span:last-child {
+      border-right: 1px solid $c-greybb;
+    }
   }
 
-  &__img {
-    height: 240px;
-    max-width: 100%;
-    display: block;
-    border-radius: 8px;
-    margin: 24px auto;
+  &__gallery-info-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  &__body {
+    padding: 32px;
+  }
+
+  &__price {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    &__icon {
+      margin: 15px 15px;
+    }
+    &__text {
+      font-weight: 300;
+      line-height: 2;
+    }
   }
 
   &__date {
+    margin-top: 15px;
     display: flex;
-    flex-wrap: wrap;
-  }
-
-  &__start,
-  &__end {
-    font-size: 14px;
-    margin: 8px 0;
-    font-weight: 700;
-    padding: 8px;
-    border-radius: 8px;
-    width: auto;
-  }
-
-  &__start {
-    color: #006a33;
-    background-color: #f7fafb;
-    border: 1px solid #006a33;
-    margin-left: 16px;
-  }
-
-  &__end {
-    color: #e40300;
-    background-color: #fdeded;
-    border: 1px solid #e40300;
+    flex-direction: row;
+    &__icon {
+      margin: 15px 15px;
+    }
+    &__text {
+      font-weight: 300;
+      line-height: 2;
+    }
   }
 
   &__capacity {
-    color: #666;
-    font-size: 16px;
-    font-weight: 800;
-    margin: 16px 0;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    &__icon {
+      margin: 15px 15px;
+    }
+    &__text {
+      font-weight: 300;
+      line-height: 2;
+    }
   }
 
   &__description {
-    margin: 16px 0;
-    font-weight: 700;
-    color: #333;
+    margin-top: 15px;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: row;
+    &__icon {
+      margin: 15px 15px;
+    }
+    &__text {
+      width: 91.5%;
+      &__header {  
+        font-weight: 700;
+        line-height: 2;
+      }
+    }
   }
 
-  &__description-editor {
-    min-height: 48px;
-    background-color: $c-white;
-    border: none;
+  &__available-tags {
+    margin-top: 15px;
   }
+
+  // &__img {
+  //   height: 240px;
+  //   max-width: 100%;
+  //   display: block;
+  //   border-radius: 8px;
+  //   margin: 24px auto;
+  // }
+
+  // &__date {
+  //   display: flex;
+  //   flex-wrap: wrap;
+  // }
+
+  // &__start,
+  // &__end {
+  //   font-size: 14px;
+  //   margin: 8px 0;
+  //   font-weight: 700;
+  //   padding: 8px;
+  //   border-radius: 8px;
+  //   width: auto;
+  // }
+
+  // &__start {
+  //   color: #006a33;
+  //   background-color: #f7fafb;
+  //   border: 1px solid #006a33;
+  //   margin-left: 16px;
+  // }
+
+  // &__end {
+  //   color: #e40300;
+  //   background-color: #fdeded;
+  //   border: 1px solid #e40300;
+  // }
+
+  // &__capacity {
+  //   color: #666;
+  //   font-size: 16px;
+  //   font-weight: 800;
+  //   margin: 16px 0;
+  // }
+
+  // &__description {
+  //   margin: 16px 0;
+  //   font-weight: 700;
+  //   color: #333;
+  // }
+
+  // &__description-editor {
+  //   min-height: 48px;
+  //   background-color: $c-white;
+  //   border: none;
+  // }
 
   &__book {
     background-color: #feb714;
     color: $c-black;
     font-weight: 700;
     width: auto;
-    margin: 24px 0;
+    margin-left: 10px;
+    // margin: 24px 0;
   }
 
   &__book-modal {
@@ -196,6 +298,36 @@
         }
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .tour-detail {
+    border: none;
+    border-radius: 0;
+
+    &__gallery-info-wrapper {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__gallery {
+      width: 100%;
+      min-width: 375px;
+    }
+
+    &__info {
+      margin-top: 32px;
+    }
+  }
+}
+
+.title-and-icon {
+  display: flex;
+  flex-direction: row;
+  &__dashboard {
+    margin-left: 0;
+    margin-right: auto;
   }
 }
 

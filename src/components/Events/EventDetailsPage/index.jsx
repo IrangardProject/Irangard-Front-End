@@ -1,5 +1,5 @@
-import React, { useEffect,useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Navigate, useParams } from 'react-router-dom';
 import { Rating } from '@mui/material';
 import Layout from '../../Layout';
 import EventGallery from './EventGallery';
@@ -14,12 +14,19 @@ import { MdOutlineDescription } from 'react-icons/md';
 import './styles.scss';
 import ShareIcon from '@mui/icons-material/Share';
 import ShareModal from '../../ShareModal/shareModal';
+import { RiSettings5Line } from 'react-icons/ri';
+import useAuth from 'src/context/AuthContext';
+
+
 
 const EventDetailsPage = () => {
+  const navigate = useNavigate();
+  const auth = useAuth();
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const params = useParams();
   const eventId = params.id;
   const { error, isLoading, data } = useGetEvent(eventId);
+  console.log("the event data is: ", data);
   if (error) {
     return <Navigate to={'/notFound'} />;
   }
@@ -34,25 +41,36 @@ const EventDetailsPage = () => {
         <div className="event-detail">
           <header className="event-detail__header">
             <h2>{data.title}</h2>
-              <div className='share-icon-container'>
+            <div className="share-icon-container">
               <ShareIcon
                 onClick={handleOpen}
-              sx={{
-                marginRight: '20px',
-                color: 'green',
-                borderRadius: '50%',
-                cursor: 'pointer',
-                bgcolor: 'rgba(0, 0, 0, 0.04)',
-                padding: '2px 1px',
-              }}/>
-            <span className="tooltip-text">به اشتراک گذاشتن رویداد</span>
+                sx={{
+                  marginRight: '20px',
+                  color: 'green',
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  bgcolor: 'rgba(0, 0, 0, 0.04)',
+                  padding: '2px 1px',
+                }}
+              />
+              <span className="tooltip-text">به اشتراک گذاشتن رویداد</span>
+            </div>
+            <div className="event-title-and-icon__dashboard">
+              {data.added_by.id === auth.user?.id && (
+                <button onClick={() => navigate(`/events/${eventId}/dashboard`)} className="event-detail__goto-dashboard">
+                  <span>رفتن به داشبورد</span>
+                  <span>
+                    <RiSettings5Line size={20} />
+                  </span>
+                </button>
+              )}
             </div>
           </header>
           <div className="event-detail__gallery-info-wrapper">
             <EventGallery className="event-detail__gallery" images={data.images} />
             <EventContactInfo className="event-detail__contact-info" info={data} />
           </div>
-          <ByUser />
+          <ByUser eventProvider={data.added_by} />
 
           <div className="event-detail__body">
             <div className="event-detail__date-and-time">
@@ -92,10 +110,10 @@ const EventDetailsPage = () => {
               </div>
             )}
           </div>
-          <ShareModal 
+          <ShareModal
             open={editProfileModalOpen}
             handleClose={() => setEditProfileModalOpen(false)}
-            shareType={"رویداد"}
+            shareType={'رویداد'}
           />
         </div>
       )}

@@ -25,6 +25,8 @@ const PlaceCards = ({ className = 'home-experiences', data = Places }) => {
       </div>
     );
 
+    console.log("the data in place cards:", data)
+
   return (
     <div className={className}>
       <div ref={sliderRef} className="flex-column">

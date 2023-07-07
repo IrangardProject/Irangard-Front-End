@@ -1,4 +1,5 @@
-import {Dialog} from "@mui/material";
+import { Dialog} from "@mui/material";
+import Button from '../Button/index'
 import {useState, useEffect} from "react";
 import {TbBellRinging2, TbMoodSad} from 'react-icons/tb';
 import apiInstance from 'src/config/axios';
@@ -7,6 +8,7 @@ import {BsCreditCard2Back, BsFillCalendarEventFill} from 'react-icons/bs';
 import './index.scss'
 import {Link} from "react-router-dom";
 import toast from "react-hot-toast";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 // import { TfiFaceSad } from "react-icons/tfi";
 const RecieveSuggestionModal = ({open, setOpen}) => {
     const [openDialog, setOpenDialog] = useState(false);
@@ -17,6 +19,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedData, setSelectedData] = useState([]);
     const [eventId, setEventId] = useState(0);
+    console.log(place);
     const categoryTexts = {
         place: "مکان های پیشنهاد شده به شما",
         tour: "تور های پیشنهاد شده به شما",
@@ -95,7 +98,38 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                 setEvents(prevEvents => prevEvents.filter(event => event.id !== id));
             })
         }
+    }
+    const removeSuggestionPlaceHandler = (id) => {
+        console.log('place function clicked', id);
+        const access_token = localStorage.getItem('access-token');
+        if (access_token) {
+            const headers = {
+                Authorization: `JWT ${access_token}`
+            };
+            apiInstance.delete(`/suggestion/place/${id}/`, {headers}).then(() => {
+                toast.success('مکان از لیست شما حذف شد')
+                setPlace(prevPlace => prevPlace.filter(place => place.id !== id));
+            })
+        }
+    }
+    const removeSuggestionTourHandler = (id) => {
+        console.log('tour function clicked', id);
+        const access_token = localStorage.getItem('access-token');
+        if (access_token) {
+            const headers = {
+                Authorization: `JWT ${access_token}`
+            };
+            apiInstance.delete(`/suggestion/tour/${id}/`, {headers}).then(() => {
+                toast.success('تور از لیست شما حذف شد')
+                setTours(prevPlace => prevPlace.filter(place => place.id !== id));
+            })
+        }
+    }
 
+    const BackiconHandler = () => {
+        setRecieve(false)
+        setOpen(true);
+        
     }
 
     return (
@@ -122,7 +156,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                             () => handleArticle("event")
                         }>
                             <BsFillCalendarEventFill/>
-                            <p>لیست پیشنهاد شده به شما خالی است</p>
+                            <p>رویداد های پیشنهاد شده به شما</p>
                         </article>
                     </section>
                 </section>
@@ -133,9 +167,12 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                 }
                 open={recieve}>
                 <section className="recieve-suggestion-shared__container">
-                    <h3>{
-                        categoryTexts[selectedCategory]
-                    }</h3>
+                    
+                    <section className="backtopreviespage">
+                        <IoArrowBackCircleOutline onClick={() =>BackiconHandler()}
+                        className="backIcontplistPage"  />
+                        <h3>بازگشت به صفحه قبل</h3>
+                    </section>
                     {
                     selectedCategory === "place" && (
                         <div> {
@@ -161,12 +198,12 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                                         }>
                                             <button className="event-btn visit">مشاهده مکان</button>
                                         </Link>
-                                        <button onClick={
-                                                () => removeSuggestionEventHandler(item.place)
+                                        <Button onClick={
+                                                () => removeSuggestionPlaceHandler(item.id)
                                             }
                                             className="event-btn delete">
                                             حذف مکان از لیست
-                                        </button>
+                                        </Button>
                                     </section>
                                 </div>
                             ))) : (
@@ -204,7 +241,7 @@ const RecieveSuggestionModal = ({open, setOpen}) => {
                                             <button className="event-btn visit">مشاهده تور</button>
                                         </Link>
                                         <button onClick={
-                                                () => removeSuggestionEventHandler(item.tour)
+                                                () => removeSuggestionTourHandler(item.id)
                                             }
                                             className="event-btn delete">
                                             حذف تور از لیست

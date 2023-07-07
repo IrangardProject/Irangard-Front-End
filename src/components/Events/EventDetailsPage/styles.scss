@@ -4,6 +4,8 @@
 .share-icon-container {
   position: relative;
   display: inline-block;
+  padding: 10px;
+  margin-left: 10px;
 }
 
 .tooltip-text {
@@ -48,6 +50,41 @@
   &__gallery {
     width: calc(100% - 364px);
   }
+
+  &__goto-dashboard {
+    // height: 40px;
+    // background-color: $c-white;
+    // border-width: 1px;
+    // border-radius: 8px;
+    // border: none;
+    // // color: $c-green2;
+    // font-size: 14px;
+    // font-weight: 700;
+    // cursor: pointer;
+    background-color: $c-white;
+    border: 1px solid $c-greybb;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+
+    &:hover {
+      background-color: $c-white9;
+    }
+
+    span {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    span:last-child {
+      border-right: 1px solid $c-greybb;
+    }
+  }
+
 
 //   &__rating {
 //     display: flex;
@@ -116,5 +153,14 @@
     &__info {
       margin-top: 32px;
     }
+  }
+}
+
+.event-title-and-icon {
+  display: flex;
+  flex-direction: row;
+  &__dashboard {
+    margin-left: 0;
+    margin-right: auto;
   }
 }

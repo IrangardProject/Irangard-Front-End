@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Modal } from '@mui/material';
-import Button from 'src/components/Button';
-import { formatPrice, convertNumberToPersian, convertNumberToEnglish } from 'src/utils/formatters.js';
+import Button from '../Button';
 import './styles.scss';
-import useAuth from 'src/context/AuthContext';
-import apiInstance from 'src/config/axios';
+import useAuth from '../../context/AuthContext';
+import apiInstance from '../../config/axios';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { tourCategories, eventTypes } from 'src/utils/constants';
+import { tourCategories, eventTypes } from '../../utils/constants';
 import { FormControl, Checkbox, MenuItem, ListItemText, Select } from '@mui/material';
-import { usePutProfile } from 'src/api/profile';
 import { RiShipLine } from 'react-icons/ri';
 import { BsCalendarEvent } from 'react-icons/bs';
 
@@ -21,7 +19,7 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
   const [selectedTourCategories, setSelectedTourCategories] = useState([]);
   const [updateLoading, setUpdateLoading] = useState(false);
   const auth = useAuth();
-  console.log('the user info: ', auth.user);
+  // console.log('the user info: ', auth.user);
 
   useEffect(() => {
     if (auth.user) {
@@ -69,60 +67,50 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
     selectedEventTypes.map(selectedEventType => {
       eventTypes.map(eventType => {
         if (eventType.label === selectedEventType) {
-          sendingEventTypes.push(String(eventTypes.indexOf(eventType)));
+          sendingEventTypes.push(Number(eventTypes.indexOf(eventType)));
         }
       });
     });
-    // console.log('this is the sendingEventTypes: ', sendingEventTypes, typeof sendingEventTypes);
 
     const sendingTourCategories = [];
     selectedTourCategories.map(selectedTourCategory => {
       tourCategories.map(tourCategory => {
         if (tourCategory.label === selectedTourCategory) {
-          sendingTourCategories.push(String(tourCategories.indexOf(tourCategory)));
+          sendingTourCategories.push(Number(tourCategories.indexOf(tourCategory)));
         }
       });
     });
-    // console.log('this is the sendingTourCategories: ', sendingTourCategories, typeof sendingTourCategories);
     const body = {
-      username: auth.user.username,
-      favorite_event_types: sendingEventTypes,
-      favorite_tour_types: sendingTourCategories,
+      favorite_events: sendingEventTypes,
+      favorite_tours: sendingTourCategories,
     };
     console.log('the body is: ', body);
-    apiInstance.put(`/accounts/profile/${auth.user.username}`, body).then(res => {
-      console.log('the result of updating the profile: ', res);
-    });
-    // setUpdateLoading(true);
-    // usePutProfile(
-    //   usernameQuery,
-    //   // body,
-    //   {
-    //     username: auth.user.username,
-    //     favorite_event_types: sendingEventTypes,
-    //     favorite_tour_types: sendingTourCategories,
-    //   },
-    //   error => {
-    //     toast.error('مشکلی در سامانه رخ داده‌است.');
-    //     setUpdateLoading(false);
-    //   },
-    //   data => {
-    //     console.log(data);
-    //     setUpdateLoading(false);
-    //     toast.success('اطلاعات با موفقیت تغییر یافت');
-    //     setOpen(false);
-    //   }
-    // );
+    apiInstance
+      .post(`/accounts/${auth.user.id}/update_favorite_types/`, body)
+      .then(data => {
+        console.log('the result of updating the profile: ', data);
+        toast.success('اطلاعات با موفقیت تغییر یافت');
+        setOpen(false);
+      })
+      .catch(err => {
+        console.log('the error is: ', err);
+        toast.error('مشکلی در سامانه رخ داده‌است.', { dataTestId: 'error-toast' });
+      });
   };
 
   const userPreferencesCloseButtonHandler = () => {
     setOpen(false);
   };
   return (
-    <Modal className="user-preferences-wrapper" open={open} onClose={userPreferencesCloseButtonHandler}>
+    <Modal
+      className="user-preferences-wrapper"
+      data-testid="user-preferences-modal"
+      open={open}
+      onClose={userPreferencesCloseButtonHandler}
+    >
       <div className="user-preferences-wrapper__container">
         <div className="user-preferences-wrapper__container__close-btn">
-          <button className="user-preferences-close" onClick={() => setOpen(false)}>
+          <button className="user-preferences-close" data-testid="close-btn-id" onClick={() => setOpen(false)}>
             <AiOutlineCloseCircle />
           </button>
         </div>
@@ -140,6 +128,7 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
                 <FormControl sx={{ width: '100%', display: 'flex', alignItems: 'center', marginTop: '20px' }}>
                   <Select
                     labelId="demo-mutiple-checkbox-label"
+                    data-testid="multiple-checkbox-events"
                     id="demo-mutiple-checkbox"
                     multiple
                     open={eventListOpener}
@@ -172,6 +161,7 @@ const UserPreferencesModal = ({ open, setOpen, usernameQuery }) => {
                 <FormControl sx={{ width: '100%', display: 'flex', alignItems: 'center', marginTop: '20px' }}>
                   <Select
                     labelId="demo-mutiple-checkbox-label"
+                    data-testid="multiple-checkbox-tours"
                     id="demo-mutiple-checkbox"
                     multiple
                     open={tourListOpener}

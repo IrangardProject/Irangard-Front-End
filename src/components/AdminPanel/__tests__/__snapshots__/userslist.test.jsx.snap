@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Demo matches the snapshot 1`] = `
+<div
+  className="user-controller"
+>
+  <div
+    className="MuiBox-root css-1i055ha"
+  >
+    <div
+      className="MuiTypography-root MuiTypography-h5 css-1o64xmw-MuiTypography-root"
+    >
+      اضافه کردن کاربر جدید
+    </div>
+    <div
+      className="bordering MuiBox-root css-16zzb8e"
+    >
+      <div
+        className="login-modal__TabContent"
+      >
+        <form
+          className="login-modal-form"
+          onSubmit={[Function]}
+        >
+          <div
+            className="form__group field"
+          >
+            <input
+              className="form__field"
+              id="username"
+              name="username"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="username"
+              type="input"
+            />
+            <label
+              className="form__label"
+              htmlFor="username"
+            >
+              نام کاربری
+            </label>
+          </div>
+          <div
+            className="form__group field"
+          >
+            <input
+              className="form__field"
+              id="email"
+              name="email"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="email"
+              type="input"
+            />
+            <label
+              className="form__label"
+              htmlFor="email"
+            >
+              ایمیل
+            </label>
+          </div>
+          <div
+            className="form__group field"
+          >
+            <input
+              className="form__field"
+              id="password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              placeholder="password"
+              type="input"
+            />
+            <label
+              className="form__label"
+              htmlFor="password"
+            >
+              رمز عبور
+            </label>
+          </div>
+          <input
+            className="submit-btn"
+            type="submit"
+            value="ثبت"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+  <div
+    className="MuiBox-root css-15jatt2"
+  >
+    <div
+      className="MuiFormGroup-root MuiFormGroup-row css-qfz70r-MuiFormGroup-root"
+    />
+    <div
+      className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-12 css-13i4rnv-MuiGrid-root"
+    >
+      <div
+        className="MuiTypography-root MuiTypography-h5 css-1o64xmw-MuiTypography-root"
+      >
+        لیست کاربران
+      </div>
+      <div
+        className="css-1hos8tk"
+      >
+        <ul
+          className="MuiList-root MuiList-padding css-h4y409-MuiList-root"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
