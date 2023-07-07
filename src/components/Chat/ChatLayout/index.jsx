@@ -103,7 +103,7 @@ export default function ChatLayout({
       console.log(error);
     }
   };
-  const defaultImg = 'https://campussafetyconference.com/wp-content/uploads/2020/08/iStock-476085198.jpg' 
+  const defaultImg = 'https://img.freepik.com/free-icon/user_318-159711.jpg' 
   
   return (
     <div

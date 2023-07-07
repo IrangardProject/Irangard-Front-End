@@ -9,7 +9,7 @@ import format from 'date-fns/format';
 import Loader from './components/Loader';
 import Message from './components/Message';
 import './styles.scss';
-import serverAvatar from 'src/assets/images/profile1.jpeg';
+// import serverAvatar from 'src/assets/images/profile1.jpeg';
 import useAuth from 'src/context/AuthContext';
 import avatar from 'src/assets/images/avatar.png';
 
@@ -28,7 +28,7 @@ export default function Messages(props) {
   };
 
 
-
+  const serverAvatar = "https://img.freepik.com/free-icon/user_318-159711.jpg";
 
 
   return (
@@ -45,7 +45,7 @@ export default function Messages(props) {
         >
           {(!isClient(message.sender) || isClient(props.userid)) && true && (
             <img
-              src={isClient(props.userid) ? auth.user.image || avatar : serverAvatar }
+              src={serverAvatar }
               className={`rcw-avatar ${isClient(props.userid) ? 'rcw-avatar-client' : ''}`}
               alt="profile"
             />
