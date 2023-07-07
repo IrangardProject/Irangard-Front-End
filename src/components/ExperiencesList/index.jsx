@@ -12,7 +12,7 @@ function ExperiencesList({ experiences, city, label }) {
   const navigate = useNavigate();
   return (
     <div className="experiences">
-      <h1 className="experiences__title">{label ? label : city ? `تجربه‌های شهر ${city}` : 'تجربه‌ها'}</h1>
+      {/* <h1 className="experiences__title">{label ? label : city ? `تجربه‌های شهر ${city}` : 'تجربه‌ها'}</h1> */}
       <div className="experiences__list">
         {experiences.length === 0 && <p className="experiences__no-experience">هیچ تجربه‌ای پیدا نشد.</p>}
         {experiences.map(xp => (

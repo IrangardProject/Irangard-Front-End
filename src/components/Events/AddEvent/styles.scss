@@ -170,53 +170,6 @@
       margin-top: 30px;
     }
   }
-
-  .hotel-rooms {
-    &__groupfield {
-      margin-bottom: 5px;
-      display: flex;
-    }
-
-    &__field {
-      margin: 5px;
-    }
-    .room-price {
-      position: relative;
-      display: inline-block;
-
-      &::after {
-        content: 'تومان';
-        position: absolute;
-        top: 50%;
-        left: 10px;
-        transform: translateY(-50%);
-      }
-    }
-    .delete-btn {
-      color: $c-golbehi2;
-      background-color: $c-white;
-      transition: all 0.3s;
-      &:hover {
-        background-color: $c-golbehi2;
-        color: $c-white;
-      }
-    }
-
-    .add-btn {
-      color: $c-green2;
-      background-color: $c-white;
-      transition: all 0.3s;
-      &:hover {
-        background-color: $c-green2;
-        color: $c-white;
-      }
-    }
-    .btn-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-  }
   .field-label {
     padding-bottom: 3px;
   }

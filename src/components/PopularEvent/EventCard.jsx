@@ -1,140 +1,70 @@
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardMedia,
-    Grid,
-    Rating,
-    Typography,
-} from "@mui/material";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import defaultXpImg from '../../assets/images/defaultXpImg.png';
+import avatar from '../../assets/images/avatar.png';
+import './styles.scss';
+import { Typography } from '@mui/material';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlined';
-import { Link } from "react-router-dom";
 import PeopleIcon from '@mui/icons-material/People';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-const EventCard = ({event}) => {
-    console.log('event in eventCard' , event);
-    return (
-        <Card
-            sx={{
-                // marginRight:'100px',
-                m: 2,
-                display: "flex",
-                borderRadius: "10px",
-                width: "80%",
-                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.2)",
-                transition: "all 0.3s ease-in-out",
-                "&:hover": {
-                    boxShadow: "0px 0px 30px 0px rgba(0,0,0,0.2)",
-                },
+import {convertTimeToPersian} from '../../utils/formatters'
+const ExperienceCard = ({start_time,organizer, city, id, imgSrc, title, description, userImgSrc, userName }) => {
+  console.log('imgSrc: ', imgSrc);
+  return (
+    <Link to={`/events/${id}`} className="experience-card">
+      <img src={imgSrc} alt={title} className="experience-card__img" />
+      <div className="experience-card__rating-wrapper"></div>
+      <h3 className="experience-card__title">{ title}</h3>
+      <p className="experience-card__description">      
+      </p>
+      <Typography variant="body2" sx={{
+        fontSize:"12px",
+        marginBottom:"10px",
+        display:"flex"
+        }}>
+          <div className='experience-card__location'>
+            <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
+            <section 
+            className='experience-card__section' 
+            >
+              <span  >   محل برگزاری  : &nbsp; </span> {city}
+            </section>
+          </div>
+      </Typography>
+      <Typography variant="body2" sx={{
+        fontSize:"12px",
+        marginBottom:"10px",
+        display:"flex"
+      }}>
+        <div className='experience-card__start_time'>
+          <DateRangeIcon color="primary" sx={{fontSize:"15px"}}/>
+          <section
+            className='experience-card__section'
+          >
+            <span >  ساعت شروع : &nbsp; </span>{ convertTimeToPersian(start_time)}
+          </section>
+        </div>
+      </Typography>
+      <Link to={`/events/${id}`}>
+        <div className="experience-card__footer">
+          <Typography variant="body2" sx={{
+            fontSize:"12px",
+            marginBottom:"10px",
+            display:"flex"
+          }}>
+              <PeopleIcon color="primary" sx={{fontSize:"15px"}}/>
+              <section 
+                className='experience-card__section'
+              >
+                <span >  برگزارکننده : &nbsp; </span> {organizer.length > 16 ? organizer.slice(0, 16) + '...' : organizer} 
+              </section>
+          </Typography>
+        </div>
+      </Link>
+    </Link>
+  );
+};
 
-                
-            }}
-        >
-
-            
-            <Grid container>
-                <Grid>
-                    <Link to={`/events/${event.id}`} >
-                        <CardMedia 
-                            
-                            component="img"
-                            // className={}
-                            image={event.images[0].image}
-                            alt="event image"
-                        />
-                    </Link>
-                </Grid>
-                <Grid item sm={12} xs={12} md={12} >
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent:"center",
-                            flexDirection: "column",
-                        }}
-                        elevation={2}
-                    >
-                        <CardContent
-                            sx={{
-                                flex: "1 0 auto",
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    marginBottom: "10px",
-                                }}
-                            >
-                                <Link to={`/events/${event.id}`} >
-                                    <Typography
-                                        noWrap
-                                        component="div"
-                                        variant="h7"
-                                        sx={{
-                                            display:"inline",
-                                            wordBreak: "break-word"
-                                            // fontSize: "12px",
-                                        }}
-                                    >
-                                        {event.title}
-                                    </Typography>
-                                </Link>
-                            </Box>
-                            <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
-                                <PlaceOutlinedIcon color="primary" sx={{fontSize:"15px"}}/>
-                                <span >   محل برگزاری  : &nbsp; </span> {event.city} 
-                            </Typography>
-                            <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
-                                <PeopleIcon color="primary" sx={{fontSize:"15px"}}/>
-                                <span >  برگزارکننده : &nbsp; </span> {event.organizer} 
-                            </Typography>
-                            <Box>
-                                {/*ساعت شروع و ساعت پایان */}
-                                <Typography variant="body2" sx={{fontSize:"12px",marginBottom:"10px",display:"flex"}}>
-                                    <DateRangeIcon color="primary" sx={{fontSize:"15px"}}/>
-                                    <span >  ساعت شروع : &nbsp; </span> {event.start_time} 
-                                    
-                                </Typography>
-                            </Box>
-                            {/* <Typography
-                              component="div"
-                              variant="caption"
-                              color="text.secondary"
-                              sx={{
-                                fontSize: "12px",
-                                display:'-webkit-box',
-                                WebkitBoxOrient: 'vertical',
-                                WebkitLineClamp: 1,
-                                overflow: "hidden",
-                              }}
-                              dangerouslySetInnerHTML={{__html: event.description}}
-                            /> */}
-                        </CardContent>
-                    </Box>
-                </Grid>
-                <Grid item sm={12} xs={12} md={12} 
-                    sx={{
-                        display: "flex",
-                        justifyContent:"center",
-                        padding :'0px 10px 10px 10px'
-                    }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        endIcon={<KeyboardArrowLeftIcon />}
-                        sx={{
-                            borderRadius:"10px",
-                        }}
-                    >
-                        <Link to={`/events/${event.id}`} style={{textDecoration:"none",color:"white"}}>
-                            مشاهده رویداد
-                        </Link>
-                    </Button>
-                </Grid>
-            </Grid>
-        </Card>
-    );
-}
- 
-export default EventCard;
+export default ExperienceCard;

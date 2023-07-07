@@ -17,7 +17,7 @@ const EventGallery = ({ images, className }) => {
       <h3 className="event-gallery__title">تصاویر</h3>
       <div className="event-gallery__images">
         {images.slice(0, 3).map(image => (
-          <img key={image} className="event-gallery__img" src={image.image} />
+          <img key={image} className="event-gallery__img" src={image} />
         ))}
       </div>
       {images.length > 3 && (

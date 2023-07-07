@@ -1,0 +1,108 @@
+@import 'src/theme/main.scss';
+@import 'src/theme/colors.scss';
+
+.payment-methods-modal {
+    width: 600px;
+    height: 400px;
+    background-color: #fff;
+    padding: 32px;
+    padding-top: 12px;
+    border-radius: 8px;
+    text-align: center;
+
+    @media (max-width: 768px) {
+      width: 350px;
+      height: 450px;
+    }
+
+    &__close-btn {
+        height: 12px;
+        display: flex;
+        justify-content: flex-end;
+        .user-upgrade-close-btn {
+            cursor: pointer;
+            margin-right: auto;
+            background-color: transparent;
+            border-color: transparent;
+            font-size: 24px;
+            &:hover {
+                color: red;
+            }
+        }
+    }
+
+    &__header {
+        &__title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+    }
+
+    &__account-upgrade-price {
+        margin-top: 10px;
+    }
+
+    &__hr {
+        width: 90%;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: auto;
+        margin-right: auto;
+        border: 0.25px solid #B2B2B2;
+    }
+
+    &__payment-way-container {
+        display: flex;
+      .form-label-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #000;
+      }
+      .form-control-label-box {
+        width: 500px;
+        @media (max-width: 768px) {
+          margin: auto;
+          width: 100%;
+        }
+      }
+      .online-payment {
+        display: flex;
+        flex-direction: row;
+        &__text {
+          margin-right: 10px;
+        }
+      }
+      .user-wallet-payment {
+        display: flex;
+        flex-direction: row;
+        &__icon {
+          margin: auto;
+        }
+        &__text {
+          &__title {
+            margin-right: 10px;
+          }
+          &__description {
+            &__enough-credit {
+              margin-top: 5px;
+              font-size: 12px;
+              color: green;
+            }
+            &__no-credit {
+              margin-top: 5px;
+              font-size: 12px;
+              color: red;
+            }
+          }
+        }
+      }
+    }
+}
+
+.submit-upgrade-payment {
+    &__btn {
+        background-color: $c-green2 !important;
+        color: #fff !important;
+        margin: 0 0 24px 0 !important;
+    }
+}

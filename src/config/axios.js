@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { baseUrl } from 'src/utils/constants';
+import { baseUrl } from '../utils/constants';
 
 const apiInstance = Axios.create();
 apiInstance.defaults.baseURL = baseUrl;

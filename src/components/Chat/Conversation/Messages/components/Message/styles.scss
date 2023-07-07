@@ -85,33 +85,7 @@
 }
 
 
-.rcw-message-cont:before {
-  top: -0.1rem;
-  content: "";
-  height: 1rem;
-  position: absolute;
-  border-top-left-radius: 0.8rem 0.7rem;
-  border-right: 1rem solid #e7f1fc;
-  right: -0.35rem;
-  transform: translate(0, -0.1rem);
-  box-shadow: 0px 5px 5px -5px #e7f1fc !important;
-  z-index: 1;
-}
 
-.rcw-message-cont:after{
-  
-  top: -0.1rem;
-  content: "";
-  height: 1rem;
-  position: absolute;
-  background-color: #fff;
-  border-top-left-radius: 0.5rem;
-  right: -40px;
-  transform:translate(-30px, -2px);
-  width: 10px;
-  z-index: 1;
-  
-}
 
 
 
@@ -134,28 +108,3 @@
 }
 
 
-.rcw-message-cont-server:before {
-  top: 0rem;
-  content: "";
-  height: 1rem;
-  position: absolute;
-  border-top-right-radius: 0.8rem 0.7rem;
-  border-left: 1rem solid #2d4c69;
-  left: -0.30rem;
-  transform: translate(0, -0.1rem);
-  box-shadow: 0px 5px 5px -5px #2d4c69 !important;
-}
-
-.rcw-message-cont-server:after{
-  
-  top: -0.1rem;
-  content: "";
-  height: 1rem;
-  position: absolute;
-  background-color: #fff;
-  border-top-right-radius: 0.6rem;
-  left: 20px;
-  transform: translate(-30px, 0px);
-  width: 10px;
-  
-}

@@ -1,250 +1,191 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import DatePicker from 'react-multi-date-picker';
-import toast, { Toaster } from 'react-hot-toast';
-import persian from 'react-date-object/calendars/persian';
-import persian_fa from 'react-date-object/locales/persian_fa';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useForm, FormProvider } from 'react-hook-form';
 import Layout from 'src/components/Layout';
-import Input from 'src/components/Input';
+import { EnhancedStepper as Stepper } from 'src/components/Stepper';
 import Button from 'src/components/Button';
-import RichText from 'src/components/RichText';
-import { convertNumberToPersian, isPersianNumber, convertJalaliDateToGeorgian } from 'src/utils/formatters';
-import apiInstance from 'src/config/axios';
+import useAuth from 'src/context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { baseUrl } from 'src/utils/constants';
-import './style.scss';
-import 'react-multi-date-picker/styles/layouts/mobile.css';
-import moment from 'jalali-moment';
-import { useEffect } from 'react';
+import { AddTourSteps as Steps } from './info';
+import { tourCategories } from 'src/utils/constants';
+import { BaseInfoSection, MapSection, DateSection, AdditionalInfoSection } from './Sections';
+import { useAddTour, updateTour } from 'src/api/Tours';
+import './styles.scss';
+import defaultTourImg from 'src/assets/images/defaultTourImg.jpg';
+import { convertJalaliDateToGeorgian } from 'src/utils/formatters';
 
-function AddTour() {
+const AddTour = () => {
+  const auth = useAuth();
+  if (!auth.isLoggedIn) {
+    return (
+      <Layout title="اضافه کردن تور جدید">
+        <div className="add-tour__no-auth">
+          <p>برای اضافه کردن تور ابتدا باید وارد شوید.</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  const methods = useForm({
+    defaultValues: {
+      activeStep: 0,
+      name: '',
+      tourCategory: '',
+      tourCategoryIndex: 0,
+      tags: [],
+      state: '',
+      city: '',
+      address: '',
+      longitude: '',
+      latitude: '',
+      startDate: '',
+      endDate: '',
+      summary: '',
+      images: [],
+      phone: '',
+    },
+  });
+
+  const activeStep = methods.watch('activeStep');
+  const [preStep, setPreStep] = useState(activeStep);
+  const onError = (errors, e) => toast.error('لطفا مشکلات مراحلی که علامت هشدار دارند، را رفع کنید.');
   const navigate = useNavigate();
+  const { mutateAsync, isLoading } = useAddTour();
 
-  const [title, setTitle] = useState('');
-  const [titleError, setTitleError] = useState('');
+  useEffect(async () => {
+    const stepFields = Steps[preStep].fields;
+    const isOkay = await methods.trigger(stepFields);
+    console.log('isOkay: ' + isOkay);
+    Steps[preStep]['error'] = !isOkay;
+    setPreStep(activeStep);
+  }, [activeStep]);
 
-  const [cost, setCost] = useState('');
-  const [costError, setCostError] = useState('');
+  useEffect(() => {
+    const subscription = methods.watch((value, { name, type }) => {
+      methods.trigger(name);
+    });
+    return () => subscription.unsubscribe();
+  }, [methods.watch]);
 
-  const [capacity, setCapacity] = useState('');
-  const [capacityError, setCapacityError] = useState('');
-
-  const [image, setImage] = useState('');
-  const imageRef = useRef(null);
-
-  const [startDate, setStartDate] = useState(null);
-  const [isStartDateSelected, setIsStartDateSelected] = useState(false);
-
-  const [endDate, setEndDate] = useState(null);
-  const [startDateBlured, setStartDateBlured] = useState(false);
-  const [endDateBlured, setEndDateBlured] = useState(false);
-
-  const [description, setDescription] = useState('');
-
-  const [loading, setLoading] = useState(false);
-
-  const startDatePickerRef = useRef(null);
-  const endDatePickerRef = useRef(null);
-
-  const handleTitleChange = e => {
-    setTitle(e.target.value);
-    if (e.target.value === '') {
-      setTitleError('عنوان تور نمی‌تواند خالی باشد.');
-    } else {
-      setTitleError('');
-    }
+  const apiAdaptor = tourData => {
+    const formatedData = {
+      title: tourData.tourName,
+      cost: tourData.tourPrice,
+      capacity: tourData.tourCapacity,
+      remaining: tourData.tourCapacity,
+      tour_type: tourData.tourCategoryIndex,
+      x_location: tourData.latitude,
+      y_location: tourData.longitude,
+      // start_date: tourData.startDate,
+      start_date: convertJalaliDateToGeorgian(tourData.startDate.toString()) + `T00:00`,
+      // end_date: tourData.endDate,
+      end_date: convertJalaliDateToGeorgian(tourData.endDate.toString()) + `T00:00`,
+      province: tourData.state.label,
+      city: tourData.city.label,
+      description: tourData.summary,
+      tags: tourData.tags.map(tag => {
+        return {
+          name: tag,
+        };
+      }),
+      address: tourData.address,
+      owner: auth.user.id,
+      phone: tourData.phone,
+      website: tourData.website,
+    };
+    return formatedData;
   };
 
-  const handleCostChange = e => {
-    setCost(e.target.value);
-    if (e.target.value === '') {
-      setCostError('هزینه تور نمی‌تواند خالی باشد.');
-    } else if (!isPersianNumber(convertNumberToPersian(e.target.value))) {
-      setCostError('هزینه تور باید عدد باشد.');
-    } else {
-      setCostError('');
-    }
+  const onSubmit = async tourData => {
+    // console.log('this is the tourData in onSubmit: ', tourData);
+    console.log('the data sending to back-end: ', apiAdaptor(tourData));
+    console.log('the auth: ', auth);
+    if (Steps.slice(0, 2).some(s => s['error'] === undefined)) toast.error('لطفا ابتدا تمامی مراحل را بگذرونید.');
+    else if (Steps.some(s => s['error'] === true)) toast.error('لطفا مشکلات مراحلی که علامت هشدار دارند، را رفع کنید.');
+    else
+      toast
+        .promise(mutateAsync(apiAdaptor(tourData)), {
+          loading: 'در حال بررسی...',
+          success: res => {
+            return 'تور به پشتیبانی ارسال شد و در صورت تایید ادمین به لیست تور ها اضافه میشود';
+          },
+          error: err => {
+            if (!err.response) return 'خطا در ارتباط با سرور! اینترنت خود را بررسی کنید';
+            else return `مشکلی پیش اومده است، دوباره امتحان کنید.`;
+          },
+        })
+        .then(res => {
+          // if (tourData.images.length === 0) return;
+          const form_data = new FormData();
+          if (tourData.images.length === 0) {
+            navigate(`/tours`);
+            return;
+          } else {
+            tourData.images.forEach((img, i) => {
+              form_data.append('images', img);
+            });
+          }
+          form_data.append('address', tourData.address);
+          form_data.append('city', tourData.city.label);
+          form_data.append('province', tourData.state.label);
+          form_data.append('title', tourData.tourName);
+          form_data.append('description', tourData.summary);
+          form_data.append('x_location', tourData.latitude);
+          form_data.append('y_location', tourData.longitude);
+          form_data.append('start_date', convertJalaliDateToGeorgian(tourData.startDate.toString()) + `T00:00`);
+          form_data.append('end_date', convertJalaliDateToGeorgian(tourData.endDate.toString()) + `T00:00`);
+          form_data.append('phone', tourData.phone);
+          toast
+            .promise(updateTour(res.data['id'], form_data), {
+              loading: 'در حال آپلود تصاویر...',
+              success: res => {
+                return 'تصاویر با موفقیت اضافه شد.';
+              },
+              error: err => {
+                if (!err.response) return 'خطا در ارتباط با سرور! اینترنت خود را بررسی کنید';
+                else return `مشکلی پیش اومده است، دوباره امتحان کنید.`;
+              },
+            })
+            .then(res => {
+              navigate(`/tours`);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        });
   };
 
-  const handleCapacityChange = e => {
-    setCapacity(e.target.value);
-    if (e.target.value === '') {
-      setCapacityError('ظرفیت تور نمی‌تواند خالی باشد.');
-    } else if (!isPersianNumber(convertNumberToPersian(e.target.value))) {
-      setCapacityError('ظرفیت تور باید عدد باشد.');
-    } else {
-      setCapacityError('');
-    }
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    setStartDateBlured(true);
-    setEndDateBlured(true);
-    let error = false;
-    if (title === '') {
-      setTitleError('عنوان تور نمی‌تواند خالی باشد.');
-      error = true;
-    }
-    if (cost === '') {
-      setCostError('هزینه تور نمی‌تواند خالی باشد.');
-      error = true;
-    } else if (!isPersianNumber(convertNumberToPersian(cost))) {
-      setCostError('هزینه تور باید عدد باشد.');
-      error = true;
-    }
-    if (capacity === '') {
-      setCapacityError('ظرفیت تور نمی‌تواند خالی باشد.');
-      error = true;
-    } else if (!isPersianNumber(convertNumberToPersian(capacity))) {
-      setCapacityError('ظرفیت تور باید عدد باشد.');
-      error = true;
-    }
-    if (!startDate || !endDate) {
-      error = true;
-    }
-    if (error) {
-      toast.error('لطفا فیلدهای مشخص‌شده را اصلاح کنید.');
-      return;
-    }
-    const body = new FormData();
-    body.append('title', title);
-    body.append('cost', cost);
-    body.append('capacity', capacity);
-    body.append('start_date', convertJalaliDateToGeorgian(startDate.toString()) + `T00:00`);
-    body.append('end_date', convertJalaliDateToGeorgian(endDate.toString()) + `T00:00`);
-    body.append('description', description);
-    if (image.image) {
-      body.append('image', image.image);
-    }
-
-    setLoading(true);
-
-    apiInstance
-      // .post('/tours/', body)
-      .post(`${baseUrl}/tours/`, body, {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        //   'Content-Type': 'multipart/form-data',
-        // },
-      })
-      .then(res => res.data)
-      .then(data => {
-        toast.success('تور با موفقیت اضافه شد.');
-        navigate(`/tours/${data.id}`);
-      })
-      .catch(error => {
-        console.log(error);
-        toast.error('مشکلی در سامانه رخ داده‌است.');
-      })
-      .finally(() => setLoading(false));
-  };
+  const AddTourSections = [BaseInfoSection, MapSection, DateSection, AdditionalInfoSection];
+  const AddTourSection = AddTourSections[preStep];
 
   return (
-    <Layout title="افزودن تور جدید">
+    <Layout title="ثبت تور جدید">
       <div className="add-tour">
-        <Toaster />
-        <h1 className="add-tour__title">افزودن تور جدید</h1>
-        <Input
-          label="عنوان:"
-          placeholder="عنوان..."
-          value={title}
-          onChange={handleTitleChange}
-          onBlur={handleTitleChange}
-          error={titleError}
-        />
-        <Button className="add-tour__choose-img-btn" onClick={() => imageRef.current.click()}>
-          <input
-            type="file"
-            ref={imageRef}
-            style={{ display: 'none' }}
-            onChange={e => {
-              setImage({
-                image: e.target.files[0],
-                preview: URL.createObjectURL(e.target.files[0]),
-              });
-            }}
-            accept="image/*"
-          />
-          انتخاب عکس تور
-        </Button>
-        {image && <img className="add-tour__img" src={image.preview} />}
-        <Input
-          label="هزینه تور:"
-          placeholder="هزینه تور..."
-          value={convertNumberToPersian(cost)}
-          onChange={handleCostChange}
-          onBlur={handleCostChange}
-          error={costError}
-        />
-        <Input
-          label="ظرفیت تور:"
-          placeholder="ظرفیت تور..."
-          value={convertNumberToPersian(capacity)}
-          onChange={handleCapacityChange}
-          onBlur={handleCapacityChange}
-          error={capacityError}
-        />
-        <Input
-          label="تاریخ شروع:"
-          autoComplete="off"
-          onBlur={() => setStartDateBlured(true)}
-          onFocus={() => startDatePickerRef.current.openCalendar()}
-          onClick={() => startDatePickerRef.current.openCalendar()}
-          placeholder= {isStartDateSelected ?  "انتخاب تاریخ شروع" : "انتخاب تاریخ شروع"}
-          type="text"
-          id="start-date"
-          value={startDate ? convertNumberToPersian(startDate.toString()) : ''}
-          error={startDateBlured && !startDate && 'تاریخ شروع نمی‌تواند خالی باشد.'}
-        />
-        <Input
-          label="تاریخ پایان:"
-          autoComplete="off"
-          onBlur={() => setEndDateBlured(true)}
-          onFocus={() => endDatePickerRef.current.openCalendar()}
-          onClick={() => endDatePickerRef.current.openCalendar()}
-          placeholder="انتخاب تاریخ پایان"
-          type="text"
-          id="end-date"
-          value={endDate ? convertNumberToPersian(endDate.toString()) : ''}
-          error={endDateBlured && !endDate && 'تاریخ پایان نمی‌تواند خالی باشد.'}
-        />
-        <RichText
-          label="توضیحات تور:"
-          onChange={content => {
-            setDescription(content);
-          }}
-        />
-        <Button variant="black" onClick={handleSubmit} disabled={loading}>
-          ثبت تور
-        </Button>
-
-        <DatePicker
-          ref={startDatePickerRef}
-          inputClass="date-input"
-          className="rmdp-mobile"
-          onChange={date => {
-            console.log("the date in add tour is: ", date.toString());
-            setStartDate(date);
-            setIsStartDateSelected(true);
-          }}
-          calendar={persian}
-          locale={persian_fa}
-          minDate={new Date()}
-        />
-        <DatePicker
-          ref={endDatePickerRef}
-          inputClass="date-input"
-          className="rmdp-mobile"
-          onChange={date => {
-            setEndDate(date);
-          }}
-          calendar={persian}
-          locale={persian_fa}
-          minDate={startDate}
-        />
+        <FormProvider {...methods}>
+          <Stepper steps={Steps} activeStep={activeStep} setActiveStep={s => methods.setValue('activeStep', s)} />
+          <form onSubmit={methods.handleSubmit(onSubmit, onError)}>
+            <div className="add-tour__section">
+              <AddTourSection />
+              <>
+                {activeStep !== 3 ? (
+                  <Button variant="green" onClick={() => methods.setValue('activeStep', activeStep + 1)}>
+                    ادامه
+                  </Button>
+                ) : (
+                  preStep !== 2 && (
+                    <Button type="submit" variant="green" disabled={isLoading}>
+                      ثبت تور
+                    </Button>
+                  )
+                )}
+              </>
+            </div>
+          </form>
+        </FormProvider>
       </div>
     </Layout>
   );
-}
+};
 
 export default AddTour;

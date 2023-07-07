@@ -12,8 +12,76 @@ import { baseUrl } from 'src/utils/constants';
 import apiInstance from '../../config/axios';
 import useAuth from '../../context/AuthContext';
 import EditProfileModal from '../EditProfileModal';
+import UserPreferencesModal from '../UserPreferencesModal';
 import './style.scss';
 import defaultProfileImg from '../../assets/images/avatar.png';
+import { styled } from '@mui/material/styles';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { TbZoomCancel } from 'react-icons/tb';
+import { GrFavorite } from 'react-icons/gr';
+import TourCard from 'src/components/Tours/TourCard';
+import EventCard from 'src/components/Events/EventCard';
+
+const StyledTabs = styled(props => (
+  <Tabs
+    sx={{ display: 'flex', justifyContent: 'center' }}
+    {...props}
+    TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
+  />
+))({
+  '& .MuiTabs-flexContainer': {
+    justifyContent: 'center',
+    marginTop: '20px',
+    // marginBottom: '20px',
+  },
+  '& .MuiTabs-indicator': {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    // alignItems: 'center',
+  },
+  '& .MuiTabs-indicatorSpan': {
+    maxWidth: 40,
+    width: '100%',
+    // backgroundColor: '#635ee7',
+    backgroundColor: '#000',
+  },
+});
+
+const StyledTab = styled(props => <Tab disableRipple {...props} />)(({ theme }) => ({
+  textTransform: 'none',
+  fontWeight: theme.typography.fontWeightRegular,
+  fontSize: theme.typography.pxToRem(15),
+  marginRight: theme.spacing(1),
+  // color: 'rgba(255, 255, 255, 0.7)',
+  color: '#000',
+  '&.Mui-selected': {
+    // color: '#fff',
+    color: '#000',
+  },
+  '&.Mui-focusVisible': {
+    // backgroundColor: 'rgba(100, 95, 228, 0.32)',
+    // backgroundColor: '#fff',
+    backgroundColor: '#000',
+  },
+}));
+
+const TabPanel = props => {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div role="tabpanel" hidden={value !== index} id={`tabpanel-${index}`} aria-labelledby={`tab-${index}`} {...other}>
+      {value === index && (
+        <Box sx={{}}>
+          <Typography sx={{ paddingTop: '20px', paddingLeft: '30px', paddingRight: '30px' }}>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+};
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -25,10 +93,17 @@ const Profile = () => {
   const [followers, setFollowers] = useState([]);
   const [followings, setFollowings] = useState([]);
   const [following, setFollowing] = useState(false);
+
   const [experiences, setExperiences] = useState([]);
   const [experiencesLoading, setExperiencesLoading] = useState(false);
+  const [tours, setTours] = useState([]);
+  const [toursLoading, setToursLoading] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
+
   const [followLoading, setFollowLoading] = useState(false);
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
+  const [userPreferencesModalOpen, setUserPreferencesModalOpen] = useState(false);
   const auth = useAuth();
   const [followerCount, setFollowerCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -43,7 +118,7 @@ const Profile = () => {
       .get(`${baseUrl}/accounts/profile/${usernameQuery}`)
       .then(res => res.data)
       .then(data => {
-        console.log("the data received: ", data)
+        console.log('the data received: ', data);
         setData(data);
         // setData({
         //   ...data,
@@ -64,6 +139,7 @@ const Profile = () => {
   }, [usernameQuery]);
 
   useEffect(async () => {
+    console.log('running the useEffect, the usernameQuery is: ', usernameQuery);
     setExperiencesLoading(true);
     await axios
       .get(`${baseUrl}/experiences/?user__username=${usernameQuery}&size=50`)
@@ -75,10 +151,49 @@ const Profile = () => {
         console.log(error);
       });
     setExperiencesLoading(false);
+    console.log('the auth in useEffect is: ', auth);
+    if (auth.isSpecial) {
+      setToursLoading(true);
+      console.log('looking for special user tours');
+      await axios
+        .get(`${baseUrl}/tours/?owner__user__username=${usernameQuery}&size=50`)
+        .then(res => res.data)
+        .then(data => {
+          console.log('the tours fetched: ', data.results);
+          setTours(data.results);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      setToursLoading(false);
+    }
+
+    if (auth.isSpecial) {
+      setEventsLoading(true);
+      await axios
+        .get(`${baseUrl}/events/?added_by__username=${usernameQuery}&size=50`)
+        .then(res => res.data)
+        .then(data => {
+          console.log('the events fetched: ', data.results);
+          setEvents(data.results);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      setEventsLoading(false);
+    }
   }, [usernameQuery]);
 
   const handleOpen = () => {
     setEditProfileModalOpen(true);
+  };
+
+  const openUserPreferencesHandler = () => {
+    setUserPreferencesModalOpen(true);
+  };
+
+  const closeUserPreferencesHandler = () => {
+    setUserPreferencesModalOpen(false);
   };
 
   const showFollow = data.following !== null && usernameQuery !== auth?.user?.username;
@@ -132,6 +247,12 @@ const Profile = () => {
       .then(data => {
         setData(data);
       });
+  };
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   return (
@@ -196,14 +317,24 @@ const Profile = () => {
                   <span>{convertNumberToPersian(followingCount)}</span>
                 </div>
               </div>
-              {data.is_owner && (
-                <button className="profile-summary__edit" onClick={handleOpen}>
-                  <span>ویرایش پروفایل</span>
-                  <span>
-                    <RiSettings5Line size={20} />
-                  </span>
-                </button>
-              )}
+              <div classname="profile-summary__options">
+                {data.is_owner && (
+                  <button className="profile-summary__options__edit" onClick={handleOpen}>
+                    <span>ویرایش پروفایل</span>
+                    <span>
+                      <RiSettings5Line size={20} />
+                    </span>
+                  </button>
+                )}
+                {data.is_owner && (
+                  <button className="profile-summary__options__user-preferences" onClick={openUserPreferencesHandler}>
+                    <span>علاقه‌مندی‌ها</span>
+                    <span>
+                      <GrFavorite size={20} />
+                    </span>
+                  </button>
+                )}
+              </div>
             </div>
             {data.about_me && (
               <div className="profile-summary__about">
@@ -211,6 +342,13 @@ const Profile = () => {
                 <p>{data.about_me}</p>
               </div>
             )}
+
+            <UserPreferencesModal
+              open={userPreferencesModalOpen}
+              setOpen={setUserPreferencesModalOpen}
+              onClose={closeUserPreferencesHandler}
+              usernameQuery={usernameQuery}
+            />
 
             <EditProfileModal
               open={editProfileModalOpen}
@@ -236,7 +374,66 @@ const Profile = () => {
           </div>
         </>
       )}
-      {!experiencesLoading && <ExperiencesList experiences={experiences} />}
+      {/* {!experiencesLoading && <ExperiencesList experiences={experiences} />} */}
+      {/* <div className="profile-tabs">
+        <div className="profile-tabs__tabs">
+          <div
+            className={`profile-tabs__tab ${tabIndex === 0 ? 'profile-tabs__tab--active' : ''}`}
+            onClick={() => handleTabClick(0)}
+          >
+            تجربیات
+          </div>
+          <div
+            className={`profile-tabs__tab ${tabIndex === 1 ? 'profile-tabs__tab--active' : ''}`}
+            onClick={() => handleTabClick(1)}
+          >
+            پست‌ها
+          </div>
+        </div>
+        <div className="profile-tabs__content">
+          {tabIndex === 0 && <ExperiencesList experiences={experiences} />}
+          {tabIndex === 1 && <PostsList posts={posts} />}
+        </div>
+      </div> */}
+      <Box sx={{ bgcolor: '#fff', borderRadius: '8px', paddingBottom: '30px' }}>
+        <StyledTabs value={value} onChange={handleChange} aria-label="styled tabs example">
+          <StyledTab label="تجربه ها" />
+          {auth.isSpecial && <StyledTab label="تور‌‌ها" />}
+          {console.log('user.username and data.username, usernameQuery', data.username, usernameQuery)}
+          {/* {auth.isSpecial && auth.user.username === data.username && <StyledTab label="تور‌‌ها" />} */}
+          {auth.isSpecial && <StyledTab label="رویداد‌ها" />}
+          {/* {auth.isSpecial && auth.user.username === data.username && <StyledTab label="رویداد‌ها" />} */}
+        </StyledTabs>
+        <TabPanel value={value} index={0}>
+          <ExperiencesList experiences={experiences} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <div className="tours">
+            {tours.length > 0 ? (
+              tours.map((tour, index) => <TourCard key={index} tour={tour} />)
+            ) : (
+              <div className="no-tour-wrapper">
+                <div className="no-tours">
+                  <TbZoomCancel style={{ fontSize: '48px', color: '#feb714' }} />
+                  <h3 className="no-tours__title">توری یافت نشد.</h3>
+                </div>
+              </div>
+            )}
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          {events.length > 0 ? (
+            events.map((event, index) => <EventCard key={index} event={event} />)
+          ) : (
+            <div className="no-event-wrapper">
+              <div className="no-events">
+                <TbZoomCancel style={{ fontSize: '48px', color: 'rgb(0, 170, 108)' }} />
+                <h3 className="no-events__title">رویدادی یافت نشد.</h3>
+              </div>
+            </div>
+          )}
+        </TabPanel>
+      </Box>
     </Layout>
   );
 };

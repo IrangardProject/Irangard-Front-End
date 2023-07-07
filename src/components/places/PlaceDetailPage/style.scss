@@ -1,4 +1,37 @@
 @import 'src/theme/main.scss';
+
+.share-icon-container{
+  position: relative;
+  display: inline-block;
+}
+.tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color:white;
+  color: $c-green1;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  border: 1px solid $c-green1;
+}
+.titleandicon{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.share-icon-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+  padding: 2px;
+}
+
 .place-detail {
   background-color: $c-white;
   margin: 32px 0;
