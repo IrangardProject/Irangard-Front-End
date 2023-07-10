@@ -2,13 +2,13 @@ FROM node:14 as build
 #WORKDIR /app/
 WORKDIR /app/build
 
-#ENV PATH /app/node_modules/.bin:$PATH
-#COPY package.json ./
-#RUN rm package-lock.json
-#RUN npm clean
-#RUN npm install -g esbuild@0.14.38
-#RUN npm i
-#RUN npm install react-scripts@3.4.1 -g --silent
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json ./
+RUN rm package-lock.json
+RUN npm clean
+RUN npm install -g esbuild@0.14.38
+RUN npm i
+RUN npm install react-scripts@3.4.1 -g --silent
 COPY . ./
 #xRUN npm run build
 
