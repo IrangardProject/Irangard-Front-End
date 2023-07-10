@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 
 const PaymentMethodsModal = ({ open, setOpen }) => {
   const auth = useAuth();
-  const [accountUpgradePrice, setAccountUpgradePrice] = useState(1000);
+  const [accountUpgradePrice, setAccountUpgradePrice] = useState(2000);
   const [paymentMethod, setPaymentMethod] = useState('درگاه پرداخت اینترنتی');
 
   const Pay = () => {
